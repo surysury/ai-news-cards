@@ -22,7 +22,7 @@ jobs:
           python-version: '3.11'
 
       - name: 의존성 설치
-        run: pip install feedparser anthropic
+        run: pip install feedparser anthropic yfinance
 
       - name: 뉴스카드 생성
         env:
