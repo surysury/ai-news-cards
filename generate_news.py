@@ -13,7 +13,23 @@ FEEDS = [
     {"name": "인공지능신문", "url": "https://www.aitimes.kr/rss/allArticle.xml",  "color": "#00C2A8"},
     {"name": "매일경제 IT", "url": "https://www.mk.co.kr/rss/40300001/",          "color": "#E6A817"},
 ]
-MAX_PER_FEED = 6
+MAX_PER_FEED = 15
+
+# AI 관련 기사 필터 키워드 (이 중 하나라도 포함되면 포함)
+AI_KW = [
+    "AI", "인공지능", "머신러닝", "딥러닝", "LLM", "GPT", "챗GPT",
+    "생성형", "언어모델", "파운데이션 모델", "거대언어모델",
+    "오픈AI", "OpenAI", "구글", "딥마인드", "앤트로픽", "Anthropic",
+    "메타 AI", "마이크로소프트", "코파일럿", "Copilot", "Gemini", "제미나이",
+    "클로드", "Claude", "그록", "Grok", "라마", "Llama",
+    "엔비디아", "NVIDIA", "반도체", "GPU", "NPU", "HBM", "데이터센터",
+    "SK하이닉스", "삼성전자", "TSMC", "퀄컴",
+    "자율주행", "로보틱스", "AI 에이전트", "AI 칩", "AI 모델",
+    "미드저니", "Midjourney", "런웨이", "Runway", "소라", "Sora",
+    "이미지 생성", "영상 생성", "AI 서비스", "AI 솔루션", "AI 플랫폼",
+    "네이버 AI", "카카오 AI", "AI 스타트업", "AI 투자", "AI 규제",
+    "챗봇", "음성인식", "컴퓨터비전", "강화학습", "파인튜닝",
+]
 
 # ── 주식 목록 ─────────────────────────────────────────────────────────────────
 STOCKS = [
@@ -114,10 +130,15 @@ def fetch_articles():
                 if count >= MAX_PER_FEED: break
                 link = entry.get("link","#")
                 if link in seen: continue
-                seen.add(link)
 
                 raw_title   = entry.get("title","제목 없음")
                 raw_summary = strip_tags(entry.get("summary", entry.get("description","")))
+
+                # AI 관련 기사만 포함
+                if not contains_any(raw_title + " " + raw_summary[:200], AI_KW):
+                    continue
+
+                seen.add(link)
                 headline, summary = ai_summarize(raw_title, raw_summary)
                 lines = [l.strip() for l in summary.split("\n") if l.strip()][:8]
 
