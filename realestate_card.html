@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>부동산 뉴스카드 2026.05.14</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700;900&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans KR',sans-serif;background:#f0ede8;min-height:100vh;padding-bottom:60px;}
+
+  /* 헤더 */
+  .top-header{background:#1a1a2e;color:#fff;padding:20px 24px 16px;}
+  .top-header .date{font-size:11px;color:#888;margin-bottom:6px;letter-spacing:.08em;}
+  .top-header h1{font-family:'Noto Serif KR',serif;font-size:24px;font-weight:900;letter-spacing:-.02em;}
+  .top-header h1 em{font-style:normal;background:linear-gradient(90deg,#f6ad55,#f687b3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .top-header .update-time{font-size:11px;color:#666;margin-top:6px;}
+
+  /* 탭 */
+  .tabs-sticky{position:sticky;top:0;z-index:100;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.12);}
+  .tabs{display:flex;border-bottom:2.5px solid #1a1a2e;}
+  .tab{flex:1;padding:14px 8px;font-size:13px;font-weight:700;color:#aaa;background:none;border:none;
+        border-bottom:3px solid transparent;margin-bottom:-2.5px;cursor:pointer;transition:.2s;text-align:center;}
+  .tab.active{color:#1a1a2e;border-bottom-color:#1a1a2e;}
+  .tab .cnt{display:inline-block;font-size:10px;background:#eee;color:#888;border-radius:10px;padding:1px 7px;margin-left:4px;}
+  .tab.active .cnt{background:#1a1a2e;color:#fff;}
+
+  /* 섹션 */
+  .section{display:none;padding:24px 0 12px;}
+  .section.active{display:block;}
+  .section-title{font-family:'Noto Serif KR',serif;font-size:18px;font-weight:900;color:#1a1a2e;
+                  margin:0 24px 16px;padding-bottom:10px;border-bottom:2px solid #1a1a2e;}
+
+  /* 캐러셀 */
+  .carousel-wrap{position:relative;width:480px;max-width:92vw;margin:0 auto;}
+  .slider{display:flex;overflow-x:scroll;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+           scrollbar-width:none;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.15);}
+  .slider::-webkit-scrollbar{display:none;}
+  .slide{flex:0 0 100%;scroll-snap-align:start;}
+  .dots{display:flex;gap:5px;justify-content:center;margin:12px 0 4px;flex-wrap:wrap;padding:0 16px;}
+  .dot{width:6px;height:6px;border-radius:50%;background:#ccc;border:none;cursor:pointer;padding:0;transition:.2s;}
+  .dot.active{background:#1a1a2e;transform:scale(1.4);}
+  .carousel-info{text-align:center;font-size:11px;color:#aaa;margin-bottom:8px;}
+  .arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.92);
+          border:1.5px solid #ddd;border-radius:50%;width:36px;height:36px;display:flex;
+          align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:#333;
+          box-shadow:0 2px 8px rgba(0,0,0,.12);z-index:10;}
+  .arrow-left{left:-18px;} .arrow-right{right:-18px;}
+
+  /* 뉴스 카드 */
+  .card{background:#faf9f7;min-height:620px;display:flex;flex-direction:column;border:1px solid #ddd;}
+  .card-header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-bottom:1.5px solid #1a1a2e;}
+  .newsletter-tag{font-size:10px;font-weight:700;letter-spacing:.15em;color:#1a1a2e;}
+  .card-date{font-size:11px;color:#999;}
+  .card-img{width:100%;height:200px;overflow:hidden;border-bottom:1px solid #eee;background:#f0ede9;}
+  .card-img img{width:100%;height:100%;object-fit:cover;display:block;}
+  .card-body{flex:1;padding:18px 20px 10px;display:flex;flex-direction:column;gap:10px;}
+  .source-chip{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.06em;
+                padding:3px 10px;border:1.5px solid;border-radius:20px;align-self:flex-start;}
+  .card-title{font-family:'Noto Serif KR',serif;font-size:20px;font-weight:900;line-height:1.45;
+               color:#1a1a2e;letter-spacing:-.02em;word-break:keep-all;border-bottom:2px solid #1a1a2e;padding-bottom:12px;}
+  .card-lines{list-style:none;display:flex;flex-direction:column;gap:6px;flex:1;}
+  .card-lines li{font-size:13px;line-height:1.65;color:#333;padding-left:14px;position:relative;word-break:keep-all;}
+  .card-lines li::before{content:'·';position:absolute;left:0;color:#aaa;font-size:16px;line-height:1.3;}
+  .card-footer{padding:12px 20px;border-top:1px solid #e8e8e8;display:flex;justify-content:space-between;
+                align-items:center;background:#f5f3f0;}
+  .card-counter{font-size:11px;color:#bbb;}
+  .read-more{font-size:12px;font-weight:700;color:#1a1a2e;text-decoration:none;border-bottom:1.5px solid #1a1a2e;padding-bottom:1px;}
+
+  /* 시장 지표 */
+  .stock-section-inner{padding:0 20px;}
+  .stock-group{margin-bottom:24px;}
+  .stock-group-title{font-size:11px;font-weight:700;letter-spacing:.1em;color:#888;margin-bottom:10px;text-transform:uppercase;}
+  .stock-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+  .stock-card{background:#fff;border-radius:12px;padding:14px;border:1px solid #e8e8e8;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+  .stock-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
+  .stock-name{font-size:14px;font-weight:800;color:#1a1a2e;}
+  .stock-ticker{font-size:10px;color:#bbb;margin-top:2px;}
+  .stock-price{font-size:16px;font-weight:700;color:#1a1a2e;margin-bottom:4px;}
+  .stock-change{font-size:13px;font-weight:700;}
+  .no-data{text-align:center;color:#aaa;font-size:13px;padding:40px;}
+  .market-note{font-size:11px;color:#bbb;text-align:center;margin-top:4px;padding-bottom:8px;}
+</style>
+</head>
+<body>
+
+<div class="top-header">
+  <div class="date">5월 2주 · 2026년 05월 14일 (목)</div>
+  <h1>오늘의 <em>부동산 뉴스카드</em></h1>
+  <div class="update-time">서울·경기 위주 · 업데이트 12:51</div>
+</div>
+
+<div class="tabs-sticky">
+  <div class="tabs">
+    <button class="tab active" onclick="showSection('news',this)">🏠 부동산 뉴스<span class="cnt">17</span></button>
+    <button class="tab" onclick="showSection('market',this)">📊 시장 지표<span class="cnt">9</span></button>
+  </div>
+</div>
+
+<div class="section active" id="section-news">
+  <div class="section-title">🏠 오늘의 부동산 뉴스 <span style="font-size:12px;font-weight:400;color:#aaa;">서울·경기 위주</span></div>
+  <div class="carousel-wrap">
+    <button class="arrow arrow-left"  onclick="move(-1)">&#8592;</button>
+    <button class="arrow arrow-right" onclick="move(+1)">&#8594;</button>
+    <div class="slider" id="slider">
+<div class="slide">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">05.14 11:40</span>
+    </div>
+    <div class="card-img"><img src="https://pimg.mk.co.kr/news/cms/202605/14/news-p.v1.20260514.30d737e2f2fa4c059543dd90d76910b6_R.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#E6A817;border-color:#E6A817">매일경제</span>
+      <h2 class="card-title">“사전청약 제외 물량 대상”…우미건설 ‘고양 창릉 우미린 그레니티’ 14일 분양일정 돌입</h2>
+      <ul class="card-lines"><li>14·15일 사전청약 당첨자 대상 관람 16일부터 일반고객도 관람 가능 18~19일 사전청약 당첨자 청약 후  26일 특공·27~28일 일반공급 청약우미건설이 14일 3기 신도시 ..</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">1 / 17</span>
+      <a class="read-more" href="https://www.mk.co.kr/news/realestate/12047417" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">05.14 11:03</span>
+    </div>
+    <div class="card-img"><img src="https://pimg.mk.co.kr/news/cms/202605/14/news-p.v1.20260514.2b786320281f4fe2b56187572d456f46_R.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#E6A817;border-color:#E6A817">매일경제</span>
+      <h2 class="card-title">중동발 정세 불안에 한국공항공사, 전국 공항 주요 건설 현장 특별점검</h2>
+      <ul class="card-lines"><li>김포·김해·제주·여수·사천공항 14개 건설 현장 21일까지 점검 현재 김포·김해 6개 점검 마무리한국공항공사(사장직무대행 박재희)는 지난 11일부터 전국공항 주요 건설 현장을 특별..</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">2 / 17</span>
+      <a class="read-more" href="https://www.mk.co.kr/news/business/12047374" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">05.14 12:33</span>
+    </div>
+    <div class="card-img"><img src="https://cphoto.asiae.co.kr/listimglink/6/2026051412301862979_1778729419.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#0070C0;border-color:#0070C0">아시아경제</span>
+      <h2 class="card-title">이기재 양천구청장 후보 &quot;서부트럭터미널 서남권 대표 상권 육성&quot;</h2>
+      <ul class="card-lines"><li>이기재 국민의힘 양천구청장 후보가 14일 서부트럭터미널 도시첨단물류단지를 서남권 대표 상권으로 육성하겠다는 구상을 밝혔다. 서부트럭터미널은 지난해 11월 9년 만에 기공식을 열고 본격 개발에 착수했다. 서울 구로구와 경기 부천시로 이어지는 교통 요충지이지만, 그동안 개발이 지연돼 지역 발전을 가로막는 요인이라는 지적이 있어 왔다. 이 후보는 &quot;서부트럭터미널 개발은 기업과 일자리를 함께 만들어내는 도시 구조 전</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">3 / 17</span>
+      <a class="read-more" href="https://www.asiae.co.kr/article/2026051412335125620" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">05.14 12:23</span>
+    </div>
+    <div class="card-img"><img src="https://cphoto.asiae.co.kr/listimglink/6/2026051412203862954_1778728838.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#0070C0;border-color:#0070C0">아시아경제</span>
+      <h2 class="card-title">강태웅 용산구청장 후보 &quot;가장 시급한 현안은 재개발·재건축 신속 추진&quot;</h2>
+      <ul class="card-lines"><li>6·3 지방선거 더불어민주당 용산구청장 후보로 출마한 강태웅 전 서울시 행정1부시장은 &quot;1분 1초도 아껴 눈에 보이는 성과로 답하겠다&quot;고 밝혔다. 용산중·용산고를 졸업하고 30년간 서울시 도시행정을 다뤄온 강 후보는 정비사업 가속화와 이른바 &#x27;용산 3대 사업&#x27; 추진을 핵심 공약으로 제시했다. 강태웅 후보는 &quot;서울시 최고위직인 행정1부시장까지 30년 경험을 이제는 구민을 위해 쓰고 싶었다”며 “그중에서도 내가 자라고 꿈</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">4 / 17</span>
+      <a class="read-more" href="https://www.asiae.co.kr/article/2026051412233088146" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">05.14 11:50</span>
+    </div>
+    <div class="card-img"><img src="https://cphoto.asiae.co.kr/listimglink/6/2025051511385558516_1747276735.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#0070C0;border-color:#0070C0">아시아경제</span>
+      <h2 class="card-title">부천시, 소규모 공동주택 집수리 지원사업 17개 단지 선정</h2>
+      <ul class="card-lines"><li>경기 부천시는 다세대·연립주택 등 소규모 공동주택을 대상으로 공용부분 유지·보수 비용을 지원하는 사업에 17개 단지를 선정했다고 14일 밝혔다. 이 사업은 실생활 불편과 안전사고 우려가 있음에도 재정적 부담으로 보수가 어려운 소규모 공동주택의 주거환경 개선과 안전 확보를 위해 추진됐다.   올해는 총 161개 단지가 신청해 공용부분 유지·보수에 대한 수요가 높은 것으로 나타났다. 시는 선정된 단지를 대상으로 이달</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">5 / 17</span>
+      <a class="read-more" href="https://www.asiae.co.kr/article/2026051411500557962" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">05.14 11:39</span>
+    </div>
+    <div class="card-img"><img src="https://cphoto.asiae.co.kr/listimglink/6/2026051410031462579_1778720595.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#0070C0;border-color:#0070C0">아시아경제</span>
+      <h2 class="card-title">오세훈 &quot;거대권력 폭주에 경고장 날려달라&quot;</h2>
+      <ul class="card-lines"><li>오세훈 국민의힘 서울시장 후보는 14일 &quot;부동산 지옥을 끝낼 수 있는 힘을 모아주고, 거대권력 폭주에 단호한 경고장을 날려달라&quot;면서 &quot;진영과 이해관계를 뛰어넘어 시민의 삶을 지키려는 모든 분과 손을 잡겠다. 더 큰 통합의 길로 나아가겠다&quot;고 했다.   오 후보는 이날 오전 서울시 선거관리위원회에 후보 등록을 마친 뒤 대국민 호소 기자회견을 열고 &quot;이번 서울시장 선거는 대한민국 방향을 바로 세우는 분기점이 될 것이다.</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">6 / 17</span>
+      <a class="read-more" href="https://www.asiae.co.kr/article/2026051411390892644" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">05.14 11:28</span>
+    </div>
+    <div class="card-img"><img src="https://cphoto.asiae.co.kr/listimglink/6/2026051411233962846_1778725419.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#0070C0;border-color:#0070C0">아시아경제</span>
+      <h2 class="card-title">삼해이앤씨, 인도 달리트 아동 기숙학교 지원</h2>
+      <ul class="card-lines"><li>삼해이앤씨(대표 박성용)는 13일 삼해이앤씨 서울사무소에서 ㈔나눔과미래(이사장 송경용)와 &#x27;인도 달리트 아동 기숙학교 지원을 위한 기부 협약식&#x27;을 진행했다고 밝혔다. 이번 협약은 나눔과미래가 운영 지원하고 있는 기숙학교 교실 증축과 운영 지원을 위해 사용될 예정이다. 인도 카스트 제도에서 최하위계층으로 경제적·사회적 차별로 비인권적인 상황에 놓인 달리트 어린이에게 쾌적한 주거 환경과 안정적인 학습 공간을 제</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">7 / 17</span>
+      <a class="read-more" href="https://www.asiae.co.kr/article/2026051411283346984" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">05.14 11:28</span>
+    </div>
+    <div class="card-img"><img src="https://cphoto.asiae.co.kr/listimglink/6/2026051411270662854_1778725626.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#0070C0;border-color:#0070C0">아시아경제</span>
+      <h2 class="card-title">정원오 &quot;서울 주택 대책, 공공성보다 공급 확대&quot;</h2>
+      <ul class="card-lines"><li>정원오 더불어민주당 서울시장 후보는 14일 서울 주거 주택 공급과 관련해 &quot;지금은 모든 역량을 공급 늘리는 데 집중해야 한다&quot;며 &quot;사업성을 우선해야 할 때&quot;라고 밝혔다. 정 후보는 이날 오전 10시 서울 중구 대한상공회의소에서 열린 한국신문방송편집인협회 포럼에 초청된 자리에서 &quot;부동산 경기가 좋으면 재개발·재건축이 활성화되는데, 한참 뒤에 효과가 나타난다. 지금은 사업성을 우선하고, 조절해야 할 때는 공공성을 높이</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">8 / 17</span>
+      <a class="read-more" href="https://www.asiae.co.kr/article/2026051410520165198" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">05.14 11:25</span>
+    </div>
+    <div class="card-img"><img src="https://cphoto.asiae.co.kr/listimglink/6/2026051409300362412_1778718604.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#0070C0;border-color:#0070C0">아시아경제</span>
+      <h2 class="card-title">[지방선거 인터뷰]추미애 &quot;경기도 가장 잘 아는 대통령과 합치할 &#x27;물 들어올 때 노 저을&#x27; 기회&quot;</h2>
+      <ul class="card-lines"><li>&quot;지금은 경기도를 가장 잘 아는 대통령이 국정을 이끌고 있다. 저 역시 대통령과 오랜 시간 정치적 신뢰를 쌓아왔고, 민생을 중심에 두고 개혁과 성과를 만들어야 한다는 방향에서도 뜻을 같이해 왔다.&quot; 제9회 전국동시지방선거에 도전장을 내민 추미애 더불어민주당 경기도지사 후보는 14일 아시아경제와의 인터뷰에서 이렇게 말했다. 추 후보는 &quot;경기도의 교통, 주거, 산업, 균형발전 과제를 풀어가는 과정에서 중앙정부와 의견</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">9 / 17</span>
+      <a class="read-more" href="https://www.asiae.co.kr/article/2026051409461825243" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">05.14 11:20</span>
+    </div>
+    <div class="card-img"><img src="https://cphoto.asiae.co.kr/listimglink/6/2026051411170062831_1778725021.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#0070C0;border-color:#0070C0">아시아경제</span>
+      <h2 class="card-title">김병욱 후보 “1세대 1주택 취약계층 재산세 한시 감면 추진”</h2>
+      <ul class="card-lines"><li>김병욱 성남시장 후보(더불어민주당)가 공시가격 상승에 따른 시민들의 세 부담 완화를 위해 1세대 1주택 취약계층을 대상으로 한 재산세 한시 감면 정책을 추진하겠다고 밝혔다. 김 후보는 지난 13일 페이스북을 통해 발표한 정책 공약에서 &quot;공시가격 급등으로 서민과 취약계층의 재산세 부담이 커지고 있다&quot;며 &quot;실거주 1주택 시민들의 주거 안정을 위해 맞춤형 세부담 완화 대책을 마련하겠다&quot;고 강조했다. 최근 성남시 평균 공시</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">10 / 17</span>
+      <a class="read-more" href="https://www.asiae.co.kr/article/2026051411201694152" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">05.14 11:21</span>
+    </div>
+    <div class="card-img"><img src="https://www.chosun.com/resizer/v2/MY2TGODFHBRTGMBVGE3GIOJZGY.jpg?auth=46d2ec38ed995d15483b2cd172b4fb1ffb1a2434eaf36f916b8910499baa8864&smart=true&width=3307&height=2535" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#C8102E;border-color:#C8102E">조선일보</span>
+      <h2 class="card-title">1분기 지방 아파트 손바뀜, 5년 만에 가장 많았다</h2>
+      <ul class="card-lines"><li>올해 1분기 수도권을 제외한 지방의 아파트 매매 거래량이 매년 1분기 기준으로 지난 2021년 이후 최고치를 기록한 것으로 나타났다. 14일 한국부동산원의 아파트 매매 거래 현황에 따르면 올해 1분기 수도권 제외 지방 아파트 매매 거래량은 8만103건으로 집계됐다. 이는 2021년 10만1787건 이후 5년 만에 가장 높은 수치다. 1년 전인 2025년 1</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">11 / 17</span>
+      <a class="read-more" href="https://www.chosun.com/economy/real_estate/2026/05/14/MEZTKMZYG5SWINTGMM2DGOJQGE/" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">05.14 11:00</span>
+    </div>
+    <div class="card-img"><img src="https://www.chosun.com/resizer/v2/MIZTKNZYG5STIM3EMRRTQNDCMY.jpg?auth=8713ef94c74ec64c312d2a4f7bbdb3c8526f2286005e3fbea326f6beefbb1a8b&smart=true&width=5000&height=3334" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#C8102E;border-color:#C8102E">조선일보</span>
+      <h2 class="card-title">현대건설, 압구정3구역에 ‘1.2km 실내 도시’ 구현…로보틱스·무인셔틀 담았다</h2>
+      <ul class="card-lines"><li>현대건설이 압구정3구역 재건축 사업에 미래형 주거 기술과 하이엔드 설계를 대거 적용한다. 현대자동차그룹의 로보틱스 기술과 AI 기반 무인셔틀, 1.2km 규모 순환형 커뮤니티 등을 접목해 단순 재건축을 넘어선 미래형 주거 플랫폼을 구현하겠다는 구상이다. 현대건설은 최근 서울 강남구 압구정3구역 홍보관을 공개했다. 지난 3일 개관한 홍보관은 조합원 대상 사전</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">12 / 17</span>
+      <a class="read-more" href="https://www.chosun.com/economy/real_estate/2026/05/14/MJSTENRTMVSWIZTDMQ4TCNJWGM/" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">05.14 10:25</span>
+    </div>
+    <div class="card-img"><img src="https://www.chosun.com/resizer/v2/MY3TQMBZGJRGIMZXGFRDCOLFMM.jpg?auth=17b6d459a4b88dab1da42305e42a27e999b3653b2c090eb022526fde09a39c5a&smart=true&width=4919&height=2371" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#C8102E;border-color:#C8102E">조선일보</span>
+      <h2 class="card-title">급매 대신 ‘1000만원 월세’… 서초구 고가 임대 급증</h2>
+      <ul class="card-lines"><li>서울 서초구 아파트 월세 매물이 이달 들어 26% 가까이 급증한 것으로 나타났다. 다주택자 양도소득세 중과 유예 종료를 앞두고도 매매가 이뤄지지 않자, 집주인들이 매물을 월세로 돌리고 있다는 분석이 나온다. 보유세 강화 가능성까지 거론되면서 세 부담을 임차인에게 전가하려는 움직임이 본격화하고 있다는 해석도 있다. 14일 부동산 빅데이터 플랫폼 아실에 따르면</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">13 / 17</span>
+      <a class="read-more" href="https://www.chosun.com/economy/real_estate/2026/05/14/MMZGIZBVMEYWEMLDG42TAZBXMQ/" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">05.14 10:41</span>
+    </div>
+    <div class="card-img"><img src="https://www.chosun.com/resizer/v2/GE4DQODFMY4DQNBTG4YTCOBUMM.jpg?auth=80c8a11184e5d5c24d5588c705a5e52c84fd0872f438414cee60e890b8cd4b34&smart=true&width=5000&height=2475" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#C8102E;border-color:#C8102E">조선일보</span>
+      <h2 class="card-title">지방 미분양 공포에… 건설사들 공공지원 임대로 선회</h2>
+      <ul class="card-lines"><li>지방을 중심으로 아파트 미분양 우려가 커지자 건설사들이 공공지원 민간임대사업으로 눈을 돌리고 있다. 분양 시장 침체로 자체 분양만으로는 사업 자금 조달이 어려워지자, 공공 지원을 활용해 기업형 민간임대 아파트를 공급하는 방식에 관심이 커지고 있는 것이다. 건설 업계에선 건설사들이 부동산 경기 회복 때 분양 전환을 통해 수익을 확보하려는 전략에 나섰다는 분석</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">14 / 17</span>
+      <a class="read-more" href="https://www.chosun.com/economy/real_estate/2026/05/14/GYYTKMJTGBSDMNDEGM2GMMZWMU/" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">05.14 10:23</span>
+    </div>
+    <div class="card-img"><img src="https://www.chosun.com/resizer/v2/G4ZGCMBWG5RTEYTBGE2TKMTGMM.jpg?auth=af5cc9ab1fc329fe07557e6db990739dfe87a144f4cc76de872cf6d106e0fee9&smart=true&width=600&height=335" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#C8102E;border-color:#C8102E">조선일보</span>
+      <h2 class="card-title">&#x27;압구정 갤러리아&#x27; 재건축, 도쿄 아자부다이힐스 설계한 헤더윅 디자인 적용</h2>
+      <ul class="card-lines"><li>동·서관에 헤더윅 설계 적용…지하광장·정원 연결한 개방형 복합공간으로 재편 [땅집고] 서울 강남권 대표 상권인 압구정 갤러리아가 세계적 건축가 토마스 헤더윅의 설계를 적용한 개방형 복합공간으로 재탄생한다.</li><li>서울시는 지난 12일 제7차 건축위원회를 열고 강남구 압구정로 일대 압구정 갤러리아 동·서관 건립사업 안건을 심의·통과시켰다고 13일 밝혔다.</li><li>압</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">15 / 17</span>
+      <a class="read-more" href="https://www.chosun.com/economy/realty/realestate_news/2026/05/14/GFSWGYLBGNTDOMDBHE3DMZLDMU/" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">05.14 08:59</span>
+    </div>
+    <div class="card-img"><img src="https://www.chosun.com/resizer/v2/MFRGIM3FGUZTSMLGMEYDGZJUMM.jpg?auth=cbf29558f4e4ff58e734fd24c70573ee12cb700525c253d7f19107a981f9bf08&amp;width=1200&amp;height=630&amp;smart=true" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#C8102E;border-color:#C8102E">조선일보</span>
+      <h2 class="card-title">1분기 아파트 거래량, 서울은 줄고 경기는 늘어...전세는 매물 부족에 동반 감소</h2>
+      <ul class="card-lines"></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">16 / 17</span>
+      <a class="read-more" href="https://www.chosun.com/economy/real_estate/2026/05/14/EUJ2IC5ERRDKTFLN3YPKNVMACY/" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">05.14 07:26</span>
+    </div>
+    <div class="card-img"><img src="https://assets.bwbx.io/images/users/iqjWHBFdfxIU/iHgglcIrksGg/v0/1200x-1.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#5B4CFF;border-color:#5B4CFF">Bloomberg</span>
+      <h2 class="card-title">Gold Holds Decline as Rising US Inflation Raises Rate-Hike Bets</h2>
+      <ul class="card-lines"><li>Gold held a decline as a resurgence in US inflation reinforced bets the Federal Reserve will keep interest rates higher for longer.</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">17 / 17</span>
+      <a class="read-more" href="https://www.bloomberg.com/news/articles/2026-05-13/gold-holds-decline-as-rising-us-inflation-raises-rate-hike-bets" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div></div>
+  </div>
+  <div class="dots" id="dots"><button class="dot active" onclick="goTo(0)"></button><button class="dot" onclick="goTo(1)"></button><button class="dot" onclick="goTo(2)"></button><button class="dot" onclick="goTo(3)"></button><button class="dot" onclick="goTo(4)"></button><button class="dot" onclick="goTo(5)"></button><button class="dot" onclick="goTo(6)"></button><button class="dot" onclick="goTo(7)"></button><button class="dot" onclick="goTo(8)"></button><button class="dot" onclick="goTo(9)"></button><button class="dot" onclick="goTo(10)"></button><button class="dot" onclick="goTo(11)"></button><button class="dot" onclick="goTo(12)"></button><button class="dot" onclick="goTo(13)"></button><button class="dot" onclick="goTo(14)"></button><button class="dot" onclick="goTo(15)"></button><button class="dot" onclick="goTo(16)"></button></div>
+  <div class="carousel-info">총 17개 · 스와이프 또는 화살표로 이동</div>
+</div>
+
+<div class="section" id="section-market">
+  <div class="section-title">📊 부동산 관련 시장 지표 <span style="font-size:12px;font-weight:400;color:#aaa;">(5일 추이)</span></div>
+  <div class="stock-section-inner">
+    <div class="stock-group"><div class="stock-group-title">증시</div><div class="stock-row">
+<div class="stock-card">
+  <div class="stock-top">
+    <div><div class="stock-name">KOSPI</div><div class="stock-ticker">KS11</div></div>
+    <div class="stock-spark"><svg width="80" height="28" viewBox="0 0 80 28" xmlns="http://www.w3.org/2000/svg"><polyline points="0.0,28.0 20.0,4.4 40.0,17.4 60.0,2.8 80.0,0.0" fill="none" stroke="#1DA462" stroke-width="2" stroke-linejoin="round"/></svg></div>
+  </div>
+  <div class="stock-price">7,883.04pt</div>
+  <div class="stock-change" style="color:#1DA462">▲ +0.50%</div>
+</div>
+<div class="stock-card">
+  <div class="stock-top">
+    <div><div class="stock-name">나스닥</div><div class="stock-ticker">IXIC</div></div>
+    <div class="stock-spark"><svg width="80" height="28" viewBox="0 0 80 28" xmlns="http://www.w3.org/2000/svg"><polyline points="0.0,28.0 20.0,7.3 40.0,6.0 60.0,14.8 80.0,0.0" fill="none" stroke="#1DA462" stroke-width="2" stroke-linejoin="round"/></svg></div>
+  </div>
+  <div class="stock-price">26,402.34pt</div>
+  <div class="stock-change" style="color:#1DA462">▲ +1.20%</div>
+</div></div></div>
+<div class="stock-group"><div class="stock-group-title">금리</div><div class="stock-row">
+<div class="stock-card">
+  <div class="stock-top">
+    <div><div class="stock-name">미국 10년 국채</div><div class="stock-ticker">TNX</div></div>
+    <div class="stock-spark"><svg width="80" height="28" viewBox="0 0 80 28" xmlns="http://www.w3.org/2000/svg"><polyline points="0.0,21.3 20.0,28.0 40.0,17.0 60.0,4.3 80.0,0.0" fill="none" stroke="#1DA462" stroke-width="2" stroke-linejoin="round"/></svg></div>
+  </div>
+  <div class="stock-price">4.48pt</div>
+  <div class="stock-change" style="color:#1DA462">▲ +0.40%</div>
+</div></div></div>
+<div class="stock-group"><div class="stock-group-title">리츠</div><div class="stock-row">
+<div class="stock-card">
+  <div class="stock-top">
+    <div><div class="stock-name">미국 리츠 ETF</div><div class="stock-ticker">IYR</div></div>
+    <div class="stock-spark"><svg width="80" height="28" viewBox="0 0 80 28" xmlns="http://www.w3.org/2000/svg"><polyline points="0.0,9.7 20.0,2.7 40.0,0.3 60.0,0.0 80.0,28.0" fill="none" stroke="#E63946" stroke-width="2" stroke-linejoin="round"/></svg></div>
+  </div>
+  <div class="stock-price">$102.01</div>
+  <div class="stock-change" style="color:#E63946">▼ -0.82%</div>
+</div>
+<div class="stock-card">
+  <div class="stock-top">
+    <div><div class="stock-name">뱅가드 리츠</div><div class="stock-ticker">VNQ</div></div>
+    <div class="stock-spark"><svg width="80" height="28" viewBox="0 0 80 28" xmlns="http://www.w3.org/2000/svg"><polyline points="0.0,10.5 20.0,2.4 40.0,0.0 60.0,0.0 80.0,28.0" fill="none" stroke="#E63946" stroke-width="2" stroke-linejoin="round"/></svg></div>
+  </div>
+  <div class="stock-price">$95.89</div>
+  <div class="stock-change" style="color:#E63946">▼ -0.83%</div>
+</div></div></div>
+<div class="stock-group"><div class="stock-group-title">건설/소재</div><div class="stock-row">
+<div class="stock-card">
+  <div class="stock-top">
+    <div><div class="stock-name">삼성전자</div><div class="stock-ticker">005930</div></div>
+    <div class="stock-spark"><svg width="80" height="28" viewBox="0 0 80 28" xmlns="http://www.w3.org/2000/svg"><polyline points="0.0,28.0 20.0,6.8 40.0,14.9 60.0,8.7 80.0,0.0" fill="none" stroke="#1DA462" stroke-width="2" stroke-linejoin="round"/></svg></div>
+  </div>
+  <div class="stock-price">₩291,000</div>
+  <div class="stock-change" style="color:#1DA462">▲ +2.46%</div>
+</div>
+<div class="stock-card">
+  <div class="stock-top">
+    <div><div class="stock-name">현대건설</div><div class="stock-ticker">000720</div></div>
+    <div class="stock-spark"><svg width="80" height="28" viewBox="0 0 80 28" xmlns="http://www.w3.org/2000/svg"><polyline points="0.0,5.1 20.0,0.0 40.0,28.0 60.0,14.6 80.0,2.0" fill="none" stroke="#1DA462" stroke-width="2" stroke-linejoin="round"/></svg></div>
+  </div>
+  <div class="stock-price">₩165,100</div>
+  <div class="stock-change" style="color:#1DA462">▲ +2.74%</div>
+</div>
+<div class="stock-card">
+  <div class="stock-top">
+    <div><div class="stock-name">대우건설</div><div class="stock-ticker">047040</div></div>
+    <div class="stock-spark"><svg width="80" height="28" viewBox="0 0 80 28" xmlns="http://www.w3.org/2000/svg"><polyline points="0.0,0.0 20.0,5.4 40.0,19.4 60.0,28.0 80.0,12.2" fill="none" stroke="#1DA462" stroke-width="2" stroke-linejoin="round"/></svg></div>
+  </div>
+  <div class="stock-price">₩31,150</div>
+  <div class="stock-change" style="color:#1DA462">▲ +7.60%</div>
+</div>
+<div class="stock-card">
+  <div class="stock-top">
+    <div><div class="stock-name">GS건설</div><div class="stock-ticker">006360</div></div>
+    <div class="stock-spark"><svg width="80" height="28" viewBox="0 0 80 28" xmlns="http://www.w3.org/2000/svg"><polyline points="0.0,0.0 20.0,7.8 40.0,22.6 60.0,28.0 80.0,23.6" fill="none" stroke="#1DA462" stroke-width="2" stroke-linejoin="round"/></svg></div>
+  </div>
+  <div class="stock-price">₩33,850</div>
+  <div class="stock-change" style="color:#1DA462">▲ +1.96%</div>
+</div></div></div>
+    <div class="market-note">※ 장 마감 후에는 전일 종가 기준 표시</div>
+  </div>
+</div>
+
+<script>
+let cur = 0;
+const slider = document.getElementById('slider');
+const dotsEl = document.getElementById('dots');
+const total  = 17;
+
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('section-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+function goTo(idx) {
+  idx = Math.max(0, Math.min(total-1, idx));
+  slider.scrollTo({left: slider.clientWidth * idx, behavior:'smooth'});
+  dotsEl.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===idx));
+  cur = idx;
+}
+function move(dir) { goTo(cur + dir); }
+slider.addEventListener('scroll', () => {
+  const idx = Math.round(slider.scrollLeft / slider.clientWidth);
+  if (idx !== cur) { dotsEl.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active',i===idx)); cur=idx; }
+});
+document.addEventListener('keydown', e => {
+  if (document.getElementById('section-news').classList.contains('active')) {
+    if (e.key==='ArrowLeft') move(-1);
+    if (e.key==='ArrowRight') move(+1);
+  }
+});
+</script>
+</body>
+</html>
