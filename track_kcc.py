@@ -135,7 +135,7 @@ def group_by_month(rows, types):
     return result
 
 def chart_json(grouped):
-    COLORS = ["#FF6B9D","#FF9EBB","#FFB3CC","#FF4081","#E91E8C"]
+    COLORS = ["#60A5FA","#93C5FD","#34D399","#F59E0B","#A78BFA"]
     all_months = sorted({ym for v in grouped.values() for ym in v})
     datasets = []
     for i, (area, monthly) in enumerate(sorted(grouped.items())):
@@ -210,92 +210,95 @@ def generate_html(trades, rents):
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
   *,*::before,*::after{{box-sizing:border-box;margin:0;padding:0;}}
   :root{{
-    --pink:   #FF6B9D;
-    --pink2:  #FF9EBB;
-    --pink3:  #FFE4EE;
-    --pink4:  #FFF0F5;
-    --dark:   #3D2B35;
-    --gray:   #9E8A92;
+    --blue:   #2563EB;
+    --blue2:  #3B82F6;
+    --blue3:  #1E3A6E;
+    --bg:     #0F1E3C;
+    --card:   #172444;
+    --card2:  #1E2F54;
+    --border: #1E3A6E;
     --white:  #FFFFFF;
+    --muted:  rgba(255,255,255,.45);
+    --accent: #60A5FA;
   }}
-  body{{font-family:'Noto Sans KR',sans-serif;background:var(--pink4);
+  body{{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--white);
         min-height:100vh;padding-bottom:env(safe-area-inset-bottom,24px);}}
 
   /* 헤더 */
-  .header{{background:linear-gradient(135deg,#FF6B9D 0%,#FF9EBB 100%);
+  .header{{background:linear-gradient(135deg,#1D4ED8 0%,#2563EB 50%,#1E40AF 100%);
            padding:28px 24px 24px;padding-top:max(28px,env(safe-area-inset-top));
            position:relative;overflow:hidden;}}
-  .header::before{{content:'🐻';position:absolute;right:20px;top:50%;
-                   transform:translateY(-50%);font-size:64px;opacity:.25;}}
-  .header::after{{content:'🌸🌸🌸';position:absolute;right:24px;top:12px;
-                  font-size:14px;opacity:.5;letter-spacing:4px;}}
-  .header .badge{{display:inline-block;background:rgba(255,255,255,.3);
-                  color:#fff;font-size:10px;font-weight:700;padding:3px 10px;
-                  border-radius:20px;letter-spacing:.08em;margin-bottom:10px;}}
+  .header::before{{content:'🏠';position:absolute;right:20px;top:50%;
+                   transform:translateY(-50%);font-size:72px;opacity:.15;}}
+  .header::after{{content:'';position:absolute;top:0;right:0;bottom:0;
+                  width:200px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.05));}}
+  .header .badge{{display:inline-block;background:rgba(255,255,255,.15);
+                  color:#fff;font-size:10px;font-weight:700;padding:3px 12px;
+                  border-radius:20px;letter-spacing:.1em;margin-bottom:10px;
+                  border:1px solid rgba(255,255,255,.2);}}
   .header h1{{font-size:22px;font-weight:900;color:#fff;line-height:1.3;
-              text-shadow:0 2px 8px rgba(0,0,0,.15);}}
-  .header h1 span{{display:block;font-size:13px;font-weight:500;
-                   opacity:.85;margin-top:4px;}}
-  .update-info{{font-size:10px;color:rgba(255,255,255,.7);margin-top:10px;}}
+              text-shadow:0 2px 12px rgba(0,0,0,.3);}}
+  .header h1 em{{font-style:normal;color:#93C5FD;}}
+  .header h1 span{{display:block;font-size:13px;font-weight:400;
+                   color:rgba(255,255,255,.65);margin-top:5px;}}
+  .update-info{{font-size:10px;color:rgba(255,255,255,.45);margin-top:10px;}}
 
   /* 탭 */
   .tabs-wrap{{position:sticky;top:0;z-index:50;
-              background:#fff;box-shadow:0 2px 12px rgba(255,107,157,.15);}}
+              background:#0F1E3C;border-bottom:1px solid var(--border);}}
   .tabs{{display:flex;}}
-  .tab{{flex:1;padding:13px 4px;font-size:12px;font-weight:700;color:var(--gray);
-        background:none;border:none;border-bottom:2.5px solid transparent;
-        cursor:pointer;text-align:center;transition:.2s;}}
-  .tab.active{{color:var(--pink);border-bottom-color:var(--pink);}}
+  .tab{{flex:1;padding:13px 4px;font-size:12px;font-weight:700;
+        color:rgba(255,255,255,.35);background:none;border:none;
+        border-bottom:2.5px solid transparent;cursor:pointer;text-align:center;transition:.2s;}}
+  .tab.active{{color:#60A5FA;border-bottom-color:#60A5FA;}}
 
   /* 컨텐츠 */
   .pane{{display:none;padding:20px 16px;}} .pane.active{{display:block;}}
 
   /* 스탯 카드 */
   .stats{{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}}
-  .stat{{background:#fff;border-radius:16px;padding:16px;
-         box-shadow:0 4px 16px rgba(255,107,157,.12);text-align:center;}}
-  .stat.wide{{grid-column:1/-1;}}
+  .stat{{background:var(--card);border-radius:16px;padding:16px;
+         border:1px solid var(--border);text-align:center;}}
   .stat-emoji{{font-size:24px;margin-bottom:6px;}}
-  .stat-val{{font-size:20px;font-weight:900;color:var(--pink);line-height:1;}}
-  .stat-lbl{{font-size:10px;color:var(--gray);margin-top:4px;font-weight:500;}}
+  .stat-val{{font-size:20px;font-weight:900;color:#60A5FA;line-height:1;}}
+  .stat-lbl{{font-size:10px;color:var(--muted);margin-top:4px;font-weight:500;}}
 
   /* 차트 카드 */
-  .chart-card{{background:#fff;border-radius:20px;padding:20px;
-               box-shadow:0 4px 20px rgba(255,107,157,.1);margin-bottom:16px;}}
-  .chart-title{{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:16px;
-                display:flex;align-items:center;gap:6px;}}
+  .chart-card{{background:var(--card);border-radius:20px;padding:20px;
+               border:1px solid var(--border);margin-bottom:16px;}}
+  .chart-title{{font-size:13px;font-weight:700;color:#fff;margin-bottom:16px;
+                display:flex;align-items:center;gap:8px;}}
   .chart-title::before{{content:'';display:block;width:4px;height:16px;
-                         background:var(--pink);border-radius:2px;}}
+                         background:#60A5FA;border-radius:2px;}}
 
   /* 테이블 */
-  .table-card{{background:#fff;border-radius:20px;overflow:hidden;
-               box-shadow:0 4px 20px rgba(255,107,157,.1);margin-bottom:16px;}}
-  .table-head{{background:linear-gradient(90deg,#FF6B9D,#FF9EBB);
+  .table-card{{background:var(--card);border-radius:20px;overflow:hidden;
+               border:1px solid var(--border);margin-bottom:16px;}}
+  .table-head{{background:linear-gradient(90deg,#1D4ED8,#2563EB);
                padding:14px 16px;font-size:12px;font-weight:700;color:#fff;}}
   table{{width:100%;border-collapse:collapse;font-size:12px;}}
-  th{{background:var(--pink3);color:var(--gray);font-weight:700;padding:10px 12px;
-      text-align:left;font-size:11px;}}
-  td{{padding:10px 12px;border-bottom:1px solid var(--pink4);color:var(--dark);}}
+  th{{background:var(--card2);color:var(--muted);font-weight:700;padding:10px 12px;
+      text-align:left;font-size:11px;letter-spacing:.04em;}}
+  td{{padding:10px 12px;border-bottom:1px solid var(--border);color:rgba(255,255,255,.8);}}
   tr:last-child td{{border-bottom:none;}}
-  tr:hover td{{background:var(--pink4);}}
-  .price-cell{{font-weight:700;color:var(--pink);}}
-  .price-cell.blue{{color:#60a5fa;}}
-  .price-cell.green{{color:#34d399;}}
-  .unit{{font-size:10px;font-weight:400;color:var(--gray);margin-left:2px;}}
+  tr:hover td{{background:var(--card2);}}
+  .price-cell{{font-weight:700;color:#60A5FA;}}
+  .price-cell.blue{{color:#93C5FD;}}
+  .price-cell.green{{color:#34D399;}}
+  .unit{{font-size:10px;font-weight:400;color:var(--muted);margin-left:2px;}}
 
-  /* 귀여운 빈 상태 */
-  .empty{{text-align:center;padding:40px 20px;color:var(--gray);}}
+  /* 빈 상태 */
+  .empty{{text-align:center;padding:40px 20px;color:var(--muted);}}
   .empty .emoji{{font-size:48px;margin-bottom:12px;}}
   .empty p{{font-size:13px;}}
 
   /* 섹션 타이틀 */
-  .section-title{{font-size:12px;font-weight:700;color:var(--pink);
-                  letter-spacing:.08em;margin:20px 0 10px;
+  .section-title{{font-size:11px;font-weight:700;color:#60A5FA;
+                  letter-spacing:.1em;margin:20px 0 10px;text-transform:uppercase;
                   display:flex;align-items:center;gap:6px;}}
 
   @media(max-width:360px){{
     .stats{{grid-template-columns:1fr;}}
-    .stat.wide{{grid-column:1;}}
   }}
 </style>
 </head>
@@ -404,8 +407,8 @@ function show(id, btn) {{
 }}
 
 Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
-Chart.defaults.color = '#9E8A92';
-Chart.defaults.borderColor = '#FFE4EE';
+Chart.defaults.color = 'rgba(255,255,255,0.45)';
+Chart.defaults.borderColor = '#1E3A6E';
 
 const tradeData  = {ds_json(t_months, t_ds)};
 const jeonseData = {ds_json(j_months, j_ds)};
@@ -422,10 +425,10 @@ function makeChart(id, data) {{
       plugins: {{
         legend: {{ labels: {{ color:'#9E8A92', font:{{size:11}}, padding:12 }} }},
         tooltip: {{
-          backgroundColor:'#fff',
-          titleColor:'#3D2B35',
-          bodyColor:'#FF6B9D',
-          borderColor:'#FFE4EE',
+          backgroundColor:'#172444',
+          titleColor:'#fff',
+          bodyColor:'#60A5FA',
+          borderColor:'#1E3A6E',
           borderWidth:1,
           callbacks: {{
             label: c => c.dataset.label+': '+(c.raw ? c.raw.toLocaleString()+'만원' : '-')
@@ -433,14 +436,14 @@ function makeChart(id, data) {{
         }}
       }},
       scales: {{
-        x: {{ ticks:{{ color:'#C5A8B5', maxTicksLimit:8, font:{{size:10}} }}, grid:{{color:'#FFF0F5'}} }},
+        x: {{ ticks:{{ color:'rgba(255,255,255,.35)', maxTicksLimit:8, font:{{size:10}} }}, grid:{{color:'#1E3A6E'}} }},
         y: {{
           ticks: {{
-            color:'#C5A8B5',
+            color:'rgba(255,255,255,.35)',
             font:{{size:10}},
             callback: v => v>=10000 ? (v/10000).toFixed(1)+'억' : v.toLocaleString()+'만'
           }},
-          grid:{{color:'#FFF0F5'}}
+          grid:{{color:'#1E3A6E'}}
         }}
       }}
     }}
