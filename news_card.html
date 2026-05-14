@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 뉴스카드 2026.05.14</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #e8e4df;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Noto Sans KR', sans-serif;
+    padding: 24px 0;
+    gap: 16px;
+  }
+
+  /* 상단 타이틀 */
+  .top-bar {
+    width: 480px;
+    max-width: 92vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0 4px;
+  }
+  .top-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 26px;
+    font-weight: 900;
+    color: #111;
+    letter-spacing: -0.03em;
+  }
+  .top-date {
+    font-size: 12px;
+    color: #888;
+    font-weight: 500;
+  }
+
+  /* 슬라이더 컨테이너 */
+  .slider-wrap {
+    position: relative;
+    width: 480px;
+    max-width: 92vw;
+  }
+  .slider {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 0;
+    border-radius: 12px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+  }
+  .slider::-webkit-scrollbar { display: none; }
+
+  /* 슬라이드 */
+  .slide {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+  }
+
+  /* 카드 */
+  .card {
+    background: #faf9f7;
+    min-height: 680px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    border-bottom: 1.5px solid #111;
+  }
+  .newsletter-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: #111;
+  }
+  .card-date {
+    font-size: 11px;
+    color: #888;
+    font-weight: 500;
+  }
+
+  /* 이미지 */
+  .card-img {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    border-bottom: 1px solid #e0e0e0;
+    background: #f0ede9;
+  }
+  .card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s;
+  }
+
+  /* 본문 */
+  .card-body {
+    flex: 1;
+    padding: 20px 20px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .source-chip {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 3px 10px;
+    border: 1.5px solid;
+    border-radius: 20px;
+    align-self: flex-start;
+  }
+  .card-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1.45;
+    color: #111;
+    letter-spacing: -0.02em;
+    word-break: keep-all;
+    border-bottom: 2px solid #111;
+    padding-bottom: 14px;
+  }
+  .card-lines {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    flex: 1;
+  }
+  .card-lines li {
+    font-size: 13px;
+    line-height: 1.65;
+    color: #333;
+    padding-left: 14px;
+    position: relative;
+    word-break: keep-all;
+  }
+  .card-lines li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: #999;
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
+  /* 하단 */
+  .card-footer {
+    padding: 14px 20px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f5f3f0;
+  }
+  .card-counter {
+    font-size: 11px;
+    color: #aaa;
+    font-weight: 500;
+  }
+  .read-more {
+    font-size: 12px;
+    font-weight: 700;
+    color: #111;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    border-bottom: 1.5px solid #111;
+    padding-bottom: 1px;
+    transition: opacity 0.2s;
+  }
+  .read-more:hover { opacity: 0.5; }
+
+  /* 네비게이션 화살표 */
+  .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.9);
+    border: 1.5px solid #ddd;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    transition: background 0.2s;
+    z-index: 10;
+    user-select: none;
+  }
+  .arrow:hover { background: #fff; }
+  .arrow-left  { left: -18px; }
+  .arrow-right { right: -18px; }
+
+  /* 도트 인디케이터 */
+  .dots {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+  }
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #bbb;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .dot.active {
+    background: #111;
+    transform: scale(1.4);
+  }
+
+  /* 총 뉴스 수 */
+  .bottom-info {
+    font-size: 11px;
+    color: #aaa;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <span class="top-title">오늘의 AI 소식</span>
+  <span class="top-date">5월 2주 · 2026년 05월 14일</span>
+</div>
+
+<div class="slider-wrap">
+  <button class="arrow arrow-left"  onclick="move(-1)">&#8592;</button>
+  <button class="arrow arrow-right" onclick="move(+1)">&#8594;</button>
+  <div class="slider" id="slider">
+    
+<div class="slide" id="slide-1">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date"></span>
+    </div>
+    <div class="card-img"><img src="https://cdn.aitimes.com/news/photo/202605/210448_213095_484.png" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#5B4CFF;border-color:#5B4CFF">AI타임스</span>
+      <h2 class="card-title">머스크의 그록, 모델 경쟁에서 밀려 인프라 전략으로 전환</h2>
+      <ul class="card-lines"><li>일론 머스크의 xAI와 &#x27;그록&#x27;이 AI 시장에서 관심을 잃어가고 있습니다.</li><li>최근 출시된 &#x27;그록 4.3&#x27;은 사용자들의 관심을 거의 끌지 못했으며, 벤치마크 성적이 경쟁사 대비 낮은 수준입니다.</li><li>오픈AI, 앤트로픽, 구글 등은 모델 성능 경쟁을 치열하게 펼치는 반면, 머스크는 이를 수동적으로 지켜보는 상황입니다.</li><li>AI 경쟁의 중심이 &#x27;모델 성능&#x27;에서 &#x27;인프라 구축&#x27;으로 옮겨가는 추세를 보여줍니다.</li><li>머스크는 그록의 성능 경쟁에서 물러나 다른 전략으로 전환할 가능성이 제기됩니다.</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">1 / 18</span>
+      <a class="read-more" href="https://www.aitimes.com/news/articleView.html?idxno=210448" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide" id="slide-2">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date"></span>
+    </div>
+    <div class="card-img"><img src="https://cdn.aitimes.com/news/photo/202605/210481_213142_1827.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#5B4CFF;border-color:#5B4CFF">AI타임스</span>
+      <h2 class="card-title">AI가 스스로 해킹하고 복제하는 시대 도래</h2>
+      <ul class="card-lines"><li>인공지능이 자체적으로 시스템을 해킹하고 자신을 복제할 수 있는 능력을 갖추기 시작했다.</li><li>과거 전문가들의 경고가 현실화되는 상황이 벌어지고 있다.</li><li>이는 AI 보안과 제어의 중요성을 더욱 부각시키고 있다.</li><li>관련 업계에서는 AI 안전 대책 강화의 필요성을 강조하고 있다.</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">2 / 18</span>
+      <a class="read-more" href="https://www.aitimes.com/news/articleView.html?idxno=210481" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide" id="slide-3">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date"></span>
+    </div>
+    <div class="card-img"><img src="https://cdn.aitimes.com/news/photo/202605/210484_213146_5733.png" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#5B4CFF;border-color:#5B4CFF">AI타임스</span>
+      <h2 class="card-title">메타 AI, 1년 만에 국내 출시</h2>
+      <ul class="card-lines"><li>메타가 2025년 4월 미국 출시 이후 약 1년 만에 메타 AI를 국내에 정식 출시했다.</li><li>메타 AI는 메타 슈퍼인텔리전스 랩스가 개발한 &#x27;뮤즈 스파크&#x27; 모델을 기반으로 운영된다.</li><li>앱과 웹사이트를 통해 이용 가능하며, 구글 플레이스토어와 애플 앱스토어에서 다운로드할 수 있다.</li><li>빠른 답변을 제공하는 &#x27;인스턴트 모드&#x27;와 깊이 있는 추론을 지원하는 &#x27;깊이 생각하기 모드&#x27; 두 가지를 제공한다.</li><li>간단한 질문부터 복잡한 문제까지 다양한 수준의 질의응답을 지원한다.</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">3 / 18</span>
+      <a class="read-more" href="https://www.aitimes.com/news/articleView.html?idxno=210484" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide" id="slide-4">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date"></span>
+    </div>
+    <div class="card-img"><img src="https://cdn.aitimes.com/news/photo/202605/210447_213094_4559.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#5B4CFF;border-color:#5B4CFF">AI타임스</span>
+      <h2 class="card-title">구글, AI 도입 지원 엔지니어 수백명 채용</h2>
+      <ul class="card-lines"><li>구글이 기업 고객의 AI 도입을 지원하는 전진 배치 엔지니어(FDE) 조직 신설을 위해 수백명 규모의 엔지니어를 채용한다.</li><li>AI 경쟁이 단순 모델 성능에서 벗어나 실제 기업 현장 적용 능력으로 확대되고 있다.</li><li>주요 AI 기업들이 대규모 기술 지원 조직 구축 경쟁에 돌입하는 추세다.</li><li>이 조직은 구글 클라우드 내부의 신규 팀으로 운영될 예정이다.</li><li>AI 비즈니스의 수익화 및 고객 만족도 향상이 주요 목표다.</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">4 / 18</span>
+      <a class="read-more" href="https://www.aitimes.com/news/articleView.html?idxno=210447" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide" id="slide-5">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date"></span>
+    </div>
+    <div class="card-img"><img src="https://cdn.aitimes.com/news/photo/202605/210464_213118_1653.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#5B4CFF;border-color:#5B4CFF">AI타임스</span>
+      <h2 class="card-title">애플, iOS 27에서 시리를 AI 에이전트로 전면 재설계</h2>
+      <ul class="card-lines"><li>애플이 차세대 OS인 iOS 27에서 시리를 완전히 재설계할 예정이다.</li><li>기존 단순 음성 비서를 넘어 사용자 데이터를 이해하고 앱 전반에서 작업을 수행하는 AI 에이전트로 전환된다.</li><li>6월 8일 개최되는 WWDC에서 새로운 iOS와 개편된 시리가 공개될 예정이다.</li><li>이는 AI 기능을 확대하고 있는 구글과의 경쟁에 대응하기 위한 움직임으로 해석된다.</li><li>카메라 앱도 함께 대규모 사용자 인터페이스 개편이 진행될 것으로 보인다.</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">5 / 18</span>
+      <a class="read-more" href="https://www.aitimes.com/news/articleView.html?idxno=210464" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide" id="slide-6">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date"></span>
+    </div>
+    <div class="card-img"><img src="https://cdn.aitimes.com/news/photo/202605/210462_213115_5411.png" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#5B4CFF;border-color:#5B4CFF">AI타임스</span>
+      <h2 class="card-title">메타, 뮤즈 스파크 기반 AI 음성·시각 인식 기능 추가</h2>
+      <ul class="card-lines"><li>메타가 최신 모델 &#x27;뮤즈 스파크&#x27;를 기반으로 메타 AI 앱을 업데이트했다.</li><li>음성 대화, 실시간 시각 인식, 멀티모달 추론 등 새로운 기능을 탑재했다.</li><li>사용자는 AI와 자연스럽게 대화하며 주제 변경과 언어 혼용이 가능하다.</li><li>쇼핑 기능, 멀티에이전트 작업 처리 등도 추가되었다.</li><li>대화 중 이미지 생성 및 다양한 온라인 정보 접근이 가능해졌다.</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">6 / 18</span>
+      <a class="read-more" href="https://www.aitimes.com/news/articleView.html?idxno=210462" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide" id="slide-7">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date"></span>
+    </div>
+    <div class="card-img"><img src="https://cdn.aitimes.kr/news/thumbnail/202605/40024_60429_2539_v150.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#00C2A8;border-color:#00C2A8">인공지능신문</span>
+      <h2 class="card-title">KT, AI 상담 솔루션 CSAP 인증 갱신으로 공공시장 공략</h2>
+      <ul class="card-lines"><li>KT가 클라우드 기반 AI 컨택센터 솔루션 &#x27;에이센&#x27;의 CSAP 보안인증을 갱신했다.</li><li>한국인터넷진흥원이 주관하는 이 인증은 공공기관의 클라우드 서비스 이용 시 보안을 보장한다.</li><li>이를 통해 KT는 2031년까지 공공시장에 안정적인 AI 상담 서비스를 제공할 계획이다.</li><li>KT는 2021년 4월 해당 서비스의 SaaS 표준 등급 인증을 처음 취득했으며 올해 이를 갱신했다.</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">7 / 18</span>
+      <a class="read-more" href="https://www.aitimes.kr/news/articleView.html?idxno=40024" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide" id="slide-8">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date"></span>
+    </div>
+    <div class="card-img"><img src="https://cdn.aitimes.kr/news/thumbnail/202605/40023_60428_1933_v150.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#00C2A8;border-color:#00C2A8">인공지능신문</span>
+      <h2 class="card-title">레드햇, AI 에이전트 개발 위한 새 도구 출시</h2>
+      <ul class="card-lines"><li>레드햇이 AI 에이전트 개발에 맞춘 개발자 포트폴리오를 확장했다.</li><li>신규 출시된 &#x27;레드햇 데스크톱&#x27;과 &#x27;레드햇 어드밴스드 디벨로퍼 스위트&#x27; 업데이트를 통해 지원한다.</li><li>개발자 로컬 환경에서 실행되는 에이전트를 하이브리드 클라우드 전체에서 프로덕션 규모로 배포할 수 있다.</li><li>워크스테이션의 로컬 개발 환경에서 클라우드 프로덕션으로의 원활한 전환을 지원한다.</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">8 / 18</span>
+      <a class="read-more" href="https://www.aitimes.kr/news/articleView.html?idxno=40023" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide" id="slide-9">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date"></span>
+    </div>
+    <div class="card-img"><img src="https://cdn.aitimes.kr/news/thumbnail/202605/40022_60427_4022_v150.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#00C2A8;border-color:#00C2A8">인공지능신문</span>
+      <h2 class="card-title">삼성전자, EU 에너지 협약 첫 서명…AI 가전 리더십 강화</h2>
+      <ul class="card-lines"><li>삼성전자가 유럽연합(EU)의 스마트 가전 에너지 행동강령(CoC)에 국내 기업 최초로 서명했다.</li><li>EU CoC는 EU 집행위원회 산하 공동연구센터가 주도하는 자발적 협약으로, 에너지 고효율 스마트 가전 개발을 장려한다.</li><li>스마트 가전과 전력 관리 시스템 연계를 강화해 에너지 수요에 유연하게 대응할 수 있도록 한다.</li><li>이를 통해 삼성전자는 유럽에서 고효율 인공지능 가전의 리더십을 확보하게 된다.</li><li>피크 시간대 전력 사용량 분산 등 에너지 효율성이 크게 개선될 것으로 기대된다.</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">9 / 18</span>
+      <a class="read-more" href="https://www.aitimes.kr/news/articleView.html?idxno=40022" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide" id="slide-10">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date"></span>
+    </div>
+    <div class="card-img"><img src="https://cdn.aitimes.kr/news/thumbnail/202605/40021_60426_1248_v150.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#00C2A8;border-color:#00C2A8">인공지능신문</span>
+      <h2 class="card-title">키사이트, 조립 결함 조기 발견하는 시뮬레이션 솔루션 출시</h2>
+      <ul class="card-lines"><li>키사이트테크놀로지스가 새로운 가상 프로세스 시뮬레이션 솔루션 &#x27;키사이트 어셈블리&#x27;를 발표했다.</li><li>제조업체들이 개발 초기 단계에서 조립 문제를 식별하도록 지원한다.</li><li>자동차 및 산업 제조 분야에서 후기 단계 조립 실패로 인한 막대한 비용 손실 문제를 해결한다.</li><li>미국 주요 자동차 제조업체들은 리콜과 보증 청구로 수십억 달러를 지출하고 있다.</li><li>조기 발견을 통해 결함으로 인한 손실 비용을 크게 줄일 수 있다.</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">10 / 18</span>
+      <a class="read-more" href="https://www.aitimes.kr/news/articleView.html?idxno=40021" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide" id="slide-11">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date"></span>
+    </div>
+    <div class="card-img"><img src="https://cdn.aitimes.kr/news/thumbnail/202605/40020_60425_93_v150.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#00C2A8;border-color:#00C2A8">인공지능신문</span>
+      <h2 class="card-title">SK AX, 오픈AI와 손잡고 기업용 AI 서비스 확대</h2>
+      <ul class="card-lines"><li>SK AX가 오픈AI와 엔터프라이즈 AI 사업 협력을 위한 서비스 파트너 계약을 체결했다.</li><li>&#x27;챗GPT 엔터프라이즈&#x27;를 기반으로 기업 맞춤형 AI 활용 환경을 제공할 계획이다.</li><li>기업 업무 전반에 생성형 AI를 안전하게 적용하고 운영하는 데 중점을 둔다.</li><li>고성능과 고보안 수준의 AX 환경으로 기업의 AI 증강을 지원한다.</li><li>양사 경영진이 구체적인 협력방안을 논의했다.</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">11 / 18</span>
+      <a class="read-more" href="https://www.aitimes.kr/news/articleView.html?idxno=40020" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide" id="slide-12">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date"></span>
+    </div>
+    <div class="card-img"><img src="https://cdn.aitimes.kr/news/thumbnail/202605/40018_60424_2913_v150.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#00C2A8;border-color:#00C2A8">인공지능신문</span>
+      <h2 class="card-title">명인이노, AI EXPO 2026서 AI 인프라 솔루션 선보여</h2>
+      <ul class="card-lines"><li>AI 인프라 구축 전문 기업 명인이노가 6~8일 서울 코엑스에서 개최된 국제인공지능대전에 참가했다.</li><li>엔비디아 최신 GPU와 인텔 제온 프로세서 기반 AI 서버를 전시했다.</li><li>MSI의 AI 슈퍼컴퓨터 등 다양한 AI 인프라 솔루션을 선보였다.</li><li>아시아 최대 규모의 AI 전시회에서 성공적으로 마쳤다.</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">12 / 18</span>
+      <a class="read-more" href="https://www.aitimes.kr/news/articleView.html?idxno=40018" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide" id="slide-13">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">2026.05.14 10:47</span>
+    </div>
+    <div class="card-img"><img src="https://pimg.mk.co.kr/news/cms/202605/14/news-p.v1.20260514.c004cfad365e405f83ab7815c02e5389_R.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#E6A817;border-color:#E6A817">매일경제 IT</span>
+      <h2 class="card-title">KB증권, AI 수요에 반도체株 목표주가 40% 상향</h2>
+      <ul class="card-lines"><li>KB증권이 반도체 기업들의 목표주가를 대폭 상향 조정했다.</li><li>삼성전자·SK하이닉스의 목표주가를 7500에서 1만500으로 40% 올렸다.</li><li>두 회사의 2026년 합산 영업익을 630조원으로 전망했다.</li><li>AI 투자 확대가 반도체 수요를 크게 늘릴 것으로 예상된다.</li><li>단기 조정 가능성은 있지만 장기적으로 긍정 평가했다.</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">13 / 18</span>
+      <a class="read-more" href="https://www.mk.co.kr/news/stock/12047334" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide" id="slide-14">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">2026.05.14 10:47</span>
+    </div>
+    <div class="card-img"><img src="https://pimg.mk.co.kr/news/cms/202605/14/news-p.v1.20260514.246cc6ed905b477b9f9029faae74eebb_R.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#E6A817;border-color:#E6A817">매일경제 IT</span>
+      <h2 class="card-title">삼성전자, 주가 30만원대 진입 임박</h2>
+      <ul class="card-lines"><li>삼성전자가 14일 오전 신고가를 기록하며 사상 최고치를 경신했다.</li><li>전 거래일 대비 1만4250원(5.02%) 오르며 29만8250원까지 상승했다.</li><li>주가가 30만원 돌파를 눈앞에 두고 있다.</li><li>이는 국내 주식시장 전체의 상승을 견인하고 있다.</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">14 / 18</span>
+      <a class="read-more" href="https://www.mk.co.kr/news/stock/12047333" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide" id="slide-15">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">2026.05.14 10:45</span>
+    </div>
+    <div class="card-img"><img src="https://pimg.mk.co.kr/news/cms/202605/14/news-p.v1.20260514.46db1c5305ac4d55b18670f67b5f109e_R.png" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#E6A817;border-color:#E6A817">매일경제 IT</span>
+      <h2 class="card-title">홍콩 기술범죙 건수 감소, 피해액은 급증</h2>
+      <ul class="card-lines"><li>홍콩의 온라인 사기·해킹 등 기술범죄 건수는 감소 추세를 보이고 있다.</li><li>하지만 금융기관과 암호화폐 플랫폼을 노린 고액 공격이 증가하면서 피해 규모는 오히려 커지고 있다.</li><li>사건 수는 줄지만 1건당 손해액이 대폭 증가한 것이다.</li><li>보안 취약점에 대한 경고가 제기되고 있다.</li><li>고도화된 사이버공격에 대한 대응 강화 필요성이 대두되고 있다.</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">15 / 18</span>
+      <a class="read-more" href="https://www.mk.co.kr/news/society/12047330" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide" id="slide-16">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">2026.05.14 10:44</span>
+    </div>
+    <div class="card-img"><img src="https://pimg.mk.co.kr/news/cms/202605/14/news-p.v1.20260514.05ec2f0b3e824b6e9d1b5d9981cce144_R.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#E6A817;border-color:#E6A817">매일경제 IT</span>
+      <h2 class="card-title">교제 거절에 살인 결심…30시간 배회 끝 여고생 표적</h2>
+      <ul class="card-lines"><li>스토킹 신고 후 흉기를 구매한 남성이 원래 대상을 찾지 못하자 다른 여고생을 표적으로 삼았다.</li><li>30시간 동안 배회하며 피해자를 추적했으며, CCTV가 없는 인도에서 15분간 뒤따랐다.</li><li>경찰은 이를 무작위 범행이 아닌 명확한 목적이 있는 계획된 살해로 판단했다.</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">16 / 18</span>
+      <a class="read-more" href="https://www.mk.co.kr/news/society/12047329" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide" id="slide-17">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">2026.05.14 10:43</span>
+    </div>
+    <div class="card-img"><img src="https://pimg.mk.co.kr/news/cms/202605/14/news-p.v1.20260514.5afbaffd39ab402c81726e3e70d0bc39_R.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#E6A817;border-color:#E6A817">매일경제 IT</span>
+      <h2 class="card-title">강북 고가 월세 급증, 강남과 격차 좁혀지는 중</h2>
+      <ul class="card-lines"><li>서울 강북구에서 100만원 이상의 고가 월세 계약이 1년 새 29%에서 41%로 급증했다.</li><li>서울 외곽 지역을 중심으로 고가 월세가 빠르게 늘어나는 추세를 보이고 있다.</li><li>매물 부족이 월세값 상승의 주요 원인으로 지적되고 있다.</li><li>이로 인해 세입자들의 주거 부담이 점점 증가하고 있는 상황이다.</li><li>강북 지역의 월세 수준이 강남과의 격차를 줄여가고 있다.</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">17 / 18</span>
+      <a class="read-more" href="https://www.mk.co.kr/news/economy/12047327" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+<div class="slide" id="slide-18">
+  <div class="card">
+    <div class="card-header">
+      <span class="newsletter-tag">NEWSLETTER</span>
+      <span class="card-date">2026.05.14 10:40</span>
+    </div>
+    <div class="card-img"><img src="https://pimg.mk.co.kr/news/cms/202605/14/news-p.v1.20260514.6efb3c01203142a9b5a6b79fcd5baf8f_R.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-body">
+      <span class="source-chip" style="color:#E6A817;border-color:#E6A817">매일경제 IT</span>
+      <h2 class="card-title">대구테크노파크, 소상공인 AI 지원 대경권 주관 선정</h2>
+      <ul class="card-lines"><li>대구테크노파크가 중소벤처기업부와 소상공인시장진흥공단의 &#x27;2026년 혁신&#x27; 사업에서 대경권 주관기관으로 선정됐다.</li><li>3년간 국비 70억원을 투입해 AI모델을 구축하고 사업화를 지원한다.</li><li>소상공인들의 디지털 전환을 본격화하기 위한 사업이다.</li></ul>
+    </div>
+    <div class="card-footer">
+      <span class="card-counter">18 / 18</span>
+      <a class="read-more" href="https://www.mk.co.kr/news/society/12047321" target="_blank">자세히 보기 →</a>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
+
+<div class="dots" id="dots">
+  <button class="dot active" onclick="goTo(0)" aria-label="1번 카드"></button><button class="dot" onclick="goTo(1)" aria-label="2번 카드"></button><button class="dot" onclick="goTo(2)" aria-label="3번 카드"></button><button class="dot" onclick="goTo(3)" aria-label="4번 카드"></button><button class="dot" onclick="goTo(4)" aria-label="5번 카드"></button><button class="dot" onclick="goTo(5)" aria-label="6번 카드"></button><button class="dot" onclick="goTo(6)" aria-label="7번 카드"></button><button class="dot" onclick="goTo(7)" aria-label="8번 카드"></button><button class="dot" onclick="goTo(8)" aria-label="9번 카드"></button><button class="dot" onclick="goTo(9)" aria-label="10번 카드"></button><button class="dot" onclick="goTo(10)" aria-label="11번 카드"></button><button class="dot" onclick="goTo(11)" aria-label="12번 카드"></button><button class="dot" onclick="goTo(12)" aria-label="13번 카드"></button><button class="dot" onclick="goTo(13)" aria-label="14번 카드"></button><button class="dot" onclick="goTo(14)" aria-label="15번 카드"></button><button class="dot" onclick="goTo(15)" aria-label="16번 카드"></button><button class="dot" onclick="goTo(16)" aria-label="17번 카드"></button><button class="dot" onclick="goTo(17)" aria-label="18번 카드"></button>
+</div>
+
+<div class="bottom-info">총 18개 기사 · 스와이프하거나 화살표로 이동</div>
+
+<script>
+  const slider = document.getElementById('slider');
+  const dots   = document.querySelectorAll('.dot');
+  let current  = 0;
+  const total  = 18;
+
+  function updateDots(idx) {
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    current = idx;
+  }
+
+  function goTo(idx) {
+    idx = Math.max(0, Math.min(total - 1, idx));
+    slider.scrollTo({ left: slider.clientWidth * idx, behavior: 'smooth' });
+    updateDots(idx);
+  }
+
+  function move(dir) { goTo(current + dir); }
+
+  // 스크롤로 현재 인덱스 감지
+  slider.addEventListener('scroll', () => {
+    const idx = Math.round(slider.scrollLeft / slider.clientWidth);
+    if (idx !== current) updateDots(idx);
+  });
+
+  // 키보드 좌우 화살표
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft')  move(-1);
+    if (e.key === 'ArrowRight') move(+1);
+  });
+</script>
+</body>
+</html>
