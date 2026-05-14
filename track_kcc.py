@@ -14,8 +14,8 @@ OUTPUT        = os.path.join(os.path.dirname(os.path.abspath(__file__)), "kcc_tr
 
 APTS = [
     {"id":"kcc",     "name":"KCC스위첸2차",   "filter":"KCC",          "lawd":"41570","areas":[59,74,84],"tab_icon":"🏠","mode":"both"},
-    {"id":"bukhan",  "name":"북한산푸르지오",  "filter":"북한산푸르지오","lawd":"11380","areas":[59,74,84,114],"tab_icon":"🏔","mode":"rent"},
-    {"id":"raemian", "name":"래미안베라힐즈",  "filter":"래미안베라힐즈","lawd":"11380","areas":[59,74,84,114],"tab_icon":"🌿","mode":"rent"},
+    {"id":"bukhan",  "name":"북한산푸르지오",  "filter":"북한산푸르지오","lawd":"11380","areas":[59,74,84,114],"tab_icon":"🏔","mode":"both"},
+    {"id":"raemian", "name":"래미안베라힐즈",  "filter":"래미안베라힐즈","lawd":"11380","areas":[59,74,84,114],"tab_icon":"🌿","mode":"both"},
 ]
 
 TRADE_URL = "https://apis.data.go.kr/1613000/RTMSDataSvcAptTrade/getRTMSDataSvcAptTrade"

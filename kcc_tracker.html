@@ -194,7 +194,7 @@ tr:hover td{background:var(--sage4);transition:.1s;}
 <div class="header">
   <div class="h-top">
     <div class="h-logo">Real Estate Tracker</div>
-    <div class="h-date">2026.05.14 14:27 업데이트</div>
+    <div class="h-date">2026.05.14 14:38 업데이트</div>
   </div>
   <div class="h-hero">
     <div class="h-kicker">국토교통부 공식 실거래가</div>
@@ -3001,6 +3001,22 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td class="pc">3,000/125<span class='u'>만원</span></td>
     </tr>
     </table></div></div><div class="pane" id="pane-bukhan"><div class="stats"><div class="stat">
+      <div class="s-emoji">🏡</div>
+      <div class="s-val" style="color:var(--sage)">156건</div>
+      <div class="s-lbl">매매거래(2023~)</div>
+    </div><div class="stat">
+      <div class="s-emoji">💰</div>
+      <div class="s-val" style="color:var(--sage)">116,096만원</div>
+      <div class="s-lbl">최근3개월 평균매매가</div>
+    </div><div class="stat">
+      <div class="s-emoji">📈</div>
+      <div class="s-val" style="color:var(--sage)">130,000만원</div>
+      <div class="s-lbl">84㎡ 최고가</div>
+    </div><div class="stat">
+      <div class="s-emoji">📉</div>
+      <div class="s-val" style="color:var(--sage)">85,000만원</div>
+      <div class="s-lbl">84㎡ 최저가</div>
+    </div><div class="stat">
       <div class="s-emoji">🔑</div>
       <div class="s-val" style="color:var(--sage)">318건</div>
       <div class="s-lbl">전세거래(2023~)</div>
@@ -3008,13 +3024,9 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <div class="s-emoji">🏠</div>
       <div class="s-val" style="color:var(--sage2)">143건</div>
       <div class="s-lbl">월세거래(2023~)</div>
-    </div><div class="stat">
-      <div class="s-emoji">💵</div>
-      <div class="s-val" style="color:var(--sage)">65,770만원</div>
-      <div class="s-lbl">최근3개월 전세평균</div>
-    </div></div><div class="chart-card"><div class="chart-ttl">🔑 전세 보증금 추이 (평형별)</div><canvas id="bukhan_jeonse" height="210"></canvas></div><div class="chart-card"><div class="chart-ttl">🏠 월세 보증금 추이 (평형별)</div><canvas id="bukhan_wolse" height="210"></canvas></div><div class="filter-row">
-      <button class="flt active" onclick="filterTbl(this,'bukhan','all')">전체 <span class="fcnt">461</span></button>
-      <button class="flt" onclick="filterTbl(this,'bukhan','매매')">매매 <span class="fcnt">0</span></button>
+    </div></div><div class="chart-card"><div class="chart-ttl">📈 매매가 추이 (평형별)</div><canvas id="bukhan_trade" height="210"></canvas></div><div class="chart-card"><div class="chart-ttl">🔑 전세 보증금 추이 (평형별)</div><canvas id="bukhan_jeonse" height="210"></canvas></div><div class="chart-card"><div class="chart-ttl">🏠 월세 보증금 추이 (평형별)</div><canvas id="bukhan_wolse" height="210"></canvas></div><div class="filter-row">
+      <button class="flt active" onclick="filterTbl(this,'bukhan','all')">전체 <span class="fcnt">617</span></button>
+      <button class="flt" onclick="filterTbl(this,'bukhan','매매')">매매 <span class="fcnt">156</span></button>
       <button class="flt" onclick="filterTbl(this,'bukhan','전세')">전세 <span class="fcnt">318</span></button>
       <button class="flt" onclick="filterTbl(this,'bukhan','월세')">월세 <span class="fcnt">143</span></button>
     </div>
@@ -3030,11 +3042,21 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>3층</td>
       <td class="pc">60,900<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-05-09</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>4층</td>
+      <td class="pc">116,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2026-05-07</td>
       <td><span class="tw">월세</span></td>
       <td>60㎡</td><td>11층</td>
       <td class="pc">30,000/100<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-05-04</td>
+      <td><span class="tm">매매</span></td>
+      <td>115㎡</td><td>13층</td>
+      <td class="pc">130,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2026-04-27</td>
       <td><span class="tw">월세</span></td>
@@ -3050,11 +3072,21 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>8층</td>
       <td class="pc">72,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-04-20</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>6층</td>
+      <td class="pc">109,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2026-04-20</td>
       <td><span class="tw">월세</span></td>
       <td>60㎡</td><td>3층</td>
       <td class="pc">10,000/180<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-04-18</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>11층</td>
+      <td class="pc">115,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2026-04-18</td>
       <td><span class="tj">전세</span></td>
@@ -3070,6 +3102,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>19층</td>
       <td class="pc">20,000/180<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-03-31</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>18층</td>
+      <td class="pc">119,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2026-03-31</td>
       <td><span class="tj">전세</span></td>
@@ -3080,6 +3117,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>2층</td>
       <td class="pc">70,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-03-29</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>18층</td>
+      <td class="pc">118,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2026-03-28</td>
       <td><span class="tj">전세</span></td>
@@ -3090,6 +3132,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>6층</td>
       <td class="pc">63,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-03-27</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>5층</td>
+      <td class="pc">117,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2026-03-21</td>
       <td><span class="tw">월세</span></td>
@@ -3105,6 +3152,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>14층</td>
       <td class="pc">70,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-03-03</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>9층</td>
+      <td class="pc">108,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2026-03-02</td>
       <td><span class="tj">전세</span></td>
@@ -3125,11 +3177,36 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>5층</td>
       <td class="pc">20,000/180<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-02-26</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>12층</td>
+      <td class="pc">110,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2026-02-26</td>
       <td><span class="tj">전세</span></td>
       <td>97㎡</td><td>3층</td>
       <td class="pc">80,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-02-25</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>6층</td>
+      <td class="pc">110,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-02-21</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>19층</td>
+      <td class="pc">130,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-02-21</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>8층</td>
+      <td class="pc">118,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-02-20</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>7층</td>
+      <td class="pc">108,750<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2026-02-19</td>
       <td><span class="tj">전세</span></td>
@@ -3145,16 +3222,41 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>1층</td>
       <td class="pc">25,000/145<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-02-04</td>
+      <td><span class="tm">매매</span></td>
+      <td>115㎡</td><td>7층</td>
+      <td class="pc">135,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-02-04</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>9층</td>
+      <td class="pc">115,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2026-02-04</td>
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>2층</td>
       <td class="pc">15,000/165<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-02-03</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>19층</td>
+      <td class="pc">113,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-02-03</td>
+      <td><span class="tm">매매</span></td>
+      <td>97㎡</td><td>1층</td>
+      <td class="pc">130,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2026-01-28</td>
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>1층</td>
       <td class="pc">65,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-01-27</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>5층</td>
+      <td class="pc">120,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2026-01-26</td>
       <td><span class="tj">전세</span></td>
@@ -3165,6 +3267,21 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>10층</td>
       <td class="pc">57,300/10<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-01-17</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>17층</td>
+      <td class="pc">109,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-01-17</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>10층</td>
+      <td class="pc">108,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-01-13</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>17층</td>
+      <td class="pc">115,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2026-01-10</td>
       <td><span class="tj">전세</span></td>
@@ -3190,6 +3307,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>10층</td>
       <td class="pc">63,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-01-02</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>7층</td>
+      <td class="pc">115,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-01-02</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>2층</td>
+      <td class="pc">105,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-12-30</td>
       <td><span class="tw">월세</span></td>
@@ -3220,6 +3347,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>12층</td>
       <td class="pc">53,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-12-24</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>20층</td>
+      <td class="pc">108,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-12-24</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>12층</td>
+      <td class="pc">108,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-12-24</td>
       <td><span class="tj">전세</span></td>
@@ -3235,6 +3372,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>16층</td>
       <td class="pc">55,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-12-21</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>11층</td>
+      <td class="pc">107,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-12-20</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>3층</td>
+      <td class="pc">104,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-12-11</td>
       <td><span class="tj">전세</span></td>
@@ -3245,11 +3392,26 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>18층</td>
       <td class="pc">2,683/16<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-12-05</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>6층</td>
+      <td class="pc">111,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-12-01</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>9층</td>
+      <td class="pc">108,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-12-01</td>
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>9층</td>
       <td class="pc">57,750<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-11-27</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>14층</td>
+      <td class="pc">107,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-11-27</td>
       <td><span class="tj">전세</span></td>
@@ -3260,11 +3422,21 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>16층</td>
       <td class="pc">65,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-11-25</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>12층</td>
+      <td class="pc">116,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-11-25</td>
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>10층</td>
       <td class="pc">62,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-11-24</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>13층</td>
+      <td class="pc">106,700<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-11-24</td>
       <td><span class="tj">전세</span></td>
@@ -3275,11 +3447,26 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>3층</td>
       <td class="pc">50,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-11-22</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>5층</td>
+      <td class="pc">95,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-11-21</td>
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>13층</td>
       <td class="pc">65,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-11-16</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>10층</td>
+      <td class="pc">109,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-11-16</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>17층</td>
+      <td class="pc">109,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-11-16</td>
       <td><span class="tj">전세</span></td>
@@ -3295,6 +3482,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>60㎡</td><td>14층</td>
       <td class="pc">10,000/150<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-11-08</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>5층</td>
+      <td class="pc">103,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-11-08</td>
       <td><span class="tj">전세</span></td>
@@ -3340,11 +3532,36 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>115㎡</td><td>17층</td>
       <td class="pc">75,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-19</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>3층</td>
+      <td class="pc">93,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-18</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>19층</td>
+      <td class="pc">95,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-18</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>2층</td>
+      <td class="pc">100,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-18</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>13층</td>
+      <td class="pc">95,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-10-18</td>
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>16층</td>
       <td class="pc">60,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-16</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>14층</td>
+      <td class="pc">104,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-10-16</td>
       <td><span class="tj">전세</span></td>
@@ -3365,6 +3582,26 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>16층</td>
       <td class="pc">50,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-14</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>16층</td>
+      <td class="pc">108,700<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-14</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>5층</td>
+      <td class="pc">94,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-13</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>13층</td>
+      <td class="pc">103,800<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-13</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>9층</td>
+      <td class="pc">108,500<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-10-13</td>
       <td><span class="tw">월세</span></td>
@@ -3400,6 +3637,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>51㎡</td><td>11층</td>
       <td class="pc">7,673<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-10</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>7층</td>
+      <td class="pc">108,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-10-02</td>
       <td><span class="tj">전세</span></td>
@@ -3410,6 +3652,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>4층</td>
       <td class="pc">55,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-09-27</td>
+      <td><span class="tm">매매</span></td>
+      <td>115㎡</td><td>5층</td>
+      <td class="pc">123,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-09-23</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>15층</td>
+      <td class="pc">103,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-09-23</td>
       <td><span class="tj">전세</span></td>
@@ -3435,6 +3687,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>3층</td>
       <td class="pc">60,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-09-13</td>
+      <td><span class="tm">매매</span></td>
+      <td>97㎡</td><td>2층</td>
+      <td class="pc">132,500<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-09-13</td>
       <td><span class="tw">월세</span></td>
@@ -3450,6 +3707,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>15층</td>
       <td class="pc">2,883/16<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-09-06</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>11층</td>
+      <td class="pc">103,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-09-06</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>7층</td>
+      <td class="pc">103,800<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-09-05</td>
       <td><span class="tj">전세</span></td>
@@ -3470,11 +3737,31 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>17층</td>
       <td class="pc">62,400<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-09-04</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>14층</td>
+      <td class="pc">95,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-09-03</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>7층</td>
+      <td class="pc">101,200<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-08-31</td>
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>7층</td>
       <td class="pc">60,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-08-30</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>11층</td>
+      <td class="pc">93,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-08-30</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>11층</td>
+      <td class="pc">92,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-08-30</td>
       <td><span class="tj">전세</span></td>
@@ -3495,6 +3782,31 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>5층</td>
       <td class="pc">54,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-08-25</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>16층</td>
+      <td class="pc">107,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-08-23</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>1층</td>
+      <td class="pc">100,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-08-23</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>1층</td>
+      <td class="pc">100,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-08-23</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>11층</td>
+      <td class="pc">108,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-08-21</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>12층</td>
+      <td class="pc">104,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-08-19</td>
       <td><span class="tj">전세</span></td>
@@ -3510,6 +3822,21 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>5층</td>
       <td class="pc">51,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-08-09</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>17층</td>
+      <td class="pc">101,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-08-09</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>17층</td>
+      <td class="pc">101,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-08-09</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>12층</td>
+      <td class="pc">103,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-08-09</td>
       <td><span class="tw">월세</span></td>
@@ -3520,6 +3847,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>60㎡</td><td>4층</td>
       <td class="pc">10,000/100<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-08-03</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>14층</td>
+      <td class="pc">105,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-08-03</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>14층</td>
+      <td class="pc">105,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-07-29</td>
       <td><span class="tj">전세</span></td>
@@ -3550,6 +3887,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>115㎡</td><td>2층</td>
       <td class="pc">73,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-07-09</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>5층</td>
+      <td class="pc">103,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-07-09</td>
       <td><span class="tj">전세</span></td>
@@ -3565,6 +3907,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>12층</td>
       <td class="pc">44,900<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-07-05</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>4층</td>
+      <td class="pc">106,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-07-05</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>6층</td>
+      <td class="pc">93,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-07-05</td>
       <td><span class="tj">전세</span></td>
@@ -3590,11 +3942,36 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>16층</td>
       <td class="pc">20,000/180<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-30</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>5층</td>
+      <td class="pc">91,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-06-30</td>
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>5층</td>
       <td class="pc">54,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-29</td>
+      <td><span class="tm">매매</span></td>
+      <td>115㎡</td><td>5층</td>
+      <td class="pc">122,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-28</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>8층</td>
+      <td class="pc">91,900<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-24</td>
+      <td><span class="tm">매매</span></td>
+      <td>97㎡</td><td>4층</td>
+      <td class="pc">134,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-19</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>18층</td>
+      <td class="pc">88,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-06-17</td>
       <td><span class="tj">전세</span></td>
@@ -3610,6 +3987,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>12층</td>
       <td class="pc">55,650<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-12</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>4층</td>
+      <td class="pc">103,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-06-12</td>
       <td><span class="tw">월세</span></td>
@@ -3640,11 +4022,26 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>115㎡</td><td>11층</td>
       <td class="pc">75,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-05-27</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>13층</td>
+      <td class="pc">92,500<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-05-27</td>
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>6층</td>
       <td class="pc">25,000/130<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-05-25</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>13층</td>
+      <td class="pc">93,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-05-24</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>10층</td>
+      <td class="pc">103,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-05-24</td>
       <td><span class="tj">전세</span></td>
@@ -3660,11 +4057,26 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>18층</td>
       <td class="pc">37,800/85<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-05-17</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>11층</td>
+      <td class="pc">103,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-05-05</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>18층</td>
+      <td class="pc">104,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-05-05</td>
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>18층</td>
       <td class="pc">63,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-05-02</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>19층</td>
+      <td class="pc">91,100<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-04-30</td>
       <td><span class="tw">월세</span></td>
@@ -3685,11 +4097,31 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>6층</td>
       <td class="pc">10,000/180<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-04-19</td>
+      <td><span class="tm">매매</span></td>
+      <td>97㎡</td><td>4층</td>
+      <td class="pc">130,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-04-15</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>3층</td>
+      <td class="pc">89,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-04-14</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>8층</td>
+      <td class="pc">109,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-04-14</td>
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>4층</td>
       <td class="pc">55,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-04-13</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>2층</td>
+      <td class="pc">102,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-04-12</td>
       <td><span class="tj">전세</span></td>
@@ -3700,6 +4132,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>60㎡</td><td>18층</td>
       <td class="pc">22,000/100<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-04-05</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>5층</td>
+      <td class="pc">103,300<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-04-05</td>
       <td><span class="tw">월세</span></td>
@@ -3715,6 +4152,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>9층</td>
       <td class="pc">50,400<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-04-03</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>8층</td>
+      <td class="pc">107,600<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-03-31</td>
       <td><span class="tj">전세</span></td>
@@ -3755,11 +4197,31 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>60㎡</td><td>3층</td>
       <td class="pc">20,000/109<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-03-19</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>1층</td>
+      <td class="pc">92,500<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-03-18</td>
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>4층</td>
       <td class="pc">10,000/210<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-03-15</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>6층</td>
+      <td class="pc">106,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-03-15</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>8층</td>
+      <td class="pc">105,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-03-13</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>10층</td>
+      <td class="pc">89,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-03-08</td>
       <td><span class="tj">전세</span></td>
@@ -3835,6 +4297,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>11층</td>
       <td class="pc">48,800<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-01-25</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>4층</td>
+      <td class="pc">91,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-01-24</td>
       <td><span class="tj">전세</span></td>
@@ -3850,6 +4317,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>18층</td>
       <td class="pc">55,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-01-21</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>4층</td>
+      <td class="pc">91,500<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-01-20</td>
       <td><span class="tw">월세</span></td>
@@ -3875,6 +4347,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>12층</td>
       <td class="pc">65,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-01-07</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>5층</td>
+      <td class="pc">92,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-01-07</td>
       <td><span class="tw">월세</span></td>
@@ -3990,6 +4467,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>12층</td>
       <td class="pc">50,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-10-26</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>14층</td>
+      <td class="pc">107,800<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-10-26</td>
       <td><span class="tj">전세</span></td>
@@ -4035,6 +4517,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>5층</td>
       <td class="pc">64,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-10-05</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>7층</td>
+      <td class="pc">93,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-10-05</td>
       <td><span class="tj">전세</span></td>
@@ -4110,6 +4597,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>15층</td>
       <td class="pc">53,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-08-30</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>10층</td>
+      <td class="pc">109,700<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-08-30</td>
       <td><span class="tj">전세</span></td>
@@ -4125,11 +4617,61 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>3층</td>
       <td class="pc">46,300<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-08-24</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>13층</td>
+      <td class="pc">104,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-08-18</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>13층</td>
+      <td class="pc">105,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-08-17</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>13층</td>
+      <td class="pc">105,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-08-13</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>4층</td>
+      <td class="pc">102,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-08-12</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>13층</td>
+      <td class="pc">99,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-08-06</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>10층</td>
+      <td class="pc">92,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-08-06</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>10층</td>
+      <td class="pc">109,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-08-05</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>14층</td>
+      <td class="pc">94,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-08-03</td>
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>17층</td>
       <td class="pc">65,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-07-30</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>19층</td>
+      <td class="pc">102,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-07-30</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>6층</td>
+      <td class="pc">105,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-07-27</td>
       <td><span class="tj">전세</span></td>
@@ -4205,16 +4747,36 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>14층</td>
       <td class="pc">64,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-06-19</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>16층</td>
+      <td class="pc">102,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2024-06-17</td>
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>2층</td>
       <td class="pc">4,424/6<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-06-15</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>17층</td>
+      <td class="pc">109,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-06-10</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>13층</td>
+      <td class="pc">105,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-06-09</td>
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>20층</td>
       <td class="pc">62,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-06-08</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>3층</td>
+      <td class="pc">102,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-06-08</td>
       <td><span class="tj">전세</span></td>
@@ -4230,6 +4792,26 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>97㎡</td><td>4층</td>
       <td class="pc">67,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-06-01</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>18층</td>
+      <td class="pc">99,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-05-29</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>13층</td>
+      <td class="pc">102,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-05-29</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>13층</td>
+      <td class="pc">102,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-05-28</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>10층</td>
+      <td class="pc">96,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2024-05-28</td>
       <td><span class="tw">월세</span></td>
@@ -4280,6 +4862,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>7층</td>
       <td class="pc">55,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-05-11</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>16층</td>
+      <td class="pc">97,800<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-05-11</td>
       <td><span class="tj">전세</span></td>
@@ -4305,6 +4892,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>4층</td>
       <td class="pc">60,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-04-30</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>10층</td>
+      <td class="pc">97,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-04-29</td>
       <td><span class="tj">전세</span></td>
@@ -4345,6 +4937,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>8층</td>
       <td class="pc">62,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-04-20</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>2층</td>
+      <td class="pc">97,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-04-19</td>
       <td><span class="tj">전세</span></td>
@@ -4435,6 +5032,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>41㎡</td><td>10층</td>
       <td class="pc">2,987/17<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-03-19</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>15층</td>
+      <td class="pc">100,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-03-14</td>
       <td><span class="tj">전세</span></td>
@@ -4555,6 +5157,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>60㎡</td><td>3층</td>
       <td class="pc">15,000/115<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-01-29</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>3층</td>
+      <td class="pc">79,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-01-27</td>
       <td><span class="tj">전세</span></td>
@@ -4575,6 +5182,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>41㎡</td><td>18층</td>
       <td class="pc">4,763/17<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-01-10</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>11층</td>
+      <td class="pc">78,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-01-10</td>
       <td><span class="tj">전세</span></td>
@@ -4735,6 +5347,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>9층</td>
       <td class="pc">55,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-11-14</td>
+      <td><span class="tm">매매</span></td>
+      <td>97㎡</td><td>4층</td>
+      <td class="pc">131,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-11-05</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>11층</td>
+      <td class="pc">99,800<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-11-04</td>
       <td><span class="tj">전세</span></td>
@@ -4890,11 +5512,26 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>1층</td>
       <td class="pc">57,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-10-03</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>16층</td>
+      <td class="pc">103,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2023-09-29</td>
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>16층</td>
       <td class="pc">2,775/15<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-09-27</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>11층</td>
+      <td class="pc">109,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-09-23</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>7층</td>
+      <td class="pc">108,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-09-22</td>
       <td><span class="tj">전세</span></td>
@@ -4920,16 +5557,36 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>15층</td>
       <td class="pc">2,775/15<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-08-30</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>19층</td>
+      <td class="pc">105,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-08-29</td>
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>7층</td>
       <td class="pc">54,600<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-08-19</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>15층</td>
+      <td class="pc">84,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-08-18</td>
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>17층</td>
       <td class="pc">58,400<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-08-17</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>13층</td>
+      <td class="pc">108,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-08-16</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>9층</td>
+      <td class="pc">99,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2023-08-16</td>
       <td><span class="tw">월세</span></td>
@@ -4975,11 +5632,26 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>6층</td>
       <td class="pc">48,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-08-02</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>15층</td>
+      <td class="pc">99,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2023-07-31</td>
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>19층</td>
       <td class="pc">21,000/105<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-07-29</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>18층</td>
+      <td class="pc">97,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-07-28</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>15층</td>
+      <td class="pc">95,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-07-28</td>
       <td><span class="tj">전세</span></td>
@@ -4990,6 +5662,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>19층</td>
       <td class="pc">20,000/109<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-07-26</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>14층</td>
+      <td class="pc">95,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-07-21</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>6층</td>
+      <td class="pc">80,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-07-15</td>
       <td><span class="tj">전세</span></td>
@@ -5025,11 +5707,21 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>11층</td>
       <td class="pc">47,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-06-28</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>11층</td>
+      <td class="pc">98,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-06-26</td>
       <td><span class="tj">전세</span></td>
       <td>115㎡</td><td>12층</td>
       <td class="pc">70,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-06-24</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>17층</td>
+      <td class="pc">95,900<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-06-23</td>
       <td><span class="tj">전세</span></td>
@@ -5055,6 +5747,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>5층</td>
       <td class="pc">53,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-06-14</td>
+      <td><span class="tm">매매</span></td>
+      <td>115㎡</td><td>7층</td>
+      <td class="pc">130,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-06-14</td>
       <td><span class="tj">전세</span></td>
@@ -5100,11 +5797,26 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>14층</td>
       <td class="pc">15,000/150<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-05-27</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>9층</td>
+      <td class="pc">95,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-05-27</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>19층</td>
+      <td class="pc">95,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-05-27</td>
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>5층</td>
       <td class="pc">50,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-05-24</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>14층</td>
+      <td class="pc">93,800<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-05-17</td>
       <td><span class="tj">전세</span></td>
@@ -5150,6 +5862,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>4층</td>
       <td class="pc">10,000/180<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-04-25</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>17층</td>
+      <td class="pc">95,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-04-22</td>
       <td><span class="tj">전세</span></td>
@@ -5165,16 +5882,41 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>8층</td>
       <td class="pc">45,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-04-15</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>9층</td>
+      <td class="pc">89,700<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-04-13</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>9층</td>
+      <td class="pc">90,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-04-12</td>
       <td><span class="tj">전세</span></td>
       <td>115㎡</td><td>9층</td>
       <td class="pc">65,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-04-08</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>4층</td>
+      <td class="pc">87,800<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-04-07</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>13층</td>
+      <td class="pc">90,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-04-06</td>
       <td><span class="tj">전세</span></td>
       <td>115㎡</td><td>10층</td>
       <td class="pc">61,400<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-04-03</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>5층</td>
+      <td class="pc">76,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2023-04-02</td>
       <td><span class="tw">월세</span></td>
@@ -5210,6 +5952,31 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>18층</td>
       <td class="pc">35,000/85<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-03-17</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>3층</td>
+      <td class="pc">80,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-03-11</td>
+      <td><span class="tm">매매</span></td>
+      <td>115㎡</td><td>15층</td>
+      <td class="pc">115,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-03-11</td>
+      <td><span class="tm">매매</span></td>
+      <td>115㎡</td><td>15층</td>
+      <td class="pc">115,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-03-11</td>
+      <td><span class="tm">매매</span></td>
+      <td>97㎡</td><td>1층</td>
+      <td class="pc">95,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-03-11</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>14층</td>
+      <td class="pc">90,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-03-08</td>
       <td><span class="tj">전세</span></td>
@@ -5245,6 +6012,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>5층</td>
       <td class="pc">53,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-02-23</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>9층</td>
+      <td class="pc">88,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-02-19</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>8층</td>
+      <td class="pc">86,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-02-18</td>
       <td><span class="tj">전세</span></td>
@@ -5265,6 +6042,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>11층</td>
       <td class="pc">49,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-02-11</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>5층</td>
+      <td class="pc">87,750<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-02-11</td>
       <td><span class="tj">전세</span></td>
@@ -5305,6 +6087,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>11층</td>
       <td class="pc">60,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-01-13</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>6층</td>
+      <td class="pc">85,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-01-12</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>12층</td>
+      <td class="pc">91,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-01-11</td>
       <td><span class="tj">전세</span></td>
@@ -5327,6 +6119,22 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td class="pc">36,000<span class='u'>만원</span></td>
     </tr>
     </table></div></div><div class="pane" id="pane-raemian"><div class="stats"><div class="stat">
+      <div class="s-emoji">🏡</div>
+      <div class="s-val" style="color:var(--sage)">211건</div>
+      <div class="s-lbl">매매거래(2023~)</div>
+    </div><div class="stat">
+      <div class="s-emoji">💰</div>
+      <div class="s-val" style="color:var(--sage)">130,000만원</div>
+      <div class="s-lbl">최근3개월 평균매매가</div>
+    </div><div class="stat">
+      <div class="s-emoji">📈</div>
+      <div class="s-val" style="color:var(--sage)">141,500만원</div>
+      <div class="s-lbl">84㎡ 최고가</div>
+    </div><div class="stat">
+      <div class="s-emoji">📉</div>
+      <div class="s-val" style="color:var(--sage)">64,000만원</div>
+      <div class="s-lbl">84㎡ 최저가</div>
+    </div><div class="stat">
       <div class="s-emoji">🔑</div>
       <div class="s-val" style="color:var(--sage)">478건</div>
       <div class="s-lbl">전세거래(2023~)</div>
@@ -5334,13 +6142,9 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <div class="s-emoji">🏠</div>
       <div class="s-val" style="color:var(--sage2)">321건</div>
       <div class="s-lbl">월세거래(2023~)</div>
-    </div><div class="stat">
-      <div class="s-emoji">💵</div>
-      <div class="s-val" style="color:var(--sage)">70,979만원</div>
-      <div class="s-lbl">최근3개월 전세평균</div>
-    </div></div><div class="chart-card"><div class="chart-ttl">🔑 전세 보증금 추이 (평형별)</div><canvas id="raemian_jeonse" height="210"></canvas></div><div class="chart-card"><div class="chart-ttl">🏠 월세 보증금 추이 (평형별)</div><canvas id="raemian_wolse" height="210"></canvas></div><div class="filter-row">
-      <button class="flt active" onclick="filterTbl(this,'raemian','all')">전체 <span class="fcnt">799</span></button>
-      <button class="flt" onclick="filterTbl(this,'raemian','매매')">매매 <span class="fcnt">0</span></button>
+    </div></div><div class="chart-card"><div class="chart-ttl">📈 매매가 추이 (평형별)</div><canvas id="raemian_trade" height="210"></canvas></div><div class="chart-card"><div class="chart-ttl">🔑 전세 보증금 추이 (평형별)</div><canvas id="raemian_jeonse" height="210"></canvas></div><div class="chart-card"><div class="chart-ttl">🏠 월세 보증금 추이 (평형별)</div><canvas id="raemian_wolse" height="210"></canvas></div><div class="filter-row">
+      <button class="flt active" onclick="filterTbl(this,'raemian','all')">전체 <span class="fcnt">1010</span></button>
+      <button class="flt" onclick="filterTbl(this,'raemian','매매')">매매 <span class="fcnt">211</span></button>
       <button class="flt" onclick="filterTbl(this,'raemian','전세')">전세 <span class="fcnt">478</span></button>
       <button class="flt" onclick="filterTbl(this,'raemian','월세')">월세 <span class="fcnt">321</span></button>
     </div>
@@ -5356,6 +6160,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>9층</td>
       <td class="pc">73,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-05-06</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>10층</td>
+      <td class="pc">114,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-05-05</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>11층</td>
+      <td class="pc">139,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2026-05-05</td>
       <td><span class="tw">월세</span></td>
@@ -5371,6 +6185,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>17층</td>
       <td class="pc">75,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-04-24</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>8층</td>
+      <td class="pc">124,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2026-04-24</td>
       <td><span class="tj">전세</span></td>
@@ -5406,6 +6225,26 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>6층</td>
       <td class="pc">9,077/23<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-04-13</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>6층</td>
+      <td class="pc">139,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-04-13</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>8층</td>
+      <td class="pc">128,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-04-11</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>6층</td>
+      <td class="pc">141,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-04-04</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>12층</td>
+      <td class="pc">120,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2026-04-02</td>
       <td><span class="tj">전세</span></td>
@@ -5421,11 +6260,21 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>16층</td>
       <td class="pc">78,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-03-27</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>4층</td>
+      <td class="pc">119,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2026-03-27</td>
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>19층</td>
       <td class="pc">71,400<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-03-21</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>20층</td>
+      <td class="pc">135,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2026-03-21</td>
       <td><span class="tj">전세</span></td>
@@ -5536,6 +6385,26 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>11층</td>
       <td class="pc">25,000/200<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-02-13</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>4층</td>
+      <td class="pc">129,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-02-13</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>7층</td>
+      <td class="pc">130,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-02-13</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>14층</td>
+      <td class="pc">140,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-02-11</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>10층</td>
+      <td class="pc">120,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2026-02-11</td>
       <td><span class="tw">월세</span></td>
@@ -5546,11 +6415,41 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>3층</td>
       <td class="pc">74,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-02-07</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>2층</td>
+      <td class="pc">124,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-02-06</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>14층</td>
+      <td class="pc">117,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-02-06</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>8층</td>
+      <td class="pc">133,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2026-02-06</td>
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>17층</td>
       <td class="pc">80,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-02-05</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>14층</td>
+      <td class="pc">120,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-02-05</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>10층</td>
+      <td class="pc">134,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-01-31</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>13층</td>
+      <td class="pc">141,500<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2026-01-31</td>
       <td><span class="tw">월세</span></td>
@@ -5561,6 +6460,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>60㎡</td><td>9층</td>
       <td class="pc">30,000/140<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-01-30</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>2층</td>
+      <td class="pc">73,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2026-01-28</td>
       <td><span class="tj">전세</span></td>
@@ -5586,11 +6490,71 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>15층</td>
       <td class="pc">78,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-01-17</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>6층</td>
+      <td class="pc">115,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-01-17</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>3층</td>
+      <td class="pc">123,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-01-15</td>
+      <td><span class="tm">매매</span></td>
+      <td>115㎡</td><td>4층</td>
+      <td class="pc">120,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-01-15</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>11층</td>
+      <td class="pc">134,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-01-12</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>18층</td>
+      <td class="pc">111,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-01-11</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>4층</td>
+      <td class="pc">120,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-01-10</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>10층</td>
+      <td class="pc">132,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-01-08</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>4층</td>
+      <td class="pc">132,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-01-06</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>3층</td>
+      <td class="pc">132,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2026-01-05</td>
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>18층</td>
       <td class="pc">78,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-01-03</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>19층</td>
+      <td class="pc">113,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-01-02</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>13층</td>
+      <td class="pc">128,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2026-01-02</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>19층</td>
+      <td class="pc">134,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2026-01-02</td>
       <td><span class="tj">전세</span></td>
@@ -5606,6 +6570,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>16층</td>
       <td class="pc">77,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-12-27</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>1층</td>
+      <td class="pc">100,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-12-26</td>
       <td><span class="tw">월세</span></td>
@@ -5616,6 +6585,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>13층</td>
       <td class="pc">59,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-12-24</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>12층</td>
+      <td class="pc">130,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-12-24</td>
       <td><span class="tw">월세</span></td>
@@ -5656,6 +6630,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>15층</td>
       <td class="pc">8,673/21<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-12-20</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>6층</td>
+      <td class="pc">126,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-12-20</td>
       <td><span class="tw">월세</span></td>
@@ -5691,6 +6670,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>44㎡</td><td>16층</td>
       <td class="pc">11,613/29<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-12-17</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>3층</td>
+      <td class="pc">110,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-12-17</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>1층</td>
+      <td class="pc">119,700<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-12-17</td>
       <td><span class="tw">월세</span></td>
@@ -5811,6 +6800,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>8층</td>
       <td class="pc">58,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-12-10</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>18층</td>
+      <td class="pc">128,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-12-09</td>
       <td><span class="tw">월세</span></td>
@@ -5831,6 +6825,36 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>8층</td>
       <td class="pc">14,744/55<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-12-06</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>18층</td>
+      <td class="pc">129,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-11-28</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>3층</td>
+      <td class="pc">127,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-11-28</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>12층</td>
+      <td class="pc">127,300<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-11-27</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>3층</td>
+      <td class="pc">122,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-11-22</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>10층</td>
+      <td class="pc">125,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-11-22</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>10층</td>
+      <td class="pc">109,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-11-22</td>
       <td><span class="tj">전세</span></td>
@@ -5846,6 +6870,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>3층</td>
       <td class="pc">65,900<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-11-17</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>7층</td>
+      <td class="pc">110,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-11-13</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>5층</td>
+      <td class="pc">110,500<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-11-12</td>
       <td><span class="tw">월세</span></td>
@@ -5856,6 +6890,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>8층</td>
       <td class="pc">40,000/125<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-11-11</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>10층</td>
+      <td class="pc">127,200<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-11-10</td>
       <td><span class="tw">월세</span></td>
@@ -5871,6 +6910,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>7층</td>
       <td class="pc">50,000/62<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-11-07</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>11층</td>
+      <td class="pc">124,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-11-05</td>
       <td><span class="tj">전세</span></td>
@@ -5936,6 +6980,21 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>7층</td>
       <td class="pc">63,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-19</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>14층</td>
+      <td class="pc">124,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-18</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>2층</td>
+      <td class="pc">118,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-18</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>4층</td>
+      <td class="pc">123,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-10-18</td>
       <td><span class="tj">전세</span></td>
@@ -5946,16 +7005,71 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>7층</td>
       <td class="pc">70,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-15</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>16층</td>
+      <td class="pc">122,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-15</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>14층</td>
+      <td class="pc">109,300<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-15</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>14층</td>
+      <td class="pc">111,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-15</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>15층</td>
+      <td class="pc">127,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-15</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>7층</td>
+      <td class="pc">122,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-10-15</td>
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>10층</td>
       <td class="pc">60,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-14</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>8층</td>
+      <td class="pc">123,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-13</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>19층</td>
+      <td class="pc">130,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-13</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>19층</td>
+      <td class="pc">130,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-10-11</td>
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>19층</td>
       <td class="pc">75,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-05</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>8층</td>
+      <td class="pc">120,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-04</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>9층</td>
+      <td class="pc">110,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-10-01</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>2층</td>
+      <td class="pc">107,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-09-30</td>
       <td><span class="tj">전세</span></td>
@@ -5971,6 +7085,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>19층</td>
       <td class="pc">63,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-09-27</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>15층</td>
+      <td class="pc">107,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-09-27</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>15층</td>
+      <td class="pc">107,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-09-27</td>
       <td><span class="tj">전세</span></td>
@@ -5981,6 +7105,31 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>11층</td>
       <td class="pc">68,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-09-25</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>7층</td>
+      <td class="pc">117,700<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-09-22</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>3층</td>
+      <td class="pc">100,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-09-22</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>17층</td>
+      <td class="pc">123,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-09-21</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>3층</td>
+      <td class="pc">100,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-09-20</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>9층</td>
+      <td class="pc">105,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-09-20</td>
       <td><span class="tj">전세</span></td>
@@ -5991,11 +7140,21 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>14층</td>
       <td class="pc">56,700<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-09-19</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>5층</td>
+      <td class="pc">124,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-09-19</td>
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>9층</td>
       <td class="pc">57,880<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-09-17</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>9층</td>
+      <td class="pc">102,500<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-09-17</td>
       <td><span class="tw">월세</span></td>
@@ -6061,6 +7220,31 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>2층</td>
       <td class="pc">56,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-08-23</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>15층</td>
+      <td class="pc">104,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-08-23</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>16층</td>
+      <td class="pc">102,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-08-23</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>15층</td>
+      <td class="pc">104,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-08-20</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>4층</td>
+      <td class="pc">120,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-08-15</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>1층</td>
+      <td class="pc">109,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-08-15</td>
       <td><span class="tj">전세</span></td>
@@ -6076,6 +7260,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>10층</td>
       <td class="pc">69,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-08-12</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>11층</td>
+      <td class="pc">110,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-08-12</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>11층</td>
+      <td class="pc">110,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-08-11</td>
       <td><span class="tj">전세</span></td>
@@ -6111,6 +7305,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>3층</td>
       <td class="pc">13,824/49<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-07-27</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>11층</td>
+      <td class="pc">109,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-07-26</td>
       <td><span class="tj">전세</span></td>
@@ -6151,6 +7350,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>52㎡</td><td>12층</td>
       <td class="pc">6,142/10<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-07-24</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>11층</td>
+      <td class="pc">101,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-07-22</td>
       <td><span class="tj">전세</span></td>
@@ -6161,6 +7365,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>6층</td>
       <td class="pc">52,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-07-19</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>15층</td>
+      <td class="pc">125,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-07-19</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>7층</td>
+      <td class="pc">104,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-07-18</td>
       <td><span class="tj">전세</span></td>
@@ -6201,11 +7415,31 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>6층</td>
       <td class="pc">15,800/40<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-07-06</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>13층</td>
+      <td class="pc">105,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-07-06</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>13층</td>
+      <td class="pc">105,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-07-05</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>20층</td>
+      <td class="pc">104,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-07-05</td>
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>4층</td>
       <td class="pc">68,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-07-04</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>14층</td>
+      <td class="pc">123,300<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-07-04</td>
       <td><span class="tj">전세</span></td>
@@ -6226,11 +7460,36 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>16층</td>
       <td class="pc">60,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-30</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>9층</td>
+      <td class="pc">104,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-30</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>9층</td>
+      <td class="pc">104,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-06-27</td>
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>19층</td>
       <td class="pc">58,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-26</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>13층</td>
+      <td class="pc">121,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-25</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>2층</td>
+      <td class="pc">98,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-25</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>11층</td>
+      <td class="pc">120,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-06-25</td>
       <td><span class="tj">전세</span></td>
@@ -6241,6 +7500,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>7층</td>
       <td class="pc">28,000/130<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-24</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>7층</td>
+      <td class="pc">119,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-06-24</td>
       <td><span class="tj">전세</span></td>
@@ -6251,6 +7515,31 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>7층</td>
       <td class="pc">70,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-21</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>12층</td>
+      <td class="pc">101,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-21</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>16층</td>
+      <td class="pc">122,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-21</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>15층</td>
+      <td class="pc">119,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-21</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>1층</td>
+      <td class="pc">117,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-21</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>11층</td>
+      <td class="pc">102,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-06-20</td>
       <td><span class="tj">전세</span></td>
@@ -6261,11 +7550,36 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>10층</td>
       <td class="pc">30,000/120<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-15</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>14층</td>
+      <td class="pc">105,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-14</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>7층</td>
+      <td class="pc">90,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-06-12</td>
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>4층</td>
       <td class="pc">56,700<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-11</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>15층</td>
+      <td class="pc">102,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-11</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>15층</td>
+      <td class="pc">102,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-10</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>6층</td>
+      <td class="pc">100,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-06-10</td>
       <td><span class="tj">전세</span></td>
@@ -6281,16 +7595,41 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>60㎡</td><td>11층</td>
       <td class="pc">10,000/200<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-07</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>17층</td>
+      <td class="pc">125,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-06-05</td>
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>7층</td>
       <td class="pc">13,056/47<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-04</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>6층</td>
+      <td class="pc">120,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-06-04</td>
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>3층</td>
       <td class="pc">13,824/49<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-03</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>16층</td>
+      <td class="pc">120,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-03</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>16층</td>
+      <td class="pc">120,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-06-03</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>16층</td>
+      <td class="pc">120,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-05-29</td>
       <td><span class="tw">월세</span></td>
@@ -6306,6 +7645,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>2층</td>
       <td class="pc">13,824/49<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-05-27</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>12층</td>
+      <td class="pc">119,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-05-25</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>11층</td>
+      <td class="pc">101,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-05-24</td>
       <td><span class="tj">전세</span></td>
@@ -6316,6 +7665,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>2층</td>
       <td class="pc">65,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-05-16</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>6층</td>
+      <td class="pc">125,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-05-15</td>
       <td><span class="tj">전세</span></td>
@@ -6396,6 +7750,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>17층</td>
       <td class="pc">15,848/40<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-04-11</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>10층</td>
+      <td class="pc">119,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-04-11</td>
       <td><span class="tj">전세</span></td>
@@ -6426,6 +7785,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>16층</td>
       <td class="pc">51,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-04-06</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>13층</td>
+      <td class="pc">122,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-04-06</td>
       <td><span class="tj">전세</span></td>
@@ -6451,6 +7815,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>15층</td>
       <td class="pc">48,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-03-30</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>13층</td>
+      <td class="pc">122,500<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-03-30</td>
       <td><span class="tw">월세</span></td>
@@ -6501,6 +7870,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>4층</td>
       <td class="pc">65,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-03-19</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>4층</td>
+      <td class="pc">121,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-03-19</td>
       <td><span class="tj">전세</span></td>
@@ -6521,6 +7895,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>60㎡</td><td>1층</td>
       <td class="pc">35,000/87<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-03-17</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>7층</td>
+      <td class="pc">90,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-03-16</td>
       <td><span class="tj">전세</span></td>
@@ -6531,6 +7910,21 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>11층</td>
       <td class="pc">15,798/39<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-03-15</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>12층</td>
+      <td class="pc">102,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-03-15</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>14층</td>
+      <td class="pc">118,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-03-15</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>6층</td>
+      <td class="pc">119,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-03-15</td>
       <td><span class="tj">전세</span></td>
@@ -6671,6 +8065,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>3층</td>
       <td class="pc">9,000/210<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-02-12</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>12층</td>
+      <td class="pc">121,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-02-12</td>
       <td><span class="tj">전세</span></td>
@@ -6751,6 +8150,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>6층</td>
       <td class="pc">66,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-01-23</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>14층</td>
+      <td class="pc">122,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2025-01-23</td>
       <td><span class="tj">전세</span></td>
@@ -6811,6 +8215,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>11층</td>
       <td class="pc">63,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-01-15</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>3층</td>
+      <td class="pc">106,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-01-14</td>
       <td><span class="tw">월세</span></td>
@@ -6821,6 +8230,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>5층</td>
       <td class="pc">65,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2025-01-12</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>13층</td>
+      <td class="pc">99,500<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2025-01-11</td>
       <td><span class="tw">월세</span></td>
@@ -7156,6 +8570,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>8층</td>
       <td class="pc">65,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-11-08</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>13층</td>
+      <td class="pc">120,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-11-02</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>17층</td>
+      <td class="pc">115,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-10-28</td>
       <td><span class="tj">전세</span></td>
@@ -7201,11 +8625,21 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>8층</td>
       <td class="pc">30,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-10-09</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>4층</td>
+      <td class="pc">115,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-10-09</td>
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>4층</td>
       <td class="pc">59,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-10-08</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>18층</td>
+      <td class="pc">119,800<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-10-08</td>
       <td><span class="tj">전세</span></td>
@@ -7261,6 +8695,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>18층</td>
       <td class="pc">72,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-08-27</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>11층</td>
+      <td class="pc">97,500<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2024-08-24</td>
       <td><span class="tw">월세</span></td>
@@ -7271,6 +8710,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>3층</td>
       <td class="pc">53,260<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-08-21</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>4층</td>
+      <td class="pc">121,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-08-21</td>
       <td><span class="tj">전세</span></td>
@@ -7286,6 +8730,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>20층</td>
       <td class="pc">61,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-08-16</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>20층</td>
+      <td class="pc">124,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-08-16</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>18층</td>
+      <td class="pc">95,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2024-08-14</td>
       <td><span class="tw">월세</span></td>
@@ -7311,6 +8765,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>13층</td>
       <td class="pc">68,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-08-10</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>8층</td>
+      <td class="pc">126,500<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2024-08-10</td>
       <td><span class="tw">월세</span></td>
@@ -7326,11 +8785,21 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>15층</td>
       <td class="pc">46,300<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-08-07</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>13층</td>
+      <td class="pc">96,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-08-02</td>
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>1층</td>
       <td class="pc">67,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-07-31</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>10층</td>
+      <td class="pc">100,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2024-07-31</td>
       <td><span class="tw">월세</span></td>
@@ -7366,6 +8835,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>12층</td>
       <td class="pc">65,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-07-13</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>18층</td>
+      <td class="pc">117,800<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-07-13</td>
       <td><span class="tj">전세</span></td>
@@ -7381,16 +8855,36 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>1층</td>
       <td class="pc">10,000/210<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-07-11</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>19층</td>
+      <td class="pc">95,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2024-07-11</td>
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>6층</td>
       <td class="pc">9,127/23<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-07-10</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>8층</td>
+      <td class="pc">118,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-07-09</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>5층</td>
+      <td class="pc">115,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-07-06</td>
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>3층</td>
       <td class="pc">55,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-07-03</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>15층</td>
+      <td class="pc">120,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-06-29</td>
       <td><span class="tj">전세</span></td>
@@ -7401,11 +8895,21 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>2층</td>
       <td class="pc">40,900<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-06-21</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>10층</td>
+      <td class="pc">115,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2024-06-21</td>
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>13층</td>
       <td class="pc">30,000/132<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-06-20</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>10층</td>
+      <td class="pc">96,750<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-06-14</td>
       <td><span class="tj">전세</span></td>
@@ -7426,6 +8930,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>19층</td>
       <td class="pc">8,649/22<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-06-11</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>9층</td>
+      <td class="pc">92,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-06-11</td>
       <td><span class="tj">전세</span></td>
@@ -7441,11 +8950,26 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>9층</td>
       <td class="pc">53,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-06-07</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>5층</td>
+      <td class="pc">90,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-06-02</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>14층</td>
+      <td class="pc">96,500<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2024-05-26</td>
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>7층</td>
       <td class="pc">4,465/7<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-05-25</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>13층</td>
+      <td class="pc">120,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2024-05-21</td>
       <td><span class="tw">월세</span></td>
@@ -7461,6 +8985,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>18층</td>
       <td class="pc">55,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-05-18</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>8층</td>
+      <td class="pc">94,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2024-05-18</td>
       <td><span class="tw">월세</span></td>
@@ -7476,6 +9005,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>7층</td>
       <td class="pc">68,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-05-15</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>12층</td>
+      <td class="pc">114,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-05-15</td>
       <td><span class="tj">전세</span></td>
@@ -7486,6 +9020,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>115㎡</td><td>3층</td>
       <td class="pc">105,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-05-14</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>11층</td>
+      <td class="pc">119,900<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-05-13</td>
       <td><span class="tj">전세</span></td>
@@ -7501,6 +9040,21 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>6층</td>
       <td class="pc">73,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-05-01</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>19층</td>
+      <td class="pc">94,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-04-27</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>4층</td>
+      <td class="pc">108,200<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-04-27</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>5층</td>
+      <td class="pc">109,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-04-26</td>
       <td><span class="tj">전세</span></td>
@@ -7541,6 +9095,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>8층</td>
       <td class="pc">38,000/120<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-04-03</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>12층</td>
+      <td class="pc">110,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-03-30</td>
       <td><span class="tj">전세</span></td>
@@ -7556,6 +9115,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>44㎡</td><td>8층</td>
       <td class="pc">10,934/28<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-03-23</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>3층</td>
+      <td class="pc">111,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-03-23</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>16층</td>
+      <td class="pc">108,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-03-21</td>
       <td><span class="tj">전세</span></td>
@@ -7566,11 +9135,21 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>14층</td>
       <td class="pc">70,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-03-17</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>14층</td>
+      <td class="pc">115,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2024-03-17</td>
       <td><span class="tw">월세</span></td>
       <td>60㎡</td><td>18층</td>
       <td class="pc">10,000/160<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-03-16</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>7층</td>
+      <td class="pc">113,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-03-16</td>
       <td><span class="tj">전세</span></td>
@@ -7586,6 +9165,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>4층</td>
       <td class="pc">7,673/27<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-03-14</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>2층</td>
+      <td class="pc">109,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-03-13</td>
       <td><span class="tj">전세</span></td>
@@ -7646,6 +9230,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>60㎡</td><td>10층</td>
       <td class="pc">20,000/85<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-02-29</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>10층</td>
+      <td class="pc">112,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-02-27</td>
       <td><span class="tj">전세</span></td>
@@ -7666,6 +9255,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>13층</td>
       <td class="pc">30,000/160<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-02-24</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>19층</td>
+      <td class="pc">86,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2024-02-24</td>
       <td><span class="tj">전세</span></td>
@@ -7726,6 +9320,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>14층</td>
       <td class="pc">67,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-02-12</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>8층</td>
+      <td class="pc">109,900<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2024-02-05</td>
       <td><span class="tw">월세</span></td>
@@ -7766,6 +9365,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>11층</td>
       <td class="pc">20,000/180<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2024-01-15</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>16층</td>
+      <td class="pc">94,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2024-01-14</td>
       <td><span class="tw">월세</span></td>
@@ -7796,6 +9400,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>19층</td>
       <td class="pc">70,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-12-30</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>12층</td>
+      <td class="pc">113,200<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-12-29</td>
       <td><span class="tj">전세</span></td>
@@ -7821,6 +9430,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>14층</td>
       <td class="pc">8,649/22<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-12-26</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>18층</td>
+      <td class="pc">112,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-12-26</td>
       <td><span class="tj">전세</span></td>
@@ -7846,6 +9460,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>6층</td>
       <td class="pc">9,606/24<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-12-23</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>6층</td>
+      <td class="pc">110,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2023-12-22</td>
       <td><span class="tw">월세</span></td>
@@ -8146,6 +9765,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>13층</td>
       <td class="pc">54,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-11-27</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>19층</td>
+      <td class="pc">112,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-11-25</td>
       <td><span class="tj">전세</span></td>
@@ -8176,6 +9800,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>6층</td>
       <td class="pc">30,000/130<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-11-11</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>19층</td>
+      <td class="pc">93,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-11-11</td>
       <td><span class="tj">전세</span></td>
@@ -8241,6 +9870,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>7층</td>
       <td class="pc">67,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-10-14</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>12층</td>
+      <td class="pc">113,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-10-14</td>
       <td><span class="tj">전세</span></td>
@@ -8251,6 +9885,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>11층</td>
       <td class="pc">30,000/140<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-10-13</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>11층</td>
+      <td class="pc">115,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-10-07</td>
       <td><span class="tj">전세</span></td>
@@ -8276,6 +9915,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>11층</td>
       <td class="pc">54,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-09-26</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>20층</td>
+      <td class="pc">119,900<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-09-26</td>
       <td><span class="tj">전세</span></td>
@@ -8286,6 +9930,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>11층</td>
       <td class="pc">65,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-09-22</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>19층</td>
+      <td class="pc">112,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-09-22</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>10층</td>
+      <td class="pc">88,500<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2023-09-21</td>
       <td><span class="tw">월세</span></td>
@@ -8311,6 +9965,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>44㎡</td><td>18층</td>
       <td class="pc">14,198/50<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-09-10</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>16층</td>
+      <td class="pc">94,250<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-09-09</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>11층</td>
+      <td class="pc">114,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-09-09</td>
       <td><span class="tj">전세</span></td>
@@ -8321,6 +9985,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>3층</td>
       <td class="pc">52,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-09-07</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>15층</td>
+      <td class="pc">90,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-09-07</td>
       <td><span class="tj">전세</span></td>
@@ -8341,6 +10010,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>2층</td>
       <td class="pc">55,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-08-26</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>8층</td>
+      <td class="pc">90,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-08-26</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>18층</td>
+      <td class="pc">107,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-08-26</td>
       <td><span class="tj">전세</span></td>
@@ -8361,6 +10040,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>14층</td>
       <td class="pc">54,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-08-12</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>5층</td>
+      <td class="pc">111,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2023-08-12</td>
       <td><span class="tw">월세</span></td>
@@ -8371,6 +10055,36 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>13층</td>
       <td class="pc">12,162/33<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-08-06</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>10층</td>
+      <td class="pc">107,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-08-06</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>11층</td>
+      <td class="pc">107,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-08-05</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>3층</td>
+      <td class="pc">87,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-08-05</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>14층</td>
+      <td class="pc">89,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-08-03</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>5층</td>
+      <td class="pc">85,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-07-30</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>14층</td>
+      <td class="pc">89,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-07-28</td>
       <td><span class="tj">전세</span></td>
@@ -8411,6 +10125,21 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>10층</td>
       <td class="pc">4,465/7<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-07-16</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>17층</td>
+      <td class="pc">91,800<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-07-16</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>3층</td>
+      <td class="pc">84,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-07-15</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>4층</td>
+      <td class="pc">64,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-07-15</td>
       <td><span class="tj">전세</span></td>
@@ -8421,6 +10150,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>6층</td>
       <td class="pc">60,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-07-14</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>11층</td>
+      <td class="pc">87,900<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-07-14</td>
       <td><span class="tj">전세</span></td>
@@ -8436,6 +10170,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>38㎡</td><td>3층</td>
       <td class="pc">2,891/15<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-07-07</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>10층</td>
+      <td class="pc">108,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-07-01</td>
       <td><span class="tj">전세</span></td>
@@ -8456,6 +10195,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>10층</td>
       <td class="pc">60,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-06-29</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>7층</td>
+      <td class="pc">108,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-06-29</td>
       <td><span class="tj">전세</span></td>
@@ -8471,11 +10215,26 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>8층</td>
       <td class="pc">60,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-06-21</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>20층</td>
+      <td class="pc">111,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-06-20</td>
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>3층</td>
       <td class="pc">56,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-06-19</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>20층</td>
+      <td class="pc">110,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-06-16</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>6층</td>
+      <td class="pc">110,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-06-14</td>
       <td><span class="tj">전세</span></td>
@@ -8486,6 +10245,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>4층</td>
       <td class="pc">60,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-06-07</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>12층</td>
+      <td class="pc">108,500<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-06-06</td>
       <td><span class="tj">전세</span></td>
@@ -8506,6 +10270,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>60㎡</td><td>11층</td>
       <td class="pc">30,000/100<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-05-31</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>2층</td>
+      <td class="pc">101,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-05-29</td>
       <td><span class="tj">전세</span></td>
@@ -8556,6 +10325,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>4층</td>
       <td class="pc">60,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-05-01</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>19층</td>
+      <td class="pc">85,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-05-01</td>
       <td><span class="tj">전세</span></td>
@@ -8566,6 +10340,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>17층</td>
       <td class="pc">58,100<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-04-30</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>14층</td>
+      <td class="pc">85,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-04-29</td>
       <td><span class="tj">전세</span></td>
@@ -8586,6 +10365,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>19층</td>
       <td class="pc">45,000/50<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-04-22</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>3층</td>
+      <td class="pc">106,200<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-04-22</td>
       <td><span class="tj">전세</span></td>
@@ -8626,6 +10410,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>16층</td>
       <td class="pc">59,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-04-14</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>17층</td>
+      <td class="pc">105,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-04-14</td>
       <td><span class="tj">전세</span></td>
@@ -8661,6 +10450,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>8층</td>
       <td class="pc">59,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-04-06</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>18층</td>
+      <td class="pc">102,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-04-06</td>
       <td><span class="tj">전세</span></td>
@@ -8671,6 +10465,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>16층</td>
       <td class="pc">46,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-04-03</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>13층</td>
+      <td class="pc">107,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-04-01</td>
       <td><span class="tj">전세</span></td>
@@ -8691,6 +10490,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>16층</td>
       <td class="pc">52,900<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-03-25</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>11층</td>
+      <td class="pc">83,500<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-03-25</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>3층</td>
+      <td class="pc">99,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-03-25</td>
       <td><span class="tj">전세</span></td>
@@ -8736,6 +10545,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>6층</td>
       <td class="pc">44,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-03-18</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>4층</td>
+      <td class="pc">95,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-03-18</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>4층</td>
+      <td class="pc">95,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-03-18</td>
       <td><span class="tj">전세</span></td>
@@ -8796,6 +10615,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>6층</td>
       <td class="pc">76,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-03-10</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>13층</td>
+      <td class="pc">104,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-03-09</td>
       <td><span class="tj">전세</span></td>
@@ -8816,6 +10640,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>85㎡</td><td>5층</td>
       <td class="pc">25,000/120<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-03-03</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>1층</td>
+      <td class="pc">68,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-03-03</td>
       <td><span class="tj">전세</span></td>
@@ -8826,6 +10655,16 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>13층</td>
       <td class="pc">46,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-03-01</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>13층</td>
+      <td class="pc">101,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-02-28</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>9층</td>
+      <td class="pc">110,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-02-27</td>
       <td><span class="tj">전세</span></td>
@@ -8921,6 +10760,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>85㎡</td><td>15층</td>
       <td class="pc">60,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-02-18</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>6층</td>
+      <td class="pc">94,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-02-18</td>
       <td><span class="tj">전세</span></td>
@@ -9111,6 +10955,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>10층</td>
       <td class="pc">43,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-01-31</td>
+      <td><span class="tm">매매</span></td>
+      <td>85㎡</td><td>10층</td>
+      <td class="pc">102,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-01-31</td>
       <td><span class="tj">전세</span></td>
@@ -9126,6 +10975,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tj">전세</span></td>
       <td>60㎡</td><td>1층</td>
       <td class="pc">48,000<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-01-28</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>15층</td>
+      <td class="pc">78,000<span class='u'>만원</span></td>
     </tr><tr data-type="월세">
       <td>2023-01-28</td>
       <td><span class="tw">월세</span></td>
@@ -9136,6 +10990,11 @@ tr:hover td{background:var(--sage4);transition:.1s;}
       <td><span class="tw">월세</span></td>
       <td>60㎡</td><td>15층</td>
       <td class="pc">38,800/17<span class='u'>만원</span></td>
+    </tr><tr data-type="매매">
+      <td>2023-01-27</td>
+      <td><span class="tm">매매</span></td>
+      <td>60㎡</td><td>12층</td>
+      <td class="pc">75,000<span class='u'>만원</span></td>
     </tr><tr data-type="전세">
       <td>2023-01-25</td>
       <td><span class="tj">전세</span></td>
@@ -9397,8 +11256,10 @@ window.addEventListener('DOMContentLoaded', () => {
   makeChart('kcc_trade', {"labels": ["2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05"], "datasets": [{"label": "84㎡(약25평)", "data": [44167, 45575, 43700, 46471, 46333, 48400, 48220, 50650, 49967, 51500, 50000, 48500, 51375, 50000, 49500, 48500, 49433, 48900, 49517, 48733, 49100, 50167, 51000, 47800, 46950, 50850, 49100, 45575, 49300, 47725, 48625, 49067, 47750, 49000, 47900, 44000, 48067, 50367, 45500, 48000, 50000], "borderColor": "#3B82F6", "backgroundColor": "#3B82F618", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#3B82F6", "pointRadius": 3, "pointHoverRadius": 5}]});
   makeChart('kcc_jeonse', {"labels": ["2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05"], "datasets": [{"label": "84㎡(약25평)", "data": [28333, 26125, 24871, 28786, 27755, 28830, 28967, 29667, 28583, 30125, 32125, 31667, 27714, 34050, 28997, 29776, 30290, 31500, 32558, 33000, 32500, 28579, 28000, 33000, 27167, 25400, 29840, 27870, 30812, 30750, 29695, 30092, 31717, 33000, 31875, 33000, 31162, 33000, 30700, 32656, 31225], "borderColor": "#3B82F6", "backgroundColor": "#3B82F618", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#3B82F6", "pointRadius": 3, "pointHoverRadius": 5}]});
   makeChart('kcc_wolse', {"labels": ["2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-08", "2023-09", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04"], "datasets": [{"label": "84㎡(약25평)", "data": [3000, 5000, 10000, 7333, 3000, 3000, 4000, 3000, 3000, 2500, 12000, 6500, 4000, 3000, 4000, 15675, 13000, 6667, 7500, 5667, 8200, 7000, 3667, 3000, 3833, 9300, 6500, 4000, 12333, 3000, 4000, 5000, 6100, 12000, 8500, 12000], "borderColor": "#3B82F6", "backgroundColor": "#3B82F618", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#3B82F6", "pointRadius": 3, "pointHoverRadius": 5}]});
+  makeChart('bukhan_trade', {"labels": ["2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2024-01", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-10", "2025-01", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05"], "datasets": [{"label": "59㎡(약18평)", "data": [null, null, 80000, 76000, null, null, 80000, 84000, null, null, null, 78500, null, null, null, null, null, 93250, 93000, 91667, 89000, 89000, 92200, 90467, 93000, 93000, 95500, 94625, 95000, null, null, 109583, 108500, 109000, null], "borderColor": "#3B82F6", "backgroundColor": "#3B82F618", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#3B82F6", "pointRadius": 3, "pointHoverRadius": 5}, {"label": "84㎡(약25평)", "data": [88000, 87250, 90000, 90600, 94600, 96950, 95833, 102750, 108500, 103000, 99800, null, 100000, 97000, 99450, 103500, 103750, 104886, 107800, null, 101333, 105475, 103333, 103000, 104500, 103550, 102750, 105583, 108617, 108083, 112083, 119000, 118000, 115000, 116000], "borderColor": "#10B981", "backgroundColor": "#10B98118", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#10B981", "pointRadius": 3, "pointHoverRadius": 5}, {"label": "114㎡(약34평)", "data": [null, null, 115500, null, null, 130000, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 122000, null, null, 123000, null, null, null, null, 135000, null, null, 130000], "borderColor": "#F59E0B", "backgroundColor": "#F59E0B18", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#F59E0B", "pointRadius": 3, "pointHoverRadius": 5}]});
   makeChart('bukhan_jeonse', {"labels": ["2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05"], "datasets": [{"label": "59㎡(약18평)", "data": [null, null, null, 45000, 46250, 46000, 47000, 48000, null, 48000, null, 49090, null, 53000, 49175, null, 52750, null, 43100, 52325, 55333, null, null, 48550, 42000, 42000, null, 51125, null, 50625, 47967, 52200, null, 54500, 52000, 49917, null, null, 63000, 54600, null], "borderColor": "#3B82F6", "backgroundColor": "#3B82F618", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#3B82F6", "pointRadius": 3, "pointHoverRadius": 5}, {"label": "84㎡(약25평)", "data": [48333, 48750, 56357, 52500, 50000, 55876, 55400, 53750, 61000, 55126, 55643, 59167, 60075, 61388, 58300, 60350, 60714, 61667, 62000, 63500, 63333, 60625, 59825, 62275, 58825, 52917, 60544, 56633, 64000, 57236, 63000, 58000, 61612, 57384, 64000, 57750, 64100, 64500, 64450, 68750, 60375], "borderColor": "#10B981", "backgroundColor": "#10B98118", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#10B981", "pointRadius": 3, "pointHoverRadius": 5}, {"label": "114㎡(약34평)", "data": [70000, null, null, 63200, null, 70000, null, 59700, null, 70000, null, null, null, 75000, 75000, 70000, null, null, null, null, null, 74000, 75267, null, null, 75000, null, null, 74000, null, 73000, null, null, 75000, null, null, null, null, 80000, null, null], "borderColor": "#F59E0B", "backgroundColor": "#F59E0B18", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#F59E0B", "pointRadius": 3, "pointHoverRadius": 5}]});
   makeChart('bukhan_wolse', {"labels": ["2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05"], "datasets": [{"label": "59㎡(약18평)", "data": [null, 15000, 21500, null, 20000, null, 30000, 10000, 30000, 10000, 10000, 17500, 16667, 23333, null, null, null, null, 10000, 1000, 16750, null, 10000, 15000, null, 20000, 13100, null, null, 25000, 10000, null, 6500, null, 25000, null, null, 20000, 30000], "borderColor": "#3B82F6", "backgroundColor": "#3B82F618", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#3B82F6", "pointRadius": 3, "pointHoverRadius": 5}, {"label": "84㎡(약25평)", "data": [12000, 10000, 30000, 20000, 20000, 18333, 20500, 29250, 20000, 25000, 10000, 20000, 10000, null, 22500, 11050, 2000, 36000, 10000, 10000, null, 45000, null, 10000, 18500, 10333, 16667, 31400, 25000, 15000, 20400, 7500, 25000, 41667, 38650, 20000, 56000, 20000, null], "borderColor": "#10B981", "backgroundColor": "#10B98118", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#10B981", "pointRadius": 3, "pointHoverRadius": 5}, {"label": "114㎡(약34평)", "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 45000, null, null, null, null, null, null, null, null], "borderColor": "#F59E0B", "backgroundColor": "#F59E0B18", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#F59E0B", "pointRadius": 3, "pointHoverRadius": 5}]});
+  makeChart('raemian_trade', {"labels": ["2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-10", "2024-11", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05"], "datasets": [{"label": "59㎡(약18평)", "data": [76500, null, 75750, 85000, 85000, null, 88300, 87875, 90917, null, 93000, null, 94000, 86000, null, null, 94000, 93938, 97500, 96167, null, null, 99500, null, 102500, null, 101500, 102167, 104100, 103500, 103583, 109325, 110000, 105250, 103125, 119000, 119500, 122000, 114500], "borderColor": "#3B82F6", "backgroundColor": "#3B82F618", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#3B82F6", "pointRadius": 3, "pointHoverRadius": 5}, {"label": "84㎡(약25평)", "data": [102000, 102000, 98800, 105050, 101000, 109500, 86000, 108250, 115467, 114000, 112000, 111733, null, 111200, 111300, 109067, 118133, 115000, 117700, 123833, 117400, 117500, 114250, 121500, 114200, 120750, 122250, 117833, 119267, 112375, 121567, 124050, 125500, 126640, 131000, 131833, 135000, 136167, 139000], "borderColor": "#10B981", "backgroundColor": "#10B98118", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#10B981", "pointRadius": 3, "pointHoverRadius": 5}, {"label": "114㎡(약34평)", "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 120000, null, null, null, null], "borderColor": "#F59E0B", "backgroundColor": "#F59E0B18", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#F59E0B", "pointRadius": 3, "pointHoverRadius": 5}]});
   makeChart('raemian_jeonse', {"labels": ["2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05"], "datasets": [{"label": "59㎡(약18평)", "data": [43333, 43091, 50700, 56500, 50000, 50000, 54333, 53167, 52250, 55333, 55000, null, 53025, 56750, 57800, 60000, 47758, 51475, 57000, 57460, 60000, 54133, 52248, 53764, 51452, 47966, 52975, 53500, 58983, 58500, 54750, 54045, 58314, 57678, null, 56500, 53538, null, 60740, 63000, null], "borderColor": "#3B82F6", "backgroundColor": "#3B82F618", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#3B82F6", "pointRadius": 3, "pointHoverRadius": 5}, {"label": "84㎡(약25평)", "data": [53020, 52234, 53881, 55650, 59840, 59786, 60429, 65000, 49333, 62780, 62589, 75275, 64333, 60711, 68643, 67500, 68833, 69617, 65667, 66152, 64000, 61714, 63767, 64909, 60644, 54926, 60069, 61530, 59400, 64692, 64741, 66333, 65813, 67800, 63133, 66000, 71250, 70650, 78300, 74333, 73000], "borderColor": "#10B981", "backgroundColor": "#10B98118", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#10B981", "pointRadius": 3, "pointHoverRadius": 5}, {"label": "114㎡(약34평)", "data": [79000, null, null, null, null, null, null, null, null, null, null, null, null, 99000, 85000, null, 105000, null, null, null, null, null, null, null, 93000, null, null, 105000, null, null, null, null, null, null, null, null, null, null, 103950, null, null], "borderColor": "#F59E0B", "backgroundColor": "#F59E0B18", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#F59E0B", "pointRadius": 3, "pointHoverRadius": 5}]});
   makeChart('raemian_wolse', {"labels": ["2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05"], "datasets": [{"label": "59㎡(약18평)", "data": [31125, 37500, 12500, null, null, 30000, 10000, 30000, 25000, 22500, 18500, null, null, 15000, 15000, null, 10000, null, 10000, 30000, 5000, 43000, 10000, 14000, 32667, null, 32500, 10000, 10000, 53000, 20000, null, 21667, 15000, 30000, null, 20000, null, null], "borderColor": "#3B82F6", "backgroundColor": "#3B82F618", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#3B82F6", "pointRadius": 3, "pointHoverRadius": 5}, {"label": "84㎡(약25평)", "data": [27338, 32450, 24444, 28750, 31500, 8000, null, null, null, 30000, 30000, 50000, 25000, 30000, null, 39000, 30000, 30000, 10000, 20000, null, null, 22500, null, 31970, 18500, 31250, 40000, 29000, null, 30000, 20000, 43333, 16667, null, 30000, 50000, 60000, 27500], "borderColor": "#10B981", "backgroundColor": "#10B98118", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#10B981", "pointRadius": 3, "pointHoverRadius": 5}]});
 });
