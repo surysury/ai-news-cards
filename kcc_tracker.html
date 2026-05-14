@@ -2,776 +2,714 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,maximum-scale=1">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>KCC스위첸2차 시세 🏠</title>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>부동산 시세 추적기</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-  :root{
-    --blue:   #2563EB;
-    --blue2:  #3B82F6;
-    --blue3:  #1E3A6E;
-    --bg:     #0F1E3C;
-    --card:   #172444;
-    --card2:  #1E2F54;
-    --border: #1E3A6E;
-    --white:  #FFFFFF;
-    --muted:  rgba(255,255,255,.45);
-    --accent: #60A5FA;
-  }
-  body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--white);
-        min-height:100vh;padding-bottom:env(safe-area-inset-bottom,24px);}
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:    #0F1E3C;
+  --card:  #172444;
+  --card2: #1E2F54;
+  --border:#1E3A6E;
+  --blue:  #2563EB;
+  --acc:   #60A5FA;
+  --w:     #FFFFFF;
+  --mu:    rgba(255,255,255,.42);
+  --max:   480px;
+}
+html,body{
+  background:var(--bg);color:var(--w);
+  font-family:'Noto Sans KR',sans-serif;
+  min-height:100vh;
+  /* 모바일 중앙 고정 */
+  max-width:var(--max);
+  margin:0 auto;
+}
 
-  /* 헤더 */
-  .header{background:linear-gradient(135deg,#1D4ED8 0%,#2563EB 50%,#1E40AF 100%);
-           padding:28px 24px 24px;padding-top:max(28px,env(safe-area-inset-top));
-           position:relative;overflow:hidden;}
-  .header::before{content:'🏠';position:absolute;right:20px;top:50%;
-                   transform:translateY(-50%);font-size:72px;opacity:.15;}
-  .header::after{content:'';position:absolute;top:0;right:0;bottom:0;
-                  width:200px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.05));}
-  .header .badge{display:inline-block;background:rgba(255,255,255,.15);
-                  color:#fff;font-size:10px;font-weight:700;padding:3px 12px;
-                  border-radius:20px;letter-spacing:.1em;margin-bottom:10px;
-                  border:1px solid rgba(255,255,255,.2);}
-  .header h1{font-size:22px;font-weight:900;color:#fff;line-height:1.3;
-              text-shadow:0 2px 12px rgba(0,0,0,.3);}
-  .header h1 em{font-style:normal;color:#93C5FD;}
-  .header h1 span{display:block;font-size:13px;font-weight:400;
-                   color:rgba(255,255,255,.65);margin-top:5px;}
-  .update-info{font-size:10px;color:rgba(255,255,255,.45);margin-top:10px;}
+/* 헤더 */
+.header{
+  background:linear-gradient(135deg,#1D4ED8,#1E40AF);
+  padding:env(safe-area-inset-top,0px) 20px 20px;
+  padding-top:calc(env(safe-area-inset-top,0px) + 20px);
+  position:relative;overflow:hidden;
+}
+.header::after{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.header-inner{position:relative;z-index:1;}
+.h-badge{display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);
+  color:rgba(255,255,255,.9);font-size:10px;font-weight:700;
+  padding:3px 12px;border-radius:20px;letter-spacing:.08em;margin-bottom:10px;}
+.h-title{font-size:20px;font-weight:900;line-height:1.35;}
+.h-title em{font-style:normal;color:#93C5FD;}
+.h-sub{font-size:11px;color:rgba(255,255,255,.5);margin-top:8px;}
 
-  /* 탭 */
-  .tabs-wrap{position:sticky;top:0;z-index:50;
-              background:#0F1E3C;border-bottom:1px solid var(--border);}
-  .tabs{display:flex;}
-  .tab{flex:1;padding:13px 4px;font-size:12px;font-weight:700;
-        color:rgba(255,255,255,.35);background:none;border:none;
-        border-bottom:2.5px solid transparent;cursor:pointer;text-align:center;transition:.2s;}
-  .tab.active{color:#60A5FA;border-bottom-color:#60A5FA;}
+/* 탭 */
+.tabs-wrap{
+  position:sticky;top:0;z-index:50;
+  background:var(--bg);border-bottom:1px solid var(--border);
+  overflow-x:auto;scrollbar-width:none;
+}
+.tabs-wrap::-webkit-scrollbar{display:none;}
+.tabs{display:flex;min-width:max-content;padding:0 4px;}
+.tab{
+  flex-shrink:0;
+  padding:12px 14px;font-size:11px;font-weight:700;
+  color:var(--mu);background:none;border:none;
+  border-bottom:2px solid transparent;
+  cursor:pointer;white-space:nowrap;transition:.2s;
+}
+.tab.active{color:var(--acc);border-bottom-color:var(--acc);}
 
-  /* 컨텐츠 */
-  .pane{display:none;padding:20px 16px;} .pane.active{display:block;}
+/* 패널 */
+.pane{display:none;padding:16px 16px 32px;}
+.pane.active{display:block;}
 
-  /* 스탯 카드 */
-  .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
-  .stat{background:var(--card);border-radius:16px;padding:16px;
-         border:1px solid var(--border);text-align:center;}
-  .stat-emoji{font-size:24px;margin-bottom:6px;}
-  .stat-val{font-size:20px;font-weight:900;color:#60A5FA;line-height:1;}
-  .stat-lbl{font-size:10px;color:var(--muted);margin-top:4px;font-weight:500;}
+/* 스탯 */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+.stat{background:var(--card);border-radius:14px;padding:14px 12px;
+  border:1px solid var(--border);text-align:center;}
+.stat-emoji{font-size:22px;margin-bottom:5px;}
+.stat-val{font-size:18px;font-weight:900;line-height:1;color:var(--acc);}
+.stat-lbl{font-size:10px;color:var(--mu);margin-top:4px;}
 
-  /* 차트 카드 */
-  .chart-card{background:var(--card);border-radius:20px;padding:20px;
-               border:1px solid var(--border);margin-bottom:16px;}
-  .chart-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:16px;
-                display:flex;align-items:center;gap:8px;}
-  .chart-title::before{content:'';display:block;width:4px;height:16px;
-                         background:#60A5FA;border-radius:2px;}
+/* 차트 */
+.chart-card{background:var(--card);border-radius:16px;padding:16px;
+  border:1px solid var(--border);margin-bottom:14px;}
+.chart-title{font-size:12px;font-weight:700;color:var(--w);margin-bottom:14px;
+  display:flex;align-items:center;gap:7px;}
+.chart-title::before{content:'';width:3px;height:14px;
+  background:var(--acc);border-radius:2px;flex-shrink:0;}
 
-  /* 테이블 */
-  .table-card{background:var(--card);border-radius:20px;overflow:hidden;
-               border:1px solid var(--border);margin-bottom:16px;}
-  .table-head{background:linear-gradient(90deg,#1D4ED8,#2563EB);
-               padding:14px 16px;font-size:12px;font-weight:700;color:#fff;}
-  table{width:100%;border-collapse:collapse;font-size:12px;}
-  th{background:var(--card2);color:var(--muted);font-weight:700;padding:10px 12px;
-      text-align:left;font-size:11px;letter-spacing:.04em;}
-  td{padding:10px 12px;border-bottom:1px solid var(--border);color:rgba(255,255,255,.8);}
-  tr:last-child td{border-bottom:none;}
-  tr:hover td{background:var(--card2);}
-  .price-cell{font-weight:700;color:#60A5FA;}
-  .price-cell.blue{color:#93C5FD;}
-  .price-cell.green{color:#34D399;}
-  .unit{font-size:10px;font-weight:400;color:var(--muted);margin-left:2px;}
+/* 섹션 타이틀 */
+.sec-title{font-size:11px;font-weight:700;color:var(--acc);
+  letter-spacing:.08em;margin:18px 0 10px;text-transform:uppercase;}
 
-  /* 빈 상태 */
-  .empty{text-align:center;padding:40px 20px;color:var(--muted);}
-  .empty .emoji{font-size:48px;margin-bottom:12px;}
-  .empty p{font-size:13px;}
+/* 테이블 */
+.tbl-card{background:var(--card);border-radius:16px;overflow:hidden;
+  border:1px solid var(--border);margin-bottom:14px;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--card2);color:var(--mu);font-weight:700;
+  padding:9px 10px;text-align:left;font-size:10px;letter-spacing:.04em;}
+td{padding:9px 10px;border-bottom:1px solid var(--border);
+  color:rgba(255,255,255,.8);font-size:12px;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--card2);}
+.pc{font-weight:700;color:var(--acc);}
+.pj{color:#93C5FD;font-weight:700;}
+.pw{color:#34D399;font-weight:700;}
+.unit{font-size:9px;font-weight:400;color:var(--mu);margin-left:1px;}
 
-  /* 섹션 타이틀 */
-  .section-title{font-size:11px;font-weight:700;color:#60A5FA;
-                  letter-spacing:.1em;margin:20px 0 10px;text-transform:uppercase;
-                  display:flex;align-items:center;gap:6px;}
-
-  @media(max-width:360px){
-    .stats{grid-template-columns:1fr;}
-  }
+/* 빈 상태 */
+.empty{text-align:center;padding:40px 16px;color:var(--mu);}
+.e-emoji{font-size:42px;margin-bottom:10px;}
+.empty p{font-size:12px;}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="badge">🏠 실거래가 추적기</div>
-  <h1>KCC스위첸2차
-    <span>경기도 김포시 운양동 · 한강신도시</span>
-  </h1>
-  <div class="update-info">📅 업데이트 2026.05.14 13:44 · 최근 24개월 기준</div>
+  <div class="header-inner">
+    <div class="h-badge">📍 부동산 시세 추적기</div>
+    <div class="h-title">실거래가 <em>대시보드</em></div>
+    <div class="h-sub">국토교통부 공식 데이터 · 2026.05.14 13:52 업데이트</div>
+  </div>
 </div>
 
 <div class="tabs-wrap">
-  <div class="tabs">
-    <button class="tab active" onclick="show('trade',this)">📈 매매</button>
-    <button class="tab" onclick="show('rent',this)">🔑 전·월세</button>
-    <button class="tab" onclick="show('table',this)">📋 전체내역</button>
-  </div>
+  <div class="tabs"><button class="tab active" onclick="show('kcc',this)">🏠 KCC스위첸2차</button><button class="tab " onclick="show('bukhan',this)">🏔 북한산푸르지오</button><button class="tab " onclick="show('raemian',this)">🌿 래미안베라힐즈</button></div>
 </div>
 
-<!-- ① 매매 탭 -->
-<div class="pane active" id="pane-trade">
-  <div class="stats">
-    <div class="stat">
+<div class="pane active" id="pane-kcc"><div class="stats"><div class="stat">
       <div class="stat-emoji">🏡</div>
-      <div class="stat-val">80건</div>
-      <div class="stat-lbl">총 매매거래 (24개월)</div>
-    </div>
-    <div class="stat">
+      <div class="stat-val" style="color:#60A5FA">80건</div>
+      <div class="stat-lbl">매매거래(24개월)</div>
+    </div><div class="stat">
       <div class="stat-emoji">💰</div>
-      <div class="stat-val" style="font-size:16px">48,160만원</div>
-      <div class="stat-lbl">최근 3개월 평균가</div>
-    </div>
-    <div class="stat">
+      <div class="stat-val" style="color:#60A5FA">48,160만원</div>
+      <div class="stat-lbl">최근3개월 평균매매가</div>
+    </div><div class="stat">
       <div class="stat-emoji">📈</div>
-      <div class="stat-val" style="font-size:16px">54,000만원</div>
-      <div class="stat-lbl">84㎡ 최고가 (24개월)</div>
-    </div>
-    <div class="stat">
+      <div class="stat-val" style="color:#60A5FA">54,000만원</div>
+      <div class="stat-lbl">84㎡ 최고가</div>
+    </div><div class="stat">
       <div class="stat-emoji">📉</div>
-      <div class="stat-val" style="font-size:16px">43,000만원</div>
-      <div class="stat-lbl">84㎡ 최저가 (24개월)</div>
-    </div>
-  </div>
-
-  <div class="chart-card">
-    <div class="chart-title">매매가 월별 추이 (평형별)</div>
-    <canvas id="tradeChart" height="200"></canvas>
-  </div>
-
-  <div class="section-title">🕐 최근 매매 거래</div>
-  <div class='table-card'><table><tr><th>거래일</th><th>면적</th><th>층</th><th>거래가</th></tr><tr>
-          <td>2026-05-01</td><td>85㎡</td>
-          <td>17층</td>
-          <td class="price-cell">50,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-04-16</td><td>85㎡</td>
-          <td>2층</td>
-          <td class="price-cell">52,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-04-15</td><td>85㎡</td>
-          <td>6층</td>
-          <td class="price-cell">46,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-04-15</td><td>84㎡</td>
-          <td>11층</td>
-          <td class="price-cell">46,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-03-23</td><td>85㎡</td>
-          <td>23층</td>
-          <td class="price-cell">46,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-03-20</td><td>85㎡</td>
-          <td>18층</td>
-          <td class="price-cell">43,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-03-19</td><td>84㎡</td>
-          <td>22층</td>
-          <td class="price-cell">47,500<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-02-27</td><td>84㎡</td>
-          <td>13층</td>
-          <td class="price-cell">49,500<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-02-26</td><td>85㎡</td>
-          <td>23층</td>
-          <td class="price-cell">52,300<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-02-23</td><td>85㎡</td>
-          <td>15층</td>
-          <td class="price-cell">49,300<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-01-28</td><td>84㎡</td>
-          <td>15층</td>
-          <td class="price-cell">47,800<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-01-22</td><td>85㎡</td>
-          <td>12층</td>
-          <td class="price-cell">47,500<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-01-21</td><td>85㎡</td>
-          <td>17층</td>
-          <td class="price-cell">48,900<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-12-24</td><td>84㎡</td>
-          <td>1층</td>
-          <td class="price-cell">44,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-11-21</td><td>85㎡</td>
-          <td>11층</td>
-          <td class="price-cell">49,000<span class="unit">만원</span></td>
-        </tr></table></div>
-</div>
-
-<!-- ② 전월세 탭 -->
-<div class="pane" id="pane-rent">
-  <div class="stats">
-    <div class="stat">
+      <div class="stat-val" style="color:#60A5FA">43,000만원</div>
+      <div class="stat-lbl">84㎡ 최저가</div>
+    </div><div class="stat">
       <div class="stat-emoji">🔑</div>
-      <div class="stat-val">145건</div>
-      <div class="stat-lbl">전세 거래 (24개월)</div>
-    </div>
-    <div class="stat">
+      <div class="stat-val" style="color:#93C5FD">145건</div>
+      <div class="stat-lbl">전세거래(24개월)</div>
+    </div><div class="stat">
       <div class="stat-emoji">🏠</div>
-      <div class="stat-val">65건</div>
-      <div class="stat-lbl">월세 거래 (24개월)</div>
+      <div class="stat-val" style="color:#34D399">65건</div>
+      <div class="stat-lbl">월세거래(24개월)</div>
+    </div></div><div class="chart-card">
+      <div class="chart-title">📈 매매가 추이 (평형별)</div>
+      <canvas id="kcc_trade" height="210"></canvas>
     </div>
-  </div>
-
-  <div class="chart-card">
-    <div class="chart-title">전세 보증금 월별 추이 (평형별)</div>
-    <canvas id="jeonseChart" height="200"></canvas>
-  </div>
-
-  <div class="section-title">🕐 최근 전·월세 거래</div>
-  <div class='table-card'><table><tr><th>거래일</th><th>유형</th><th>면적</th><th>층</th><th>가격</th></tr><tr>
-          <td>2026-05-07</td><td>전세</td><td>85㎡</td>
-          <td>2층</td>
-          <td class="price-cell blue">32,000만원</td>
-        </tr><tr>
-          <td>2026-05-02</td><td>전세</td><td>84㎡</td>
-          <td>22층</td>
-          <td class="price-cell blue">30,450만원</td>
-        </tr><tr>
-          <td>2026-04-28</td><td>전세</td><td>84㎡</td>
-          <td>12층</td>
-          <td class="price-cell blue">31,000만원</td>
-        </tr><tr>
-          <td>2026-04-24</td><td>전세</td><td>85㎡</td>
-          <td>18층</td>
-          <td class="price-cell blue">30,000만원</td>
-        </tr><tr>
-          <td>2026-04-18</td><td>전세</td><td>85㎡</td>
-          <td>28층</td>
-          <td class="price-cell blue">34,500만원</td>
-        </tr><tr>
-          <td>2026-04-16</td><td>월세</td><td>85㎡</td>
-          <td>3층</td>
-          <td class="price-cell green">8,000/105만원</td>
-        </tr><tr>
-          <td>2026-04-10</td><td>월세</td><td>84㎡</td>
-          <td>18층</td>
-          <td class="price-cell green">25,000/50만원</td>
-        </tr><tr>
-          <td>2026-04-08</td><td>전세</td><td>84㎡</td>
-          <td>7층</td>
-          <td class="price-cell blue">34,000만원</td>
-        </tr><tr>
-          <td>2026-04-07</td><td>전세</td><td>84㎡</td>
-          <td>24층</td>
-          <td class="price-cell blue">33,000만원</td>
-        </tr><tr>
-          <td>2026-04-07</td><td>전세</td><td>84㎡</td>
-          <td>24층</td>
-          <td class="price-cell blue">33,000만원</td>
-        </tr><tr>
-          <td>2026-04-04</td><td>월세</td><td>85㎡</td>
-          <td>10층</td>
-          <td class="price-cell green">3,000/140만원</td>
-        </tr><tr>
-          <td>2026-04-01</td><td>전세</td><td>84㎡</td>
-          <td>10층</td>
-          <td class="price-cell blue">34,000만원</td>
-        </tr><tr>
-          <td>2026-04-01</td><td>전세</td><td>85㎡</td>
-          <td>19층</td>
-          <td class="price-cell blue">35,000만원</td>
-        </tr><tr>
-          <td>2026-04-01</td><td>전세</td><td>84㎡</td>
-          <td>1층</td>
-          <td class="price-cell blue">29,400만원</td>
-        </tr><tr>
-          <td>2026-03-31</td><td>전세</td><td>85㎡</td>
-          <td>3층</td>
-          <td class="price-cell blue">33,000만원</td>
-        </tr></table></div>
-</div>
-
-<!-- ③ 전체내역 탭 -->
-<div class="pane" id="pane-table">
-  <div class="table-card">
-    <div class="table-head">📋 매매 전체 내역 (80건)</div>
-    <table>
-      <tr><th>거래일</th><th>면적</th><th>층</th><th>거래가</th></tr>
-      <tr>
-          <td>2026-05-01</td><td>85㎡</td>
-          <td>17층</td>
-          <td class="price-cell">50,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-04-16</td><td>85㎡</td>
-          <td>2층</td>
-          <td class="price-cell">52,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-04-15</td><td>85㎡</td>
-          <td>6층</td>
-          <td class="price-cell">46,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-04-15</td><td>84㎡</td>
-          <td>11층</td>
-          <td class="price-cell">46,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-03-23</td><td>85㎡</td>
-          <td>23층</td>
-          <td class="price-cell">46,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-03-20</td><td>85㎡</td>
-          <td>18층</td>
-          <td class="price-cell">43,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-03-19</td><td>84㎡</td>
-          <td>22층</td>
-          <td class="price-cell">47,500<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-02-27</td><td>84㎡</td>
-          <td>13층</td>
-          <td class="price-cell">49,500<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-02-26</td><td>85㎡</td>
-          <td>23층</td>
-          <td class="price-cell">52,300<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-02-23</td><td>85㎡</td>
-          <td>15층</td>
-          <td class="price-cell">49,300<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-01-28</td><td>84㎡</td>
-          <td>15층</td>
-          <td class="price-cell">47,800<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-01-22</td><td>85㎡</td>
-          <td>12층</td>
-          <td class="price-cell">47,500<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2026-01-21</td><td>85㎡</td>
-          <td>17층</td>
-          <td class="price-cell">48,900<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-12-24</td><td>84㎡</td>
-          <td>1층</td>
-          <td class="price-cell">44,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-11-21</td><td>85㎡</td>
-          <td>11층</td>
-          <td class="price-cell">49,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-11-05</td><td>84㎡</td>
-          <td>12층</td>
-          <td class="price-cell">46,800<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-10-14</td><td>85㎡</td>
-          <td>11층</td>
-          <td class="price-cell">49,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-09-24</td><td>85㎡</td>
-          <td>8층</td>
-          <td class="price-cell">48,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-09-17</td><td>85㎡</td>
-          <td>7층</td>
-          <td class="price-cell">47,500<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-08-20</td><td>85㎡</td>
-          <td>22층</td>
-          <td class="price-cell">52,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-08-13</td><td>84㎡</td>
-          <td>18층</td>
-          <td class="price-cell">49,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-08-13</td><td>85㎡</td>
-          <td>23층</td>
-          <td class="price-cell">50,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-08-09</td><td>84㎡</td>
-          <td>8층</td>
-          <td class="price-cell">48,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-08-07</td><td>84㎡</td>
-          <td>10층</td>
-          <td class="price-cell">47,400<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-08-04</td><td>84㎡</td>
-          <td>21층</td>
-          <td class="price-cell">48,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-07-07</td><td>84㎡</td>
-          <td>16층</td>
-          <td class="price-cell">50,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-07-04</td><td>85㎡</td>
-          <td>19층</td>
-          <td class="price-cell">49,800<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-07-04</td><td>85㎡</td>
-          <td>8층</td>
-          <td class="price-cell">47,700<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-07-03</td><td>84㎡</td>
-          <td>9층</td>
-          <td class="price-cell">47,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-06-20</td><td>84㎡</td>
-          <td>5층</td>
-          <td class="price-cell">48,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-06-18</td><td>84㎡</td>
-          <td>10층</td>
-          <td class="price-cell">46,850<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-06-15</td><td>84㎡</td>
-          <td>15층</td>
-          <td class="price-cell">48,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-06-14</td><td>84㎡</td>
-          <td>15층</td>
-          <td class="price-cell">48,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-06-05</td><td>84㎡</td>
-          <td>4층</td>
-          <td class="price-cell">46,500<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-06-02</td><td>84㎡</td>
-          <td>11층</td>
-          <td class="price-cell">49,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-05-21</td><td>85㎡</td>
-          <td>15층</td>
-          <td class="price-cell">51,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-05-21</td><td>85㎡</td>
-          <td>15층</td>
-          <td class="price-cell">51,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-05-20</td><td>85㎡</td>
-          <td>24층</td>
-          <td class="price-cell">50,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-05-20</td><td>85㎡</td>
-          <td>24층</td>
-          <td class="price-cell">50,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-05-20</td><td>85㎡</td>
-          <td>24층</td>
-          <td class="price-cell">50,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-05-20</td><td>85㎡</td>
-          <td>24층</td>
-          <td class="price-cell">50,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-05-08</td><td>84㎡</td>
-          <td>15층</td>
-          <td class="price-cell">50,500<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-05-08</td><td>84㎡</td>
-          <td>15층</td>
-          <td class="price-cell">50,500<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-05-03</td><td>85㎡</td>
-          <td>3층</td>
-          <td class="price-cell">45,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-05-03</td><td>85㎡</td>
-          <td>3층</td>
-          <td class="price-cell">45,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-04-28</td><td>85㎡</td>
-          <td>5층</td>
-          <td class="price-cell">45,700<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-04-23</td><td>85㎡</td>
-          <td>17층</td>
-          <td class="price-cell">45,200<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-04-17</td><td>84㎡</td>
-          <td>2층</td>
-          <td class="price-cell">44,400<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-04-05</td><td>85㎡</td>
-          <td>9층</td>
-          <td class="price-cell">47,000<span class="unit">만원</span></td>
-        </tr><tr>
-          <td>2025-03-15</td><td>84㎡</td>
-          <td>2층</td>
-          <td class="price-cell">47,200<span class="unit">만원</span></td>
-        </tr>
-    </table>
-  </div>
-  <div class="table-card" style="margin-top:16px">
-    <div class="table-head" style="background:linear-gradient(90deg,#60a5fa,#a78bfa)">
-      🔑 전·월세 전체 내역 (210건)
+    <script>makeChart('kcc_trade', {"labels": ["2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05"], "datasets": [{"label": "84㎡(약25평)", "data": [49517, 48733, 49100, 50167, 51000, 47800, 46950, 50850, 49100, 45575, 49300, 47725, 48625, 49067, 47750, 49000, 47900, 44000, 48067, 50367, 45500, 48000, 50000], "borderColor": "#60A5FA", "backgroundColor": "#60A5FA22", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#60A5FA", "pointRadius": 4}]});</script><div class="chart-card">
+      <div class="chart-title">🔑 전세 보증금 추이 (평형별)</div>
+      <canvas id="kcc_jeonse" height="210"></canvas>
     </div>
-    <table>
-      <tr><th>거래일</th><th>유형</th><th>면적</th><th>층</th><th>가격</th></tr>
-      <tr>
-          <td>2026-05-07</td><td>전세</td><td>85㎡</td>
-          <td>2층</td>
-          <td class="price-cell blue">32,000만원</td>
+    <script>makeChart('kcc_jeonse', {"labels": ["2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05"], "datasets": [{"label": "84㎡(약25평)", "data": [32558, 33000, 32500, 28579, 28000, 33000, 27167, 25400, 29840, 27870, 30812, 30750, 29695, 30092, 31717, 33000, 31875, 33000, 31162, 33000, 30700, 32656, 31225], "borderColor": "#60A5FA", "backgroundColor": "#60A5FA22", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#60A5FA", "pointRadius": 4}]});</script><div class="chart-card">
+      <div class="chart-title">🏠 월세 보증금 추이 (평형별)</div>
+      <canvas id="kcc_wolse" height="210"></canvas>
+    </div>
+    <script>makeChart('kcc_wolse', {"labels": ["2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04"], "datasets": [{"label": "84㎡(약25평)", "data": [13000, 6667, 7500, 5667, 8200, 7000, 3667, 3000, 3833, 9300, 6500, 4000, 12333, 3000, 4000, 5000, 6100, 12000, 8500, 12000], "borderColor": "#60A5FA", "backgroundColor": "#60A5FA22", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#60A5FA", "pointRadius": 4}]});</script><div class="sec-title">최근 매매 거래</div>
+        <div class="tbl-card">
+          <table><tr><th>거래일</th><th>면적</th><th>층</th><th>거래가</th></tr>
+          <tr>
+          <td>2026-05-01</td><td>85㎡</td><td>17층</td>
+          <td class="pc">50,000<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-05-02</td><td>전세</td><td>84㎡</td>
-          <td>22층</td>
-          <td class="price-cell blue">30,450만원</td>
+          <td>2026-04-16</td><td>85㎡</td><td>2층</td>
+          <td class="pc">52,000<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-04-28</td><td>전세</td><td>84㎡</td>
-          <td>12층</td>
-          <td class="price-cell blue">31,000만원</td>
+          <td>2026-04-15</td><td>85㎡</td><td>6층</td>
+          <td class="pc">46,000<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-04-24</td><td>전세</td><td>85㎡</td>
-          <td>18층</td>
-          <td class="price-cell blue">30,000만원</td>
+          <td>2026-04-15</td><td>84㎡</td><td>11층</td>
+          <td class="pc">46,000<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-04-18</td><td>전세</td><td>85㎡</td>
-          <td>28층</td>
-          <td class="price-cell blue">34,500만원</td>
+          <td>2026-03-23</td><td>85㎡</td><td>23층</td>
+          <td class="pc">46,000<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-04-16</td><td>월세</td><td>85㎡</td>
-          <td>3층</td>
-          <td class="price-cell green">8,000/105만원</td>
+          <td>2026-03-20</td><td>85㎡</td><td>18층</td>
+          <td class="pc">43,000<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-04-10</td><td>월세</td><td>84㎡</td>
-          <td>18층</td>
-          <td class="price-cell green">25,000/50만원</td>
+          <td>2026-03-19</td><td>84㎡</td><td>22층</td>
+          <td class="pc">47,500<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-04-08</td><td>전세</td><td>84㎡</td>
-          <td>7층</td>
-          <td class="price-cell blue">34,000만원</td>
+          <td>2026-02-27</td><td>84㎡</td><td>13층</td>
+          <td class="pc">49,500<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-04-07</td><td>전세</td><td>84㎡</td>
-          <td>24층</td>
-          <td class="price-cell blue">33,000만원</td>
+          <td>2026-02-26</td><td>85㎡</td><td>23층</td>
+          <td class="pc">52,300<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-04-07</td><td>전세</td><td>84㎡</td>
-          <td>24층</td>
-          <td class="price-cell blue">33,000만원</td>
+          <td>2026-02-23</td><td>85㎡</td><td>15층</td>
+          <td class="pc">49,300<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-04-04</td><td>월세</td><td>85㎡</td>
-          <td>10층</td>
-          <td class="price-cell green">3,000/140만원</td>
+          <td>2026-01-28</td><td>84㎡</td><td>15층</td>
+          <td class="pc">47,800<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-04-01</td><td>전세</td><td>84㎡</td>
-          <td>10층</td>
-          <td class="price-cell blue">34,000만원</td>
+          <td>2026-01-22</td><td>85㎡</td><td>12층</td>
+          <td class="pc">47,500<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-04-01</td><td>전세</td><td>85㎡</td>
-          <td>19층</td>
-          <td class="price-cell blue">35,000만원</td>
+          <td>2026-01-21</td><td>85㎡</td><td>17층</td>
+          <td class="pc">48,900<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-04-01</td><td>전세</td><td>84㎡</td>
-          <td>1층</td>
-          <td class="price-cell blue">29,400만원</td>
+          <td>2025-12-24</td><td>84㎡</td><td>1층</td>
+          <td class="pc">44,000<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-03-31</td><td>전세</td><td>85㎡</td>
-          <td>3층</td>
-          <td class="price-cell blue">33,000만원</td>
+          <td>2025-11-21</td><td>85㎡</td><td>11층</td>
+          <td class="pc">49,000<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-03-15</td><td>전세</td><td>85㎡</td>
-          <td>13층</td>
-          <td class="price-cell blue">31,500만원</td>
+          <td>2025-11-05</td><td>84㎡</td><td>12층</td>
+          <td class="pc">46,800<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-03-14</td><td>전세</td><td>84㎡</td>
-          <td>8층</td>
-          <td class="price-cell blue">26,500만원</td>
+          <td>2025-10-14</td><td>85㎡</td><td>11층</td>
+          <td class="pc">49,000<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-03-14</td><td>전세</td><td>85㎡</td>
-          <td>17층</td>
-          <td class="price-cell blue">31,800만원</td>
+          <td>2025-09-24</td><td>85㎡</td><td>8층</td>
+          <td class="pc">48,000<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-03-13</td><td>월세</td><td>85㎡</td>
-          <td>9층</td>
-          <td class="price-cell green">2,000/150만원</td>
+          <td>2025-09-17</td><td>85㎡</td><td>7층</td>
+          <td class="pc">47,500<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-03-03</td><td>월세</td><td>84㎡</td>
-          <td>14층</td>
-          <td class="price-cell green">15,000/85만원</td>
+          <td>2025-08-20</td><td>85㎡</td><td>22층</td>
+          <td class="pc">52,000<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-02-28</td><td>전세</td><td>84㎡</td>
-          <td>11층</td>
-          <td class="price-cell blue">32,000만원</td>
+          <td>2025-08-13</td><td>84㎡</td><td>18층</td>
+          <td class="pc">49,000<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-02-26</td><td>전세</td><td>85㎡</td>
-          <td>19층</td>
-          <td class="price-cell blue">31,000만원</td>
+          <td>2025-08-13</td><td>85㎡</td><td>23층</td>
+          <td class="pc">50,000<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-02-24</td><td>전세</td><td>85㎡</td>
-          <td>12층</td>
-          <td class="price-cell blue">35,000만원</td>
+          <td>2025-08-09</td><td>84㎡</td><td>8층</td>
+          <td class="pc">48,000<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-02-20</td><td>전세</td><td>85㎡</td>
-          <td>11층</td>
-          <td class="price-cell blue">33,000만원</td>
+          <td>2025-08-07</td><td>84㎡</td><td>10층</td>
+          <td class="pc">47,400<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-02-20</td><td>월세</td><td>85㎡</td>
-          <td>18층</td>
-          <td class="price-cell green">4,000/145만원</td>
+          <td>2025-08-04</td><td>84㎡</td><td>21층</td>
+          <td class="pc">48,000<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-02-11</td><td>월세</td><td>85㎡</td>
-          <td>4층</td>
-          <td class="price-cell green">14,000/90만원</td>
+          <td>2025-07-07</td><td>84㎡</td><td>16층</td>
+          <td class="pc">50,000<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-02-11</td><td>전세</td><td>85㎡</td>
-          <td>19층</td>
-          <td class="price-cell blue">33,000만원</td>
+          <td>2025-07-04</td><td>85㎡</td><td>19층</td>
+          <td class="pc">49,800<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-02-10</td><td>전세</td><td>85㎡</td>
-          <td>17층</td>
-          <td class="price-cell blue">34,000만원</td>
+          <td>2025-07-04</td><td>85㎡</td><td>8층</td>
+          <td class="pc">47,700<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-02-10</td><td>월세</td><td>85㎡</td>
-          <td>26층</td>
-          <td class="price-cell green">5,000/130만원</td>
+          <td>2025-07-03</td><td>84㎡</td><td>9층</td>
+          <td class="pc">47,000<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-02-03</td><td>월세</td><td>84㎡</td>
-          <td>18층</td>
-          <td class="price-cell green">25,000/60만원</td>
+          <td>2025-06-20</td><td>84㎡</td><td>5층</td>
+          <td class="pc">48,000<span class="unit">만원</span></td>
+        </tr></table>
+        </div><div class="sec-title">최근 전·월세 거래</div>
+        <div class="tbl-card">
+          <table><tr><th>거래일</th><th>유형</th><th>면적</th><th>층</th><th>가격</th></tr>
+          <tr>
+          <td>2026-05-07</td><td class="pj">전세</td>
+          <td>85㎡</td><td>2층</td>
+          <td class="pc">32,000만원<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-01-31</td><td>전세</td><td>85㎡</td>
-          <td>14층</td>
-          <td class="price-cell blue">26,000만원</td>
+          <td>2026-05-02</td><td class="pj">전세</td>
+          <td>84㎡</td><td>22층</td>
+          <td class="pc">30,450만원<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-01-30</td><td>월세</td><td>84㎡</td>
-          <td>5층</td>
-          <td class="price-cell green">5,000/150만원</td>
+          <td>2026-04-28</td><td class="pj">전세</td>
+          <td>84㎡</td><td>12층</td>
+          <td class="pc">31,000만원<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-01-30</td><td>월세</td><td>84㎡</td>
-          <td>5층</td>
-          <td class="price-cell green">5,000/150만원</td>
+          <td>2026-04-24</td><td class="pj">전세</td>
+          <td>85㎡</td><td>18층</td>
+          <td class="pc">30,000만원<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-01-28</td><td>전세</td><td>84㎡</td>
-          <td>2층</td>
-          <td class="price-cell blue">30,000만원</td>
+          <td>2026-04-18</td><td class="pj">전세</td>
+          <td>85㎡</td><td>28층</td>
+          <td class="pc">34,500만원<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-01-26</td><td>월세</td><td>84㎡</td>
-          <td>1층</td>
-          <td class="price-cell green">5,000/135만원</td>
+          <td>2026-04-16</td><td class="pw">월세</td>
+          <td>85㎡</td><td>3층</td>
+          <td class="pc">8,000/105<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-01-22</td><td>전세</td><td>84㎡</td>
-          <td>20층</td>
-          <td class="price-cell blue">33,000만원</td>
+          <td>2026-04-10</td><td class="pw">월세</td>
+          <td>84㎡</td><td>18층</td>
+          <td class="pc">25,000/50<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-01-19</td><td>월세</td><td>85㎡</td>
-          <td>20층</td>
-          <td class="price-cell green">4,000/145만원</td>
+          <td>2026-04-08</td><td class="pj">전세</td>
+          <td>84㎡</td><td>7층</td>
+          <td class="pc">34,000만원<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-01-17</td><td>월세</td><td>85㎡</td>
-          <td>18층</td>
-          <td class="price-cell green">3,000/150만원</td>
+          <td>2026-04-07</td><td class="pj">전세</td>
+          <td>84㎡</td><td>24층</td>
+          <td class="pc">33,000만원<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-01-17</td><td>전세</td><td>85㎡</td>
-          <td>20층</td>
-          <td class="price-cell blue">33,000만원</td>
+          <td>2026-04-07</td><td class="pj">전세</td>
+          <td>84㎡</td><td>24층</td>
+          <td class="pc">33,000만원<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-01-17</td><td>월세</td><td>85㎡</td>
-          <td>18층</td>
-          <td class="price-cell green">3,000/150만원</td>
+          <td>2026-04-04</td><td class="pw">월세</td>
+          <td>85㎡</td><td>10층</td>
+          <td class="pc">3,000/140<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-01-13</td><td>전세</td><td>84㎡</td>
-          <td>17층</td>
-          <td class="price-cell blue">30,000만원</td>
+          <td>2026-04-01</td><td class="pj">전세</td>
+          <td>84㎡</td><td>10층</td>
+          <td class="pc">34,000만원<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-01-11</td><td>전세</td><td>85㎡</td>
-          <td>24층</td>
-          <td class="price-cell blue">30,000만원</td>
+          <td>2026-04-01</td><td class="pj">전세</td>
+          <td>85㎡</td><td>19층</td>
+          <td class="pc">35,000만원<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-01-09</td><td>월세</td><td>85㎡</td>
-          <td>20층</td>
-          <td class="price-cell green">3,000/160만원</td>
+          <td>2026-04-01</td><td class="pj">전세</td>
+          <td>84㎡</td><td>1층</td>
+          <td class="pc">29,400만원<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-01-09</td><td>전세</td><td>85㎡</td>
-          <td>13층</td>
-          <td class="price-cell blue">38,100만원</td>
+          <td>2026-03-31</td><td class="pj">전세</td>
+          <td>85㎡</td><td>3층</td>
+          <td class="pc">33,000만원<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-01-09</td><td>월세</td><td>85㎡</td>
-          <td>20층</td>
-          <td class="price-cell green">3,000/158만원</td>
+          <td>2026-03-15</td><td class="pj">전세</td>
+          <td>85㎡</td><td>13층</td>
+          <td class="pc">31,500만원<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-01-08</td><td>월세</td><td>85㎡</td>
-          <td>4층</td>
-          <td class="price-cell green">15,000/85만원</td>
+          <td>2026-03-14</td><td class="pj">전세</td>
+          <td>84㎡</td><td>8층</td>
+          <td class="pc">26,500만원<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-01-08</td><td>월세</td><td>85㎡</td>
-          <td>4층</td>
-          <td class="price-cell green">15,000/85만원</td>
+          <td>2026-03-14</td><td class="pj">전세</td>
+          <td>85㎡</td><td>17층</td>
+          <td class="pc">31,800만원<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-01-06</td><td>전세</td><td>84㎡</td>
-          <td>19층</td>
-          <td class="price-cell blue">33,000만원</td>
+          <td>2026-03-13</td><td class="pw">월세</td>
+          <td>85㎡</td><td>9층</td>
+          <td class="pc">2,000/150<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-01-06</td><td>전세</td><td>85㎡</td>
-          <td>9층</td>
-          <td class="price-cell blue">32,000만원</td>
+          <td>2026-03-03</td><td class="pw">월세</td>
+          <td>84㎡</td><td>14층</td>
+          <td class="pc">15,000/85<span class="unit">만원</span></td>
         </tr><tr>
-          <td>2026-01-05</td><td>전세</td><td>85㎡</td>
-          <td>8층</td>
-          <td class="price-cell blue">30,000만원</td>
-        </tr>
-    </table>
-  </div>
-</div>
+          <td>2026-02-28</td><td class="pj">전세</td>
+          <td>84㎡</td><td>11층</td>
+          <td class="pc">32,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-02-26</td><td class="pj">전세</td>
+          <td>85㎡</td><td>19층</td>
+          <td class="pc">31,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-02-24</td><td class="pj">전세</td>
+          <td>85㎡</td><td>12층</td>
+          <td class="pc">35,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-02-20</td><td class="pj">전세</td>
+          <td>85㎡</td><td>11층</td>
+          <td class="pc">33,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-02-20</td><td class="pw">월세</td>
+          <td>85㎡</td><td>18층</td>
+          <td class="pc">4,000/145<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-02-11</td><td class="pw">월세</td>
+          <td>85㎡</td><td>4층</td>
+          <td class="pc">14,000/90<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-02-11</td><td class="pj">전세</td>
+          <td>85㎡</td><td>19층</td>
+          <td class="pc">33,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-02-10</td><td class="pj">전세</td>
+          <td>85㎡</td><td>17층</td>
+          <td class="pc">34,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-02-10</td><td class="pw">월세</td>
+          <td>85㎡</td><td>26층</td>
+          <td class="pc">5,000/130<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-02-03</td><td class="pw">월세</td>
+          <td>84㎡</td><td>18층</td>
+          <td class="pc">25,000/60<span class="unit">만원</span></td>
+        </tr></table>
+        </div></div><div class="pane" id="pane-bukhan"><div class="stats"><div class="stat">
+      <div class="stat-emoji">🔑</div>
+      <div class="stat-val" style="color:#93C5FD">165건</div>
+      <div class="stat-lbl">전세거래(24개월)</div>
+    </div><div class="stat">
+      <div class="stat-emoji">🏠</div>
+      <div class="stat-val" style="color:#34D399">74건</div>
+      <div class="stat-lbl">월세거래(24개월)</div>
+    </div><div class="stat">
+      <div class="stat-emoji">💵</div>
+      <div class="stat-val" style="color:#93C5FD">65,770만원</div>
+      <div class="stat-lbl">최근3개월 전세평균</div>
+    </div></div><div class="chart-card">
+      <div class="chart-title">🔑 전세 보증금 추이 (평형별)</div>
+      <canvas id="bukhan_jeonse" height="210"></canvas>
+    </div>
+    <script>makeChart('bukhan_jeonse', {"labels": ["2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05"], "datasets": [{"label": "59㎡(약18평)", "data": [43100, 52325, 55333, null, null, 48550, 42000, 42000, null, 51125, null, 50625, 47967, 52200, null, 54500, 52000, 49917, null, null, 63000, 54600, null], "borderColor": "#60A5FA", "backgroundColor": "#60A5FA22", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#60A5FA", "pointRadius": 4}, {"label": "84㎡(약25평)", "data": [62000, 63500, 63333, 60625, 59825, 62275, 58825, 52917, 60544, 56633, 64000, 57236, 63000, 58000, 61612, 57384, 64000, 57750, 64100, 64500, 64450, 68750, 60375], "borderColor": "#34D399", "backgroundColor": "#34D39922", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#34D399", "pointRadius": 4}, {"label": "114㎡(약34평)", "data": [null, null, null, 74000, 75267, null, null, 75000, null, null, 74000, null, 73000, null, null, 75000, null, null, null, null, 80000, null, null], "borderColor": "#F59E0B", "backgroundColor": "#F59E0B22", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#F59E0B", "pointRadius": 4}]});</script><div class="chart-card">
+      <div class="chart-title">🏠 월세 보증금 추이 (평형별)</div>
+      <canvas id="bukhan_wolse" height="210"></canvas>
+    </div>
+    <script>makeChart('bukhan_wolse', {"labels": ["2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05"], "datasets": [{"label": "59㎡(약18평)", "data": [null, 10000, 1000, 16750, null, 10000, 15000, null, 20000, 13100, null, null, 25000, 10000, null, 6500, null, 25000, null, null, 20000, 30000], "borderColor": "#60A5FA", "backgroundColor": "#60A5FA22", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#60A5FA", "pointRadius": 4}, {"label": "84㎡(약25평)", "data": [36000, 10000, 10000, null, 45000, null, 10000, 18500, 10333, 16667, 31400, 25000, 15000, 20400, 7500, 25000, 41667, 38650, 20000, 56000, 20000, null], "borderColor": "#34D399", "backgroundColor": "#34D39922", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#34D399", "pointRadius": 4}, {"label": "114㎡(약34평)", "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, 45000, null, null, null, null, null, null, null, null], "borderColor": "#F59E0B", "backgroundColor": "#F59E0B22", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#F59E0B", "pointRadius": 4}]});</script><div class="sec-title">최근 전·월세 거래</div>
+        <div class="tbl-card">
+          <table><tr><th>거래일</th><th>유형</th><th>면적</th><th>층</th><th>가격</th></tr>
+          <tr>
+          <td>2026-05-13</td><td class="pj">전세</td>
+          <td>85㎡</td><td>4층</td>
+          <td class="pc">59,850만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-05-11</td><td class="pj">전세</td>
+          <td>85㎡</td><td>3층</td>
+          <td class="pc">60,900만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-05-07</td><td class="pw">월세</td>
+          <td>60㎡</td><td>11층</td>
+          <td class="pc">30,000/100<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-04-27</td><td class="pw">월세</td>
+          <td>41㎡</td><td>12층</td>
+          <td class="pc">1,844/7<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-04-25</td><td class="pw">월세</td>
+          <td>60㎡</td><td>5층</td>
+          <td class="pc">30,000/120<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-04-21</td><td class="pj">전세</td>
+          <td>85㎡</td><td>8층</td>
+          <td class="pc">72,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-04-20</td><td class="pw">월세</td>
+          <td>60㎡</td><td>3층</td>
+          <td class="pc">10,000/180<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-04-18</td><td class="pj">전세</td>
+          <td>60㎡</td><td>10층</td>
+          <td class="pc">54,600만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-04-18</td><td class="pj">전세</td>
+          <td>85㎡</td><td>8층</td>
+          <td class="pc">65,500만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-04-10</td><td class="pw">월세</td>
+          <td>85㎡</td><td>19층</td>
+          <td class="pc">20,000/180<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-31</td><td class="pj">전세</td>
+          <td>115㎡</td><td>14층</td>
+          <td class="pc">80,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-30</td><td class="pj">전세</td>
+          <td>85㎡</td><td>2층</td>
+          <td class="pc">70,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-28</td><td class="pj">전세</td>
+          <td>60㎡</td><td>6층</td>
+          <td class="pc">63,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-28</td><td class="pj">전세</td>
+          <td>85㎡</td><td>4층</td>
+          <td class="pc">63,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-21</td><td class="pw">월세</td>
+          <td>85㎡</td><td>17층</td>
+          <td class="pc">56,000/11<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-11</td><td class="pw">월세</td>
+          <td>41㎡</td><td>5층</td>
+          <td class="pc">3,103/17<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-07</td><td class="pj">전세</td>
+          <td>85㎡</td><td>14층</td>
+          <td class="pc">70,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-02</td><td class="pj">전세</td>
+          <td>85㎡</td><td>17층</td>
+          <td class="pc">60,900만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-02</td><td class="pj">전세</td>
+          <td>85㎡</td><td>3층</td>
+          <td class="pc">63,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-01</td><td class="pj">전세</td>
+          <td>85㎡</td><td>2층</td>
+          <td class="pc">59,800만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-02-27</td><td class="pw">월세</td>
+          <td>85㎡</td><td>5층</td>
+          <td class="pc">20,000/180<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-02-26</td><td class="pj">전세</td>
+          <td>97㎡</td><td>3층</td>
+          <td class="pc">80,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-02-19</td><td class="pj">전세</td>
+          <td>85㎡</td><td>8층</td>
+          <td class="pc">64,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-02-12</td><td class="pj">전세</td>
+          <td>85㎡</td><td>18층</td>
+          <td class="pc">65,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-02-05</td><td class="pw">월세</td>
+          <td>85㎡</td><td>1층</td>
+          <td class="pc">25,000/145<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-02-04</td><td class="pw">월세</td>
+          <td>85㎡</td><td>2층</td>
+          <td class="pc">15,000/165<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-01-28</td><td class="pj">전세</td>
+          <td>85㎡</td><td>1층</td>
+          <td class="pc">65,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-01-26</td><td class="pj">전세</td>
+          <td>85㎡</td><td>13층</td>
+          <td class="pc">62,500만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-01-22</td><td class="pw">월세</td>
+          <td>85㎡</td><td>10층</td>
+          <td class="pc">57,300/10<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-01-10</td><td class="pj">전세</td>
+          <td>85㎡</td><td>4층</td>
+          <td class="pc">65,000만원<span class="unit">만원</span></td>
+        </tr></table>
+        </div></div><div class="pane" id="pane-raemian"><div class="stats"><div class="stat">
+      <div class="stat-emoji">🔑</div>
+      <div class="stat-val" style="color:#93C5FD">264건</div>
+      <div class="stat-lbl">전세거래(24개월)</div>
+    </div><div class="stat">
+      <div class="stat-emoji">🏠</div>
+      <div class="stat-val" style="color:#34D399">157건</div>
+      <div class="stat-lbl">월세거래(24개월)</div>
+    </div><div class="stat">
+      <div class="stat-emoji">💵</div>
+      <div class="stat-val" style="color:#93C5FD">70,979만원</div>
+      <div class="stat-lbl">최근3개월 전세평균</div>
+    </div></div><div class="chart-card">
+      <div class="chart-title">🔑 전세 보증금 추이 (평형별)</div>
+      <canvas id="raemian_jeonse" height="210"></canvas>
+    </div>
+    <script>makeChart('raemian_jeonse', {"labels": ["2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05"], "datasets": [{"label": "59㎡(약18평)", "data": [57000, 57460, 60000, 54133, 52248, 53764, 51452, 47966, 52975, 53500, 58983, 58500, 54750, 54045, 58314, 57678, null, 56500, 53538, null, 60740, 63000, null], "borderColor": "#60A5FA", "backgroundColor": "#60A5FA22", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#60A5FA", "pointRadius": 4}, {"label": "84㎡(약25평)", "data": [65667, 66152, 64000, 61714, 63767, 64909, 60644, 54926, 60069, 61530, 59400, 64692, 64741, 66333, 65813, 67800, 63133, 66000, 71250, 70650, 78300, 74333, 73000], "borderColor": "#34D399", "backgroundColor": "#34D39922", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#34D399", "pointRadius": 4}, {"label": "114㎡(약34평)", "data": [null, null, null, null, null, null, 93000, null, null, 105000, null, null, null, null, null, null, null, null, null, null, 103950, null, null], "borderColor": "#F59E0B", "backgroundColor": "#F59E0B22", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#F59E0B", "pointRadius": 4}]});</script><div class="chart-card">
+      <div class="chart-title">🏠 월세 보증금 추이 (평형별)</div>
+      <canvas id="raemian_wolse" height="210"></canvas>
+    </div>
+    <script>makeChart('raemian_wolse', {"labels": ["2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05"], "datasets": [{"label": "59㎡(약18평)", "data": [10000, 30000, 5000, 43000, 10000, 14000, 32667, null, 32500, 10000, 10000, 53000, 20000, null, 21667, 15000, 30000, null, 20000, null, null], "borderColor": "#60A5FA", "backgroundColor": "#60A5FA22", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#60A5FA", "pointRadius": 4}, {"label": "84㎡(약25평)", "data": [10000, 20000, null, null, 22500, null, 31970, 18500, 31250, 40000, 29000, null, 30000, 20000, 43333, 16667, null, 30000, 50000, 60000, 27500], "borderColor": "#34D399", "backgroundColor": "#34D39922", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#34D399", "pointRadius": 4}]});</script><div class="sec-title">최근 전·월세 거래</div>
+        <div class="tbl-card">
+          <table><tr><th>거래일</th><th>유형</th><th>면적</th><th>층</th><th>가격</th></tr>
+          <tr>
+          <td>2026-05-12</td><td class="pw">월세</td>
+          <td>85㎡</td><td>8층</td>
+          <td class="pc">40,000/125<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-05-11</td><td class="pj">전세</td>
+          <td>85㎡</td><td>9층</td>
+          <td class="pc">73,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-05-05</td><td class="pw">월세</td>
+          <td>85㎡</td><td>7층</td>
+          <td class="pc">15,000/250<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-04-29</td><td class="pj">전세</td>
+          <td>85㎡</td><td>5층</td>
+          <td class="pc">65,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-04-25</td><td class="pj">전세</td>
+          <td>85㎡</td><td>17층</td>
+          <td class="pc">75,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-04-24</td><td class="pj">전세</td>
+          <td>85㎡</td><td>13층</td>
+          <td class="pc">83,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-04-20</td><td class="pj">전세</td>
+          <td>60㎡</td><td>11층</td>
+          <td class="pc">65,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-04-20</td><td class="pw">월세</td>
+          <td>85㎡</td><td>1층</td>
+          <td class="pc">60,000/70<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-04-20</td><td class="pj">전세</td>
+          <td>60㎡</td><td>11층</td>
+          <td class="pc">65,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-04-14</td><td class="pw">월세</td>
+          <td>38㎡</td><td>6층</td>
+          <td class="pc">9,077/23<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-04-14</td><td class="pw">월세</td>
+          <td>38㎡</td><td>11층</td>
+          <td class="pc">16,364/45<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-04-14</td><td class="pw">월세</td>
+          <td>38㎡</td><td>15층</td>
+          <td class="pc">15,040/40<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-04-02</td><td class="pw">월세</td>
+          <td>38㎡</td><td>4층</td>
+          <td class="pc">9,667/34<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-04-02</td><td class="pj">전세</td>
+          <td>60㎡</td><td>16층</td>
+          <td class="pc">59,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-28</td><td class="pj">전세</td>
+          <td>85㎡</td><td>16층</td>
+          <td class="pc">78,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-27</td><td class="pj">전세</td>
+          <td>85㎡</td><td>19층</td>
+          <td class="pc">71,400만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-21</td><td class="pj">전세</td>
+          <td>60㎡</td><td>3층</td>
+          <td class="pc">64,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-21</td><td class="pj">전세</td>
+          <td>85㎡</td><td>6층</td>
+          <td class="pc">71,400만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-16</td><td class="pj">전세</td>
+          <td>85㎡</td><td>8층</td>
+          <td class="pc">80,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-14</td><td class="pw">월세</td>
+          <td>85㎡</td><td>9층</td>
+          <td class="pc">60,000/55<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-14</td><td class="pj">전세</td>
+          <td>60㎡</td><td>14층</td>
+          <td class="pc">60,900만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-14</td><td class="pj">전세</td>
+          <td>60㎡</td><td>14층</td>
+          <td class="pc">60,900만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-14</td><td class="pj">전세</td>
+          <td>60㎡</td><td>14층</td>
+          <td class="pc">60,900만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-13</td><td class="pw">월세</td>
+          <td>38㎡</td><td>18층</td>
+          <td class="pc">8,056/28<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-10</td><td class="pw">월세</td>
+          <td>38㎡</td><td>10층</td>
+          <td class="pc">8,622/22<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-10</td><td class="pw">월세</td>
+          <td>38㎡</td><td>8층</td>
+          <td class="pc">6,664/31<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-09</td><td class="pj">전세</td>
+          <td>115㎡</td><td>9층</td>
+          <td class="pc">103,950만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-09</td><td class="pj">전세</td>
+          <td>85㎡</td><td>15층</td>
+          <td class="pc">84,000만원<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-08</td><td class="pw">월세</td>
+          <td>85㎡</td><td>14층</td>
+          <td class="pc">40,000/100<span class="unit">만원</span></td>
+        </tr><tr>
+          <td>2026-03-07</td><td class="pw">월세</td>
+          <td>85㎡</td><td>9층</td>
+          <td class="pc">50,000/90<span class="unit">만원</span></td>
+        </tr></table>
+        </div></div>
 
 <script>
-function show(id, btn) {
+Chart.defaults.font.family="'Noto Sans KR',sans-serif";
+Chart.defaults.color="rgba(255,255,255,0.4)";
+Chart.defaults.borderColor="#1E3A6E";
+
+function show(id,btn){
   document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('pane-'+id).classList.add('active');
   btn.classList.add('active');
 }
 
-Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
-Chart.defaults.color = 'rgba(255,255,255,0.45)';
-Chart.defaults.borderColor = '#1E3A6E';
-
-const tradeData  = {"labels": ["2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05"], "datasets": [{"label": "84㎡ (약25평)", "data": [49517, 48733, 49100, 50167, 51000, 47800, 46950, 50850, 49100, 45575, 49300, 47725, 48625, 49067, 47750, 49000, 47900, 44000, 48067, 50367, 45500, 48000, 50000], "borderColor": "#60A5FA", "backgroundColor": "#60A5FA33", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#60A5FA", "pointRadius": 4}]};
-const jeonseData = {"labels": ["2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05"], "datasets": [{"label": "84㎡ (약25평)", "data": [32558, 33000, 32500, 28579, 28000, 33000, 27167, 25400, 29840, 27870, 30812, 30750, 29695, 30092, 31717, 33000, 31875, 33000, 31162, 33000, 30700, 32656, 31225], "borderColor": "#60A5FA", "backgroundColor": "#60A5FA33", "tension": 0.4, "spanGaps": true, "pointBackgroundColor": "#60A5FA", "pointRadius": 4}]};
-
-function makeChart(id, data) {
-  const ctx = document.getElementById(id);
-  if (!ctx || !data.labels.length) return;
-  new Chart(ctx, {
-    type: 'line',
-    data: data,
-    options: {
-      responsive: true,
-      interaction: { mode:'index', intersect:false },
-      plugins: {
-        legend: { labels: { color:'#9E8A92', font:{size:11}, padding:12 } },
-        tooltip: {
-          backgroundColor:'#172444',
-          titleColor:'#fff',
-          bodyColor:'#60A5FA',
-          borderColor:'#1E3A6E',
-          borderWidth:1,
-          callbacks: {
-            label: c => c.dataset.label+': '+(c.raw ? c.raw.toLocaleString()+'만원' : '-')
-          }
+function makeChart(id,data){
+  const ctx=document.getElementById(id);
+  if(!ctx||!data.labels.length)return;
+  new Chart(ctx,{
+    type:'line',data:data,
+    options:{
+      responsive:true,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{labels:{color:'rgba(255,255,255,.5)',font:{size:10},padding:10}},
+        tooltip:{
+          backgroundColor:'#172444',titleColor:'#fff',
+          bodyColor:'#60A5FA',borderColor:'#1E3A6E',borderWidth:1,
+          callbacks:{label:c=>c.dataset.label+': '+(c.raw?c.raw.toLocaleString()+'만원':'-')}
         }
       },
-      scales: {
-        x: { ticks:{ color:'rgba(255,255,255,.35)', maxTicksLimit:8, font:{size:10} }, grid:{color:'#1E3A6E'} },
-        y: {
-          ticks: {
-            color:'rgba(255,255,255,.35)',
-            font:{size:10},
-            callback: v => v>=10000 ? (v/10000).toFixed(1)+'억' : v.toLocaleString()+'만'
-          },
+      scales:{
+        x:{ticks:{color:'rgba(255,255,255,.3)',maxTicksLimit:8,font:{size:9}},
+            grid:{color:'#1E3A6E'}},
+        y:{
+          ticks:{color:'rgba(255,255,255,.3)',font:{size:9},
+            callback:v=>v>=10000?(v/10000).toFixed(1)+'억':v.toLocaleString()+'만'},
           grid:{color:'#1E3A6E'}
         }
       }
     }
   });
 }
-
-makeChart('tradeChart',  tradeData);
-makeChart('jeonseChart', jeonseData);
 </script>
 </body>
 </html>
