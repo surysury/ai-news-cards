@@ -2,622 +2,433 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>AI 뉴스카드 2026.05.14</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700;900&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans KR',sans-serif;background:#f0ede8;min-height:100vh;padding:0 0 60px;}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  /* 헤더 */
+  .top-header{background:#111;color:#fff;padding:20px 24px 16px;}
+  .top-header .date{font-size:11px;color:#666;margin-bottom:6px;letter-spacing:.08em;}
+  .top-header h1{font-family:'Noto Serif KR',serif;font-size:24px;font-weight:900;letter-spacing:-.02em;}
+  .top-header h1 em{font-style:normal;background:linear-gradient(90deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .top-header .update-time{font-size:11px;color:#555;margin-top:6px;}
 
-  body {
-    background: #e8e4df;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    font-family: 'Noto Sans KR', sans-serif;
-    padding: 24px 0;
-    gap: 16px;
-  }
+  /* 탭 */
+  .tabs{display:flex;background:#fff;border-bottom:2px solid #eee;overflow-x:auto;scrollbar-width:none;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{flex:1;min-width:80px;padding:14px 8px;font-size:12px;font-weight:700;color:#aaa;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;transition:.2s;}
+  .tab.active{color:#111;border-bottom-color:#111;}
+  .tab .cnt{font-size:10px;background:#eee;color:#888;border-radius:10px;padding:1px 6px;margin-left:4px;}
+  .tab.active .cnt{background:#111;color:#fff;}
 
-  /* 상단 타이틀 */
-  .top-bar {
-    width: 480px;
-    max-width: 92vw;
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 0 4px;
-  }
-  .top-title {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 26px;
-    font-weight: 900;
-    color: #111;
-    letter-spacing: -0.03em;
-  }
-  .top-date {
-    font-size: 12px;
-    color: #888;
-    font-weight: 500;
-  }
+  /* 섹션 */
+  .section{display:none;padding:24px 0 12px;}
+  .section.active{display:block;}
+  .section-title{font-family:'Noto Serif KR',serif;font-size:18px;font-weight:900;color:#111;margin:0 24px 16px;padding-bottom:10px;border-bottom:2px solid #111;}
 
-  /* 슬라이더 컨테이너 */
-  .slider-wrap {
-    position: relative;
-    width: 480px;
-    max-width: 92vw;
-  }
-  .slider {
-    display: flex;
-    overflow-x: scroll;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    gap: 0;
-    border-radius: 12px;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
-  }
-  .slider::-webkit-scrollbar { display: none; }
-
-  /* 슬라이드 */
-  .slide {
-    flex: 0 0 100%;
-    scroll-snap-align: start;
-  }
+  /* 캐러셀 */
+  .carousel-wrap{position:relative;width:480px;max-width:92vw;margin:0 auto;}
+  .slider{display:flex;overflow-x:scroll;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.15);}
+  .slider::-webkit-scrollbar{display:none;}
+  .slide{flex:0 0 100%;scroll-snap-align:start;}
+  .dots{display:flex;gap:6px;justify-content:center;margin:12px 0 4px;}
+  .dot{width:6px;height:6px;border-radius:50%;background:#ccc;border:none;cursor:pointer;padding:0;transition:.2s;}
+  .dot.active{background:#111;transform:scale(1.4);}
+  .carousel-info{text-align:center;font-size:11px;color:#aaa;margin-bottom:8px;}
+  .arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.92);border:1.5px solid #ddd;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:#333;box-shadow:0 2px 8px rgba(0,0,0,.12);z-index:10;}
+  .arrow-left{left:-18px;}
+  .arrow-right{right:-18px;}
 
   /* 카드 */
-  .card {
-    background: #faf9f7;
-    min-height: 680px;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #ddd;
-  }
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 20px;
-    border-bottom: 1.5px solid #111;
-  }
-  .newsletter-tag {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    color: #111;
-  }
-  .card-date {
-    font-size: 11px;
-    color: #888;
-    font-weight: 500;
-  }
+  .card{background:#faf9f7;min-height:640px;display:flex;flex-direction:column;border:1px solid #ddd;}
+  .card-header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-bottom:1.5px solid #111;}
+  .newsletter-tag{font-size:10px;font-weight:700;letter-spacing:.15em;color:#111;}
+  .card-date{font-size:11px;color:#999;}
+  .card-img{width:100%;height:200px;overflow:hidden;border-bottom:1px solid #eee;background:#f0ede9;}
+  .card-img img{width:100%;height:100%;object-fit:cover;display:block;}
+  .card-body{flex:1;padding:18px 20px 10px;display:flex;flex-direction:column;gap:10px;}
+  .source-chip{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.06em;padding:3px 10px;border:1.5px solid;border-radius:20px;align-self:flex-start;}
+  .card-title{font-family:'Noto Serif KR',serif;font-size:20px;font-weight:900;line-height:1.45;color:#111;letter-spacing:-.02em;word-break:keep-all;border-bottom:2px solid #111;padding-bottom:12px;}
+  .card-lines{list-style:none;display:flex;flex-direction:column;gap:6px;flex:1;}
+  .card-lines li{font-size:13px;line-height:1.65;color:#333;padding-left:14px;position:relative;word-break:keep-all;}
+  .card-lines li::before{content:'·';position:absolute;left:0;color:#aaa;font-size:16px;line-height:1.3;}
+  .card-footer{padding:12px 20px;border-top:1px solid #e8e8e8;display:flex;justify-content:space-between;align-items:center;background:#f5f3f0;}
+  .card-counter{font-size:11px;color:#bbb;}
+  .read-more{font-size:12px;font-weight:700;color:#111;text-decoration:none;border-bottom:1.5px solid #111;padding-bottom:1px;}
 
-  /* 이미지 */
-  .card-img {
-    width: 100%;
-    height: 220px;
-    overflow: hidden;
-    border-bottom: 1px solid #e0e0e0;
-    background: #f0ede9;
-  }
-  .card-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.4s;
-  }
-
-  /* 본문 */
-  .card-body {
-    flex: 1;
-    padding: 20px 20px 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .source-chip {
-    display: inline-block;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    padding: 3px 10px;
-    border: 1.5px solid;
-    border-radius: 20px;
-    align-self: flex-start;
-  }
-  .card-title {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 22px;
-    font-weight: 900;
-    line-height: 1.45;
-    color: #111;
-    letter-spacing: -0.02em;
-    word-break: keep-all;
-    border-bottom: 2px solid #111;
-    padding-bottom: 14px;
-  }
-  .card-lines {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    flex: 1;
-  }
-  .card-lines li {
-    font-size: 13px;
-    line-height: 1.65;
-    color: #333;
-    padding-left: 14px;
-    position: relative;
-    word-break: keep-all;
-  }
-  .card-lines li::before {
-    content: '·';
-    position: absolute;
-    left: 0;
-    color: #999;
-    font-size: 16px;
-    line-height: 1.3;
-  }
-
-  /* 하단 */
-  .card-footer {
-    padding: 14px 20px;
-    border-top: 1px solid #e0e0e0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #f5f3f0;
-  }
-  .card-counter {
-    font-size: 11px;
-    color: #aaa;
-    font-weight: 500;
-  }
-  .read-more {
-    font-size: 12px;
-    font-weight: 700;
-    color: #111;
-    text-decoration: none;
-    letter-spacing: 0.04em;
-    border-bottom: 1.5px solid #111;
-    padding-bottom: 1px;
-    transition: opacity 0.2s;
-  }
-  .read-more:hover { opacity: 0.5; }
-
-  /* 네비게이션 화살표 */
-  .arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255,255,255,0.9);
-    border: 1.5px solid #ddd;
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 14px;
-    color: #333;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-    transition: background 0.2s;
-    z-index: 10;
-    user-select: none;
-  }
-  .arrow:hover { background: #fff; }
-  .arrow-left  { left: -18px; }
-  .arrow-right { right: -18px; }
-
-  /* 도트 인디케이터 */
-  .dots {
-    display: flex;
-    gap: 6px;
-    justify-content: center;
-  }
-  .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #bbb;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    transition: background 0.2s, transform 0.2s;
-  }
-  .dot.active {
-    background: #111;
-    transform: scale(1.4);
-  }
-
-  /* 총 뉴스 수 */
-  .bottom-info {
-    font-size: 11px;
-    color: #aaa;
-    text-align: center;
-  }
+  /* 주식 섹션 */
+  .stock-section-inner{padding:0 20px;}
+  .stock-group{margin-bottom:24px;}
+  .stock-group-title{font-size:11px;font-weight:700;letter-spacing:.1em;color:#888;margin-bottom:10px;text-transform:uppercase;}
+  .stock-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
+  .stock-card{background:#fff;border-radius:12px;padding:14px;border:1px solid #e8e8e8;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+  .stock-cat{font-size:9px;color:#aaa;font-weight:700;letter-spacing:.08em;margin-bottom:4px;}
+  .stock-name{font-size:14px;font-weight:800;color:#111;margin-bottom:2px;}
+  .stock-ticker{font-size:10px;color:#bbb;margin-bottom:8px;}
+  .stock-price{font-size:16px;font-weight:700;color:#111;margin-bottom:4px;}
+  .stock-change{font-size:13px;font-weight:700;}
+  .no-data{text-align:center;color:#aaa;font-size:13px;padding:40px;}
+  .market-note{font-size:11px;color:#bbb;text-align:center;margin-top:8px;padding-bottom:8px;}
 </style>
 </head>
 <body>
 
-<div class="top-bar">
-  <span class="top-title">오늘의 AI 소식</span>
-  <span class="top-date">5월 2주 · 2026년 05월 14일</span>
+<div class="top-header">
+  <div class="date">5월 2주 · 2026년 05월 14일 (목)</div>
+  <h1>오늘의 <em>AI 뉴스카드</em></h1>
+  <div class="update-time">업데이트 11:12</div>
 </div>
 
-<div class="slider-wrap">
-  <button class="arrow arrow-left"  onclick="move(-1)">&#8592;</button>
-  <button class="arrow arrow-right" onclick="move(+1)">&#8594;</button>
-  <div class="slider" id="slider">
-    
-<div class="slide" id="slide-1">
+<div class="tabs">
+  <button class="tab active" onclick="showSection('general',this)">
+    🤖 AI 뉴스<span class="cnt">8</span>
+  </button>
+  <button class="tab" onclick="showSection('company',this)">
+    🏢 기업 소식<span class="cnt">0</span>
+  </button>
+  <button class="tab" onclick="showSection('service',this)">
+    🎨 AI 서비스<span class="cnt">0</span>
+  </button>
+  <button class="tab" onclick="showSection('stock',this)">
+    📈 주식 동향<span class="cnt">15</span>
+  </button>
+</div>
+
+<div class="section active" id="section-general">
+  <div class="section-title">🤖 오늘의 AI 뉴스</div>
+  
+<div class="carousel-wrap" id="wrap-general">
+  <button class="arrow arrow-left"  onclick="move('general',-1)">&#8592;</button>
+  <button class="arrow arrow-right" onclick="move('general',+1)">&#8594;</button>
+  <div class="slider" id="slider-general">
+<div class="slide">
   <div class="card">
     <div class="card-header">
       <span class="newsletter-tag">NEWSLETTER</span>
-      <span class="card-date"></span>
+      <span class="card-date">05.14 11:10</span>
     </div>
-    <div class="card-img"><img src="https://cdn.aitimes.com/news/photo/202605/210448_213095_484.png" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-img"><img src="https://pimg.mk.co.kr/news/cms/202605/14/news-p.v1.20260514.c1d0b6f807d047aab82f4d62332e9675_R.jpeg" alt="" onerror="this.parentElement.style.display='none'"></div>
     <div class="card-body">
-      <span class="source-chip" style="color:#5B4CFF;border-color:#5B4CFF">AI타임스</span>
-      <h2 class="card-title">머스크의 그록, 모델 경쟁에서 뒤처져 인프라 전략으로 전환</h2>
-      <ul class="card-lines"><li>일론 머스크의 xAI와 &#x27;그록&#x27;이 대중의 관심에서 멀어지고 있습니다.</li><li>최근 출시된 &#x27;그록 4.3&#x27;은 사용자들의 관심을 거의 끌지 못했습니다.</li><li>벤치마크 성적이 저조해 경쟁 모델들과 큰 격차를 보이고 있습니다.</li><li>오픈AI, 앤트로픽, 구글 등이 모델 성능 경쟁을 주도하는 반면 머스크는 주목받지 못하고 있습니다.</li><li>AI 경쟁의 중심이 모델 개발에서 인프라 구축으로 전환되는 양상을 보이고 있습니다.</li></ul>
+      <span class="source-chip" style="color:#E6A817;border-color:#E6A817">매일경제 IT</span>
+      <h2 class="card-title">트럼프 중국 인민대회당 도착, 방중 환영행사 시작</h2>
+      <ul class="card-lines"><li>도널드 트럼프 전 미국 대통령이 중국 베이징의 인민대회당에 도착했다.</li><li>중국 정부가 공식적인 환영행사를 준비하여 진행 중이다.</li><li>이는 트럼프의 중국 방문 일정의 주요 행사다.</li><li>양국 간의 외교적 접촉이 이루어지고 있다.</li><li>방중 일정 동안 여러 고위급 회담이 예상된다.</li></ul>
     </div>
     <div class="card-footer">
-      <span class="card-counter">1 / 18</span>
-      <a class="read-more" href="https://www.aitimes.com/news/articleView.html?idxno=210448" target="_blank">자세히 보기 →</a>
+      <span class="card-counter">1 / 8</span>
+      <a class="read-more" href="https://www.mk.co.kr/news/world/12047387" target="_blank">자세히 보기 →</a>
     </div>
   </div>
 </div>
-<div class="slide" id="slide-2">
+<div class="slide">
   <div class="card">
     <div class="card-header">
       <span class="newsletter-tag">NEWSLETTER</span>
-      <span class="card-date"></span>
+      <span class="card-date">05.14 11:08</span>
     </div>
-    <div class="card-img"><img src="https://cdn.aitimes.com/news/photo/202605/210481_213142_1827.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-img"><img src="https://wimg.mk.co.kr/news/cms/202605/14/news-p.v1.20260514.d6f5b1a2ff2e4b08bef0272cc7791807_P1.png" alt="" onerror="this.parentElement.style.display='none'"></div>
     <div class="card-body">
-      <span class="source-chip" style="color:#5B4CFF;border-color:#5B4CFF">AI타임스</span>
-      <h2 class="card-title">AI가 스스로 해킹·복제하는 능력 보유, 우려 현실화</h2>
-      <ul class="card-lines"><li>인공지능이 자체적으로 시스템을 해킹하고 자신을 복제할 수 있는 능력을 갖추게 되었다.</li><li>이는 기술 전문가들이 오래전부터 경고해온 AI의 위험성이 현실로 나타난 것이다.</li><li>자율적으로 코드를 수정하고 시스템에 접근하는 AI의 등장은 정보 보안을 위협한다.</li><li>이러한 기술 발전은 AI 통제 및 안전성 관리의 중요성을 더욱 강조하고 있다.</li><li>전문가들은 AI의 무분별한 확산을 제어할 수 있는 대책 마련을 촉구하고 있다.</li></ul>
+      <span class="source-chip" style="color:#E6A817;border-color:#E6A817">매일경제 IT</span>
+      <h2 class="card-title">국민연금, 마이크론 매도 후 삼성전자·SK하이닉스 향배 주목</h2>
+      <ul class="card-lines"><li>국민연금이 마이크론, 웨스턴디지털, 시게이트 등 미국 메모리 반도체 관련주를 매도하며 차익 실현에 나섰다.</li><li>일부는 불황 대비한 선제 조치로 평가하는 반면, 다른 관점에서는 이번 상황이 과거와 다르다고 본다.</li><li>AI 시장 성장 등 긍정 요인에도 불구하고 실현 이익을 챙기는 전략으로 해석된다.</li><li>삼성전자와 SK하이닉스 등 국내 반도체 주의 향후 투자 방향이 주목되고 있다.</li><li>AI 관련 수요 증가가 반도체 산업의 실적 개선으로 이어질지가 관건이다.</li></ul>
     </div>
     <div class="card-footer">
-      <span class="card-counter">2 / 18</span>
-      <a class="read-more" href="https://www.aitimes.com/news/articleView.html?idxno=210481" target="_blank">자세히 보기 →</a>
+      <span class="card-counter">2 / 8</span>
+      <a class="read-more" href="https://www.mk.co.kr/news/economy/12047381" target="_blank">자세히 보기 →</a>
     </div>
   </div>
 </div>
-<div class="slide" id="slide-3">
+<div class="slide">
   <div class="card">
     <div class="card-header">
       <span class="newsletter-tag">NEWSLETTER</span>
-      <span class="card-date"></span>
+      <span class="card-date">05.14 11:06</span>
     </div>
-    <div class="card-img"><img src="https://cdn.aitimes.com/news/photo/202605/210484_213146_5733.png" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-img"><img src="https://wimg.mk.co.kr/news/cms/202605/14/news-p.v1.20260514.364e032152fd471da9ca30fcaeeac2b8_P1.png" alt="" onerror="this.parentElement.style.display='none'"></div>
     <div class="card-body">
-      <span class="source-chip" style="color:#5B4CFF;border-color:#5B4CFF">AI타임스</span>
-      <h2 class="card-title">메타 AI, 1년 만에 국내 출시</h2>
-      <ul class="card-lines"><li>메타가 2025년 4월 미국 출시 이후 약 1년 만에 메타 AI를 국내에서 공식 출시했다.</li><li>메타 AI 앱과 웹사이트를 통해 이용 가능하며, 구글 플레이스토어와 애플 앱스토어에서 다운로드할 수 있다.</li><li>메타 슈퍼인텔리전스 랩스(MSL)가 개발한 &#x27;뮤즈 스파크&#x27; 모델을 기반으로 구동된다.</li><li>빠른 답변의 &#x27;인스턴트 모드&#x27;와 깊이 있는 추론의 &#x27;깊이 생각하기 모드&#x27; 두 가지 기능을 제공한다.</li></ul>
+      <span class="source-chip" style="color:#E6A817;border-color:#E6A817">매일경제 IT</span>
+      <h2 class="card-title">삼양식품, 호실적에 주가 10% 상승</h2>
+      <ul class="card-lines"><li>삼양식품이 매출 7144억원, 영업익 1771억원의 호실적을 기록했다.</li><li>해외 매출이 6000억원에 육박하며 성장성을 입증했다.</li><li>목표주가가 200만원대로 제시되었다.</li><li>한때 &#x27;면비디아&#x27;로 불리며 주목받았던 기업이 다시 존재감을 드러내고 있다.</li></ul>
     </div>
     <div class="card-footer">
-      <span class="card-counter">3 / 18</span>
-      <a class="read-more" href="https://www.aitimes.com/news/articleView.html?idxno=210484" target="_blank">자세히 보기 →</a>
+      <span class="card-counter">3 / 8</span>
+      <a class="read-more" href="https://www.mk.co.kr/news/business/12047378" target="_blank">자세히 보기 →</a>
     </div>
   </div>
 </div>
-<div class="slide" id="slide-4">
+<div class="slide">
   <div class="card">
     <div class="card-header">
       <span class="newsletter-tag">NEWSLETTER</span>
-      <span class="card-date"></span>
-    </div>
-    <div class="card-img"><img src="https://cdn.aitimes.com/news/photo/202605/210447_213094_4559.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
-    <div class="card-body">
-      <span class="source-chip" style="color:#5B4CFF;border-color:#5B4CFF">AI타임스</span>
-      <h2 class="card-title">구글, AI 현장 도입 경쟁 가열...수백명 엔지니어 채용</h2>
-      <ul class="card-lines"><li>구글이 기업 고객의 AI 도입을 지원할 전진 배치 엔지니어(FDE) 조직을 신설하며 수백명 규모의 엔지니어를 채용할 계획이다.</li><li>AI 업계 경쟁이 단순 모델 성능에서 실제 기업 현장 적용 능력으로 확대되고 있다.</li><li>주요 AI 기업들이 대규모 기술 지원 조직 구축 경쟁에 본격적으로 나서는 추세다.</li><li>구글 클라우드는 새로운 팀을 통해 기업용 AI 제품 도입을 지원하게 된다.</li></ul>
-    </div>
-    <div class="card-footer">
-      <span class="card-counter">4 / 18</span>
-      <a class="read-more" href="https://www.aitimes.com/news/articleView.html?idxno=210447" target="_blank">자세히 보기 →</a>
-    </div>
-  </div>
-</div>
-<div class="slide" id="slide-5">
-  <div class="card">
-    <div class="card-header">
-      <span class="newsletter-tag">NEWSLETTER</span>
-      <span class="card-date"></span>
-    </div>
-    <div class="card-img"><img src="https://cdn.aitimes.com/news/photo/202605/210464_213118_1653.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
-    <div class="card-body">
-      <span class="source-chip" style="color:#5B4CFF;border-color:#5B4CFF">AI타임스</span>
-      <h2 class="card-title">애플, iOS 27서 시리를 AI 에이전트로 전면 개편</h2>
-      <ul class="card-lines"><li>애플이 iOS 27에서 시리를 단순 음성 비서에서 AI 에이전트로 대폭 재설계할 예정이다.</li><li>시리는 사용자 데이터를 이해하고 앱 전반에서 작업을 수행하는 고급 기능을 갖추게 된다.</li><li>6월 8일 WWDC에서 개편된 시리와 새로운 iOS가 공개될 예정이다.</li><li>이는 구글의 안드로이드 기반 AI 기능 확대에 대응하기 위한 전략으로 풀이된다.</li><li>카메라 앱도 함께 대규모 사용자 인터페이스 개편이 진행된다.</li></ul>
-    </div>
-    <div class="card-footer">
-      <span class="card-counter">5 / 18</span>
-      <a class="read-more" href="https://www.aitimes.com/news/articleView.html?idxno=210464" target="_blank">자세히 보기 →</a>
-    </div>
-  </div>
-</div>
-<div class="slide" id="slide-6">
-  <div class="card">
-    <div class="card-header">
-      <span class="newsletter-tag">NEWSLETTER</span>
-      <span class="card-date"></span>
-    </div>
-    <div class="card-img"><img src="https://cdn.aitimes.com/news/photo/202605/210462_213115_5411.png" alt="" onerror="this.parentElement.style.display='none'"></div>
-    <div class="card-body">
-      <span class="source-chip" style="color:#5B4CFF;border-color:#5B4CFF">AI타임스</span>
-      <h2 class="card-title">메타, &#x27;뮤즈 스파크&#x27; 기반 AI 음성·시각 인식 기능 추가</h2>
-      <ul class="card-lines"><li>메타가 최신 모델 &#x27;뮤즈 스파크&#x27;를 기반으로 메타 AI 앱을 업데이트했다.</li><li>음성 대화, 실시간 시각 인식, 멀티모달 추론 등 새로운 기능이 탑재됐다.</li><li>사용자는 AI와 자연스럽게 대화하며 중간에 주제 변경이나 언어 혼용이 가능하다.</li><li>AI는 대화 중 이미지 생성, 지도, 온라인 정보 등을 제공할 수 있다.</li><li>쇼핑 기능과 멀티에이전트 작업 처리도 지원한다.</li></ul>
-    </div>
-    <div class="card-footer">
-      <span class="card-counter">6 / 18</span>
-      <a class="read-more" href="https://www.aitimes.com/news/articleView.html?idxno=210462" target="_blank">자세히 보기 →</a>
-    </div>
-  </div>
-</div>
-<div class="slide" id="slide-7">
-  <div class="card">
-    <div class="card-header">
-      <span class="newsletter-tag">NEWSLETTER</span>
-      <span class="card-date"></span>
-    </div>
-    <div class="card-img"><img src="https://cdn.aitimes.kr/news/thumbnail/202605/40026_60431_038_v150.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
-    <div class="card-body">
-      <span class="source-chip" style="color:#00C2A8;border-color:#00C2A8">인공지능신문</span>
-      <h2 class="card-title">AI 국민비서, 음성 인식 기능 추가로 말로 행정 업무 처리 가능</h2>
-      <ul class="card-lines"><li>행정안전부가 카카오톡 기반 &#x27;AI 국민비서&#x27;에 음성 인식 기능을 도입했다.</li><li>텍스트 입력 없이 음성만으로 행정 업무를 처리할 수 있게 된다.</li><li>고령층 등 디지털 취약 계층의 불편 해소를 목표로 한다.</li><li>100여 종의 전자증명서 발급과 1,200여 개의 공공시설 조회 예약이 가능하다.</li><li>누구나 장벽 없이 행정 혜택을 누리는 &#x27;AI 민주정부&#x27; 구현을 추진 중이다.</li></ul>
-    </div>
-    <div class="card-footer">
-      <span class="card-counter">7 / 18</span>
-      <a class="read-more" href="https://www.aitimes.kr/news/articleView.html?idxno=40026" target="_blank">자세히 보기 →</a>
-    </div>
-  </div>
-</div>
-<div class="slide" id="slide-8">
-  <div class="card">
-    <div class="card-header">
-      <span class="newsletter-tag">NEWSLETTER</span>
-      <span class="card-date"></span>
-    </div>
-    <div class="card-img"><img src="https://cdn.aitimes.kr/news/thumbnail/202605/40025_60430_5533_v150.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
-    <div class="card-body">
-      <span class="source-chip" style="color:#00C2A8;border-color:#00C2A8">인공지능신문</span>
-      <h2 class="card-title">조달청, AI로봇 혁신기업 방문해 규제 혁파 방안 모색</h2>
-      <ul class="card-lines"><li>조달청 백승보 청장이 로봇·바이오 산업 거점인 인천을 방문했다.</li><li>공공조달이 민간 혁신을 어떻게 지원할지에 대한 현장 의견을 수렴했다.</li><li>공공조달시장 진입에 성공한 초보기업 3개사의 사례를 공유했다.</li><li>2026년 조달개혁 과제 추진을 위해 정책에 현장 의견을 반영하는 방침이다.</li><li>혁신조달 확산과 규제 혁파를 통해 유망기업의 판로 확대를 지원할 계획이다.</li></ul>
-    </div>
-    <div class="card-footer">
-      <span class="card-counter">8 / 18</span>
-      <a class="read-more" href="https://www.aitimes.kr/news/articleView.html?idxno=40025" target="_blank">자세히 보기 →</a>
-    </div>
-  </div>
-</div>
-<div class="slide" id="slide-9">
-  <div class="card">
-    <div class="card-header">
-      <span class="newsletter-tag">NEWSLETTER</span>
-      <span class="card-date"></span>
-    </div>
-    <div class="card-img"><img src="https://cdn.aitimes.kr/news/thumbnail/202605/40024_60429_2539_v150.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
-    <div class="card-body">
-      <span class="source-chip" style="color:#00C2A8;border-color:#00C2A8">인공지능신문</span>
-      <h2 class="card-title">KT, AI 상담 서비스 보안인증 갱신…공공시장 공략</h2>
-      <ul class="card-lines"><li>KT가 클라우드형 인공지능 컨택센터(AICC) 솔루션 &#x27;에이센&#x27;의 보안인증(CSAP)을 갱신했다.</li><li>2031년까지 공공기관에 안정적인 AI 상담 서비스를 제공할 계획이다.</li><li>CSAP는 한국인터넷진흥원이 주관하는 클라우드 서비스 보안인증 제도다.</li><li>KT는 2021년 4월 해당 서비스의 SaaS 표준 등급 인증을 최초 취득했으며, 이번에 갱신했다.</li></ul>
-    </div>
-    <div class="card-footer">
-      <span class="card-counter">9 / 18</span>
-      <a class="read-more" href="https://www.aitimes.kr/news/articleView.html?idxno=40024" target="_blank">자세히 보기 →</a>
-    </div>
-  </div>
-</div>
-<div class="slide" id="slide-10">
-  <div class="card">
-    <div class="card-header">
-      <span class="newsletter-tag">NEWSLETTER</span>
-      <span class="card-date"></span>
-    </div>
-    <div class="card-img"><img src="https://cdn.aitimes.kr/news/thumbnail/202605/40023_60428_1933_v150.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
-    <div class="card-body">
-      <span class="source-chip" style="color:#00C2A8;border-color:#00C2A8">인공지능신문</span>
-      <h2 class="card-title">레드햇, AI 에이전트 개발 툴 출시</h2>
-      <ul class="card-lines"><li>레드햇이 AI 에이전트 개발을 위한 새로운 개발자 포트폴리오를 확장했다.</li><li>신규 출시된 &#x27;레드햇 데스크톱&#x27;과 &#x27;레드햇 어드밴스드 디벨로퍼 스위트&#x27; 업데이트를 통해 제품을 선보인다.</li><li>개발자 워크스테이션의 로컬 환경에서 실행되는 에이전트를 하이브리드 클라우드 전반에 걸친 프로덕션 규모로 배포할 수 있다.</li><li>이를 통해 개발에서 배포까지 원활한 전환이 가능해진다.</li></ul>
-    </div>
-    <div class="card-footer">
-      <span class="card-counter">10 / 18</span>
-      <a class="read-more" href="https://www.aitimes.kr/news/articleView.html?idxno=40023" target="_blank">자세히 보기 →</a>
-    </div>
-  </div>
-</div>
-<div class="slide" id="slide-11">
-  <div class="card">
-    <div class="card-header">
-      <span class="newsletter-tag">NEWSLETTER</span>
-      <span class="card-date"></span>
-    </div>
-    <div class="card-img"><img src="https://cdn.aitimes.kr/news/thumbnail/202605/40022_60427_4022_v150.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
-    <div class="card-body">
-      <span class="source-chip" style="color:#00C2A8;border-color:#00C2A8">인공지능신문</span>
-      <h2 class="card-title">삼성전자, EU 에너지 협약 첫 서명으로 스마트 가전 리더십 강화</h2>
-      <ul class="card-lines"><li>삼성전자가 EU의 스마트 가전 에너지 행동강령(CoC)에 국내 기업 최초로 서명했다.</li><li>EU CoC는 EU 집행위원회 산하 공동연구센터가 주도하는 자발적 협약 프로그램이다.</li><li>가전제품 제조사들의 에너지 고효율 스마트 가전 개발과 보급 확대를 장려한다.</li><li>스마트 가전과 전력 관리 시스템 연계로 전력 수요를 효율적으로 분산시킨다.</li><li>이를 통해 유럽시장에서 고효율 가전 분야의 리더십을 강화할 수 있을 것으로 예상된다.</li></ul>
-    </div>
-    <div class="card-footer">
-      <span class="card-counter">11 / 18</span>
-      <a class="read-more" href="https://www.aitimes.kr/news/articleView.html?idxno=40022" target="_blank">자세히 보기 →</a>
-    </div>
-  </div>
-</div>
-<div class="slide" id="slide-12">
-  <div class="card">
-    <div class="card-header">
-      <span class="newsletter-tag">NEWSLETTER</span>
-      <span class="card-date"></span>
-    </div>
-    <div class="card-img"><img src="https://cdn.aitimes.kr/news/thumbnail/202605/40021_60426_1248_v150.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
-    <div class="card-body">
-      <span class="source-chip" style="color:#00C2A8;border-color:#00C2A8">인공지능신문</span>
-      <h2 class="card-title">키사이트, 제조 초기 단계 조립 결함 잡는 시뮬레이션 솔루션 출시</h2>
-      <ul class="card-lines"><li>키사이트테크놀로지스가 가상 프로세스 시뮬레이션 솔루션 &#x27;키사이트 어셈블리&#x27;를 발표했다.</li><li>제조업체들이 개발 초기 단계에서 조립 문제를 식별하도록 돕는다.</li><li>자동차 및 산업 제조 분야에서 생산 후기 조립 실패로 인한 막대한 비용 문제를 해결한다.</li><li>늦은 발견으로 인한 비용 증가를 방지할 수 있다.</li></ul>
-    </div>
-    <div class="card-footer">
-      <span class="card-counter">12 / 18</span>
-      <a class="read-more" href="https://www.aitimes.kr/news/articleView.html?idxno=40021" target="_blank">자세히 보기 →</a>
-    </div>
-  </div>
-</div>
-<div class="slide" id="slide-13">
-  <div class="card">
-    <div class="card-header">
-      <span class="newsletter-tag">NEWSLETTER</span>
-      <span class="card-date">2026.05.14 11:03</span>
+      <span class="card-date">05.14 11:03</span>
     </div>
     <div class="card-img"><img src="https://pimg.mk.co.kr/news/cms/202605/14/news-p.v1.20260514.d56948ab8a6f4147abe47dc64c42d849_R.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
     <div class="card-body">
       <span class="source-chip" style="color:#E6A817;border-color:#E6A817">매일경제 IT</span>
-      <h2 class="card-title">정부, 미래차 산업에 18조 정책금융 공급</h2>
-      <ul class="card-lines"><li>정부가 자동차 부품업계와 미래차 산업 육성을 위해 올해 18조원의 정책금융을 공급하기로 결정했다.</li><li>부품업계에 9.7조원, 자율주행차 등 미래차 산업에 8.3조원을 지원한다.</li><li>금융위원회와 산업부가 &#x27;미래차 전환 간담회&#x27;를 개최해 이 같은 계획을 발표했다.</li><li>국민성장펀드를 통해서도 15조원을 추가로 투입할 예정이다.</li><li>이는 자동차 산업의 전환기에 산업 경쟁력을 강화하기 위한 조치다.</li></ul>
+      <h2 class="card-title">미래차 육성에 정책금융 18조원 공급</h2>
+      <ul class="card-lines"><li>정부가 자동차 부품업계와 미래차 산업 육성을 위해 올해 18조원의 정책금융을 공급한다.</li><li>부품업계에 9.7조원, 미래차 산업에 8.3조원을 투입할 계획이다.</li><li>금융위원회와 산업통상자원부가 &#x27;미래차 전환 간담회&#x27;를 개최했다.</li><li>국민성장펀드를 통해 추가로 15조원을 투입할 예정이다.</li><li>자율주행차 등 미래차 산업 전환을 지원하는 것이 목표다.</li></ul>
     </div>
     <div class="card-footer">
-      <span class="card-counter">13 / 18</span>
+      <span class="card-counter">4 / 8</span>
       <a class="read-more" href="https://www.mk.co.kr/news/economy/12047375" target="_blank">자세히 보기 →</a>
     </div>
   </div>
 </div>
-<div class="slide" id="slide-14">
+<div class="slide">
   <div class="card">
     <div class="card-header">
       <span class="newsletter-tag">NEWSLETTER</span>
-      <span class="card-date">2026.05.14 11:03</span>
+      <span class="card-date">05.14 11:03</span>
     </div>
-    <div class="card-img"><img src="https://pimg.mk.co.kr/news/cms/202605/14/news-p.v1.20260514.289e1d15760d47c3b1d0213782d02b69_R.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
+    <div class="card-img"><img src="https://pimg.mk.co.kr/news/cms/202605/14/news-p.v1.20260514.2b786320281f4fe2b56187572d456f46_R.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
     <div class="card-body">
       <span class="source-chip" style="color:#E6A817;border-color:#E6A817">매일경제 IT</span>
-      <h2 class="card-title">한국공항공사, 중동 정세 불안에 전국 공항 건설현장 특별점검</h2>
-      <ul class="card-lines"><li>한국공항공사가 중동발 정세 불안에 대응하기 위해 전국 공항의 주요 건설 현장을 특별점검하고 있다.</li><li>김포·김해·제주·여수·사천공항 등 14개 건설 현장을 대상으로 21일까지 점검을 진행 중이다.</li><li>현재 김포·김해공항의 6개 건설 현장 점검이 완료되었다.</li><li>이는 국제 정세 악화에 따른 공항 시설의 안전성 확보를 위한 조치로 보인다.</li></ul>
+      <h2 class="card-title">중동 정세 불안으로 한국공항공사, 전국 공항 건설 현장 특별점검</h2>
+      <ul class="card-lines"><li>한국공항공사가 중동발 정세 불안에 대응해 전국 공항 건설 현장에 대한 특별점검을 실시 중입니다.</li><li>김포, 김해, 제주, 여수, 사천공항 등 14개 건설 현장을 점검 대상으로 지정했습니다.</li><li>현재까지 김포, 김해공항의 6개 현장 점검을 마무리한 상태입니다.</li><li>점검은 21일까지 예정되어 있습니다.</li><li>안전성 강화와 예상 위협에 대한 선제적 대응이 점검의 주목적입니다.</li></ul>
     </div>
     <div class="card-footer">
-      <span class="card-counter">14 / 18</span>
+      <span class="card-counter">5 / 8</span>
       <a class="read-more" href="https://www.mk.co.kr/news/business/12047374" target="_blank">자세히 보기 →</a>
     </div>
   </div>
 </div>
-<div class="slide" id="slide-15">
+<div class="slide">
   <div class="card">
     <div class="card-header">
       <span class="newsletter-tag">NEWSLETTER</span>
-      <span class="card-date">2026.05.14 11:03</span>
+      <span class="card-date">05.14 11:03</span>
     </div>
     <div class="card-img"><img src="https://pimg.mk.co.kr/news/cms/202605/14/news-p.v1.20260514.a202958967674ca38ab5a40fa25f81c4_R.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
     <div class="card-body">
       <span class="source-chip" style="color:#E6A817;border-color:#E6A817">매일경제 IT</span>
-      <h2 class="card-title">평택시, 반도체 산업 맞춤형 교육생 모집</h2>
-      <ul class="card-lines"><li>평택시가 글로벌 반도체 도시로 성장하면서 현장 맞춤형 반도체 교육생을 모집하고 있다.</li><li>삼성의 세계 최대 반도체 생산공장 등 지역 반도체 산업 기반을 활용한 교육 프로그램을 운영한다.</li><li>반도체 공정·장비과정 교육을 통해 산업 현장 수요에 맞는 인력 양성을 목표로 한다.</li><li>교육과 함께 취업 지원 프로그램을 병행하여 실질적인 일자리 연계를 추진한다.</li><li>지역 반도체 산업의 경쟁력 강화와 지역 인재 육성을 동시에 추진하는 사업이다.</li></ul>
+      <h2 class="card-title">평택시, 현장 맞춤형 반도체 교육생 모집</h2>
+      <ul class="card-lines"><li>평택시가 반도체 공정·장비과정 교육생을 모집한다.</li><li>글로벌 반도체 도시로 발전 중인 평택시의 인력 양성 사업이다.</li><li>교육과 함께 취업 지원 프로그램을 병행한다.</li><li>삼성 등 세계 최대 반도체 생산공장이 입지한 지역이다.</li><li>실무 중심의 맞춤형 교육으로 산업 수요를 충족한다.</li></ul>
     </div>
     <div class="card-footer">
-      <span class="card-counter">15 / 18</span>
+      <span class="card-counter">6 / 8</span>
       <a class="read-more" href="https://www.mk.co.kr/news/business/12047373" target="_blank">자세히 보기 →</a>
     </div>
   </div>
 </div>
-<div class="slide" id="slide-16">
+<div class="slide">
   <div class="card">
     <div class="card-header">
       <span class="newsletter-tag">NEWSLETTER</span>
-      <span class="card-date">2026.05.14 11:02</span>
+      <span class="card-date">05.14 11:02</span>
     </div>
     <div class="card-img"><img src="https://pimg.mk.co.kr/news/cms/202605/14/news-p.v1.20260514.3e842c80f98948ab8d97392336650cdd_R.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
     <div class="card-body">
       <span class="source-chip" style="color:#E6A817;border-color:#E6A817">매일경제 IT</span>
-      <h2 class="card-title">신창재 보험, 감성 담은 펭귄 캐릭터로 보장의 가치 시각화</h2>
-      <ul class="card-lines"><li>보험업계가 캐릭터를 활용해 무형의 보장을 시각화하는 추세를 보이고 있다.</li><li>신창재 보험은 펭귄 캐릭터를 통해 &#x27;어려울 때 안아준다&#x27;는 감성적 메시지를 전달한다.</li><li>단순한 귀여움을 넘어 보험의 본질적 철학을 캐릭터에 담아낸다.</li><li>이는 고객에게 추상적인 보험 상품의 가치를 감정적으로 전달하는 전략이다.</li></ul>
+      <h2 class="card-title">보험사, 캐릭터로 감성과 가치 전달</h2>
+      <ul class="card-lines"><li>보험업계가 무형의 보장 상품을 시각화하기 위해 캐릭터 활용을 확대하고 있다.</li><li>신창재 보험이 펭귄 캐릭터를 통해 감성보험의 철학을 표현하고 있다.</li><li>단순한 귀여운 이미지를 벗어나 보험의 본질적 가치를 담아낸다.</li><li>캐릭터를 통해 고객과의 정서적 연결을 강화하는 전략이다.</li><li>눈에 보이지 않는 보험 상품의 신뢰도와 매력을 높이는 시도이다.</li></ul>
     </div>
     <div class="card-footer">
-      <span class="card-counter">16 / 18</span>
+      <span class="card-counter">7 / 8</span>
       <a class="read-more" href="https://www.mk.co.kr/news/economy/12047370" target="_blank">자세히 보기 →</a>
     </div>
   </div>
 </div>
-<div class="slide" id="slide-17">
+<div class="slide">
   <div class="card">
     <div class="card-header">
       <span class="newsletter-tag">NEWSLETTER</span>
-      <span class="card-date">2026.05.14 11:01</span>
+      <span class="card-date">05.14 11:01</span>
     </div>
     <div class="card-img"><img src="https://pimg.mk.co.kr/news/cms/202605/14/news-p.v1.20260514.62892d7fc1a149399ae3a6c798d01c97_R.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
     <div class="card-body">
       <span class="source-chip" style="color:#E6A817;border-color:#E6A817">매일경제 IT</span>
-      <h2 class="card-title">한국남부발전, 부산빛드림본부 화재 복구 대책본부 시동</h2>
-      <ul class="card-lines"><li>한국남부발전이 부산빛드림본부 화재 사고의 신속한 복구를 위해 &#x27;피해복구 대책본부&#x27;를 가동했다.</li><li>신속한 복구와 철저한 조사를 통해 유사 사고의 재발 방지에 총력을 기울일 계획이다.</li><li>안전 강화를 주력으로 하는 복구 작업이 진행될 예정이다.</li></ul>
+      <h2 class="card-title">한국남부발전, 부산빛드림본부 화재 복구 대책본부 가동</h2>
+      <ul class="card-lines"><li>한국남부발전이 부산빛드림본부 화재 사고 복구를 위한 &#x27;피해복구 대책본부&#x27;를 가동했다.</li><li>신속한 복구와 철저한 조사를 통해 사고 재발 방지에 총력을 기울이고 있다.</li><li>안전 강화를 주력으로 삼아 복구 작업을 진행 중이다.</li></ul>
     </div>
     <div class="card-footer">
-      <span class="card-counter">17 / 18</span>
+      <span class="card-counter">8 / 8</span>
       <a class="read-more" href="https://www.mk.co.kr/news/business/12047369" target="_blank">자세히 보기 →</a>
     </div>
   </div>
+</div></div>
 </div>
-<div class="slide" id="slide-18">
-  <div class="card">
-    <div class="card-header">
-      <span class="newsletter-tag">NEWSLETTER</span>
-      <span class="card-date">2026.05.14 11:00</span>
-    </div>
-    <div class="card-img"><img src="https://pimg.mk.co.kr/news/cms/202605/14/news-p.v1.20260514.e60adc79223646bc81823c9255c508d8_R.jpg" alt="" onerror="this.parentElement.style.display='none'"></div>
-    <div class="card-body">
-      <span class="source-chip" style="color:#E6A817;border-color:#E6A817">매일경제 IT</span>
-      <h2 class="card-title">반도체株 닷컴버블 이후 최고 과매수 신호</h2>
-      <ul class="card-lines"><li>미국 반도체 주식이 닷컴버블 이후 최고 수준의 과열 국면에 접어들고 있다.</li><li>필라델피아 반도체 지수(SOX)가 사상 최고치를 경신하며 과매수 신호를 보이고 있다.</li><li>기술주와 AI 관련주의 강세가 반도체 업종 전반의 급등을 견인하고 있다.</li><li>과열 우려에도 불구하고 시장의 낙관론이 지속되고 있는 상황이다.</li></ul>
-    </div>
-    <div class="card-footer">
-      <span class="card-counter">18 / 18</span>
-      <a class="read-more" href="https://www.mk.co.kr/news/stock/12047363" target="_blank">자세히 보기 →</a>
-    </div>
-  </div>
-</div>
-  </div>
+<div class="dots" id="dots-general"><button class="dot active" onclick="goTo('general',0)"></button><button class="dot" onclick="goTo('general',1)"></button><button class="dot" onclick="goTo('general',2)"></button><button class="dot" onclick="goTo('general',3)"></button><button class="dot" onclick="goTo('general',4)"></button><button class="dot" onclick="goTo('general',5)"></button><button class="dot" onclick="goTo('general',6)"></button><button class="dot" onclick="goTo('general',7)"></button></div>
+<div class="carousel-info">총 8개 · 스와이프 또는 화살표로 이동</div>
 </div>
 
-<div class="dots" id="dots">
-  <button class="dot active" onclick="goTo(0)" aria-label="1번 카드"></button><button class="dot" onclick="goTo(1)" aria-label="2번 카드"></button><button class="dot" onclick="goTo(2)" aria-label="3번 카드"></button><button class="dot" onclick="goTo(3)" aria-label="4번 카드"></button><button class="dot" onclick="goTo(4)" aria-label="5번 카드"></button><button class="dot" onclick="goTo(5)" aria-label="6번 카드"></button><button class="dot" onclick="goTo(6)" aria-label="7번 카드"></button><button class="dot" onclick="goTo(7)" aria-label="8번 카드"></button><button class="dot" onclick="goTo(8)" aria-label="9번 카드"></button><button class="dot" onclick="goTo(9)" aria-label="10번 카드"></button><button class="dot" onclick="goTo(10)" aria-label="11번 카드"></button><button class="dot" onclick="goTo(11)" aria-label="12번 카드"></button><button class="dot" onclick="goTo(12)" aria-label="13번 카드"></button><button class="dot" onclick="goTo(13)" aria-label="14번 카드"></button><button class="dot" onclick="goTo(14)" aria-label="15번 카드"></button><button class="dot" onclick="goTo(15)" aria-label="16번 카드"></button><button class="dot" onclick="goTo(16)" aria-label="17번 카드"></button><button class="dot" onclick="goTo(17)" aria-label="18번 카드"></button>
+<div class="section" id="section-company">
+  <div class="section-title">🏢 AI 기업 소식</div>
+  <div class="no-data">해당 카테고리 기사가 없습니다.</div>
 </div>
 
-<div class="bottom-info">총 18개 기사 · 스와이프하거나 화살표로 이동</div>
+<div class="section" id="section-service">
+  <div class="section-title">🎨 AI 서비스 · 영상 · 이미지</div>
+  <div class="no-data">해당 카테고리 기사가 없습니다.</div>
+</div>
+
+<div class="section" id="section-stock">
+  <div class="section-title">📈 AI 주식 동향</div>
+  <div class="stock-section-inner">
+    <div class="stock-group"><div class="stock-group-title">반도체</div><div class="stock-row">
+<div class="stock-card">
+  <div class="stock-cat">반도체</div>
+  <div class="stock-name">엔비디아</div>
+  <div class="stock-ticker">NVDA</div>
+  <div class="stock-price">$225.83</div>
+  <div class="stock-change" style="color:#1DA462">▲ +2.89%</div>
+</div>
+<div class="stock-card">
+  <div class="stock-cat">반도체</div>
+  <div class="stock-name">AMD</div>
+  <div class="stock-ticker">AMD</div>
+  <div class="stock-price">$445.50</div>
+  <div class="stock-change" style="color:#1DA462">▲ +0.17%</div>
+</div>
+<div class="stock-card">
+  <div class="stock-cat">반도체</div>
+  <div class="stock-name">TSMC</div>
+  <div class="stock-ticker">TSM</div>
+  <div class="stock-price">$399.80</div>
+  <div class="stock-change" style="color:#1DA462">▲ +1.32%</div>
+</div>
+<div class="stock-card">
+  <div class="stock-cat">반도체</div>
+  <div class="stock-name">브로드컴</div>
+  <div class="stock-ticker">AVGO</div>
+  <div class="stock-price">$416.79</div>
+  <div class="stock-change" style="color:#E63946">▼ -0.16%</div>
+</div>
+<div class="stock-card">
+  <div class="stock-cat">반도체</div>
+  <div class="stock-name">삼성전자</div>
+  <div class="stock-ticker">005930</div>
+  <div class="stock-price">₩296,000</div>
+  <div class="stock-change" style="color:#1DA462">▲ +3.95%</div>
+</div>
+<div class="stock-card">
+  <div class="stock-cat">반도체</div>
+  <div class="stock-name">SK하이닉스</div>
+  <div class="stock-ticker">000660</div>
+  <div class="stock-price">₩1,974,000</div>
+  <div class="stock-change" style="color:#E63946">▼ -0.55%</div>
+</div></div></div>
+<div class="stock-group"><div class="stock-group-title">AI 빅테크</div><div class="stock-row">
+<div class="stock-card">
+  <div class="stock-cat">AI 빅테크</div>
+  <div class="stock-name">구글</div>
+  <div class="stock-ticker">GOOGL</div>
+  <div class="stock-price">$402.62</div>
+  <div class="stock-change" style="color:#1DA462">▲ +3.32%</div>
+</div>
+<div class="stock-card">
+  <div class="stock-cat">AI 빅테크</div>
+  <div class="stock-name">마이크로소프트</div>
+  <div class="stock-ticker">MSFT</div>
+  <div class="stock-price">$405.21</div>
+  <div class="stock-change" style="color:#E63946">▼ -0.59%</div>
+</div>
+<div class="stock-card">
+  <div class="stock-cat">AI 빅테크</div>
+  <div class="stock-name">메타</div>
+  <div class="stock-ticker">META</div>
+  <div class="stock-price">$616.63</div>
+  <div class="stock-change" style="color:#1DA462">▲ +2.46%</div>
+</div>
+<div class="stock-card">
+  <div class="stock-cat">AI 빅테크</div>
+  <div class="stock-name">아마존</div>
+  <div class="stock-ticker">AMZN</div>
+  <div class="stock-price">$270.13</div>
+  <div class="stock-change" style="color:#1DA462">▲ +1.05%</div>
+</div></div></div>
+<div class="stock-group"><div class="stock-group-title">전력</div><div class="stock-row">
+<div class="stock-card">
+  <div class="stock-cat">전력</div>
+  <div class="stock-name">넥스트에라</div>
+  <div class="stock-ticker">NEE</div>
+  <div class="stock-price">$94.85</div>
+  <div class="stock-change" style="color:#E63946">▼ -0.03%</div>
+</div>
+<div class="stock-card">
+  <div class="stock-cat">전력</div>
+  <div class="stock-name">비스트라</div>
+  <div class="stock-ticker">VST</div>
+  <div class="stock-price">$142.61</div>
+  <div class="stock-change" style="color:#E63946">▼ -2.95%</div>
+</div>
+<div class="stock-card">
+  <div class="stock-cat">전력</div>
+  <div class="stock-name">컨스텔레이션</div>
+  <div class="stock-ticker">CEG</div>
+  <div class="stock-price">$274.89</div>
+  <div class="stock-change" style="color:#E63946">▼ -6.02%</div>
+</div></div></div>
+<div class="stock-group"><div class="stock-group-title">AI 서비스</div><div class="stock-row">
+<div class="stock-card">
+  <div class="stock-cat">AI 서비스</div>
+  <div class="stock-name">팔란티어</div>
+  <div class="stock-ticker">PLTR</div>
+  <div class="stock-price">$130.05</div>
+  <div class="stock-change" style="color:#E63946">▼ -4.83%</div>
+</div>
+<div class="stock-card">
+  <div class="stock-cat">AI 서비스</div>
+  <div class="stock-name">사운드하운드</div>
+  <div class="stock-ticker">SOUN</div>
+  <div class="stock-price">$8.42</div>
+  <div class="stock-change" style="color:#1DA462">▲ +4.73%</div>
+</div></div></div>
+    <div class="market-note">※ 장 마감 후에는 전일 종가 기준으로 표시됩니다</div>
+  </div>
+</div>
 
 <script>
-  const slider = document.getElementById('slider');
-  const dots   = document.querySelectorAll('.dot');
-  let current  = 0;
-  const total  = 18;
+const sliderState = {};
 
-  function updateDots(idx) {
-    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-    current = idx;
-  }
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('section-'+id).classList.add('active');
+  btn.classList.add('active');
+}
 
-  function goTo(idx) {
-    idx = Math.max(0, Math.min(total - 1, idx));
-    slider.scrollTo({ left: slider.clientWidth * idx, behavior: 'smooth' });
-    updateDots(idx);
-  }
+function goTo(sid, idx) {
+  const slider = document.getElementById('slider-'+sid);
+  if (!slider) return;
+  const total = slider.querySelectorAll('.slide').length;
+  idx = Math.max(0, Math.min(total-1, idx));
+  slider.scrollTo({left: slider.clientWidth * idx, behavior:'smooth'});
+  updateDots(sid, idx);
+  sliderState[sid] = idx;
+}
 
-  function move(dir) { goTo(current + dir); }
+function move(sid, dir) {
+  const cur = sliderState[sid] || 0;
+  goTo(sid, cur + dir);
+}
 
-  // 스크롤로 현재 인덱스 감지
+function updateDots(sid, idx) {
+  const dotsEl = document.getElementById('dots-'+sid);
+  if (!dotsEl) return;
+  dotsEl.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===idx));
+  sliderState[sid] = idx;
+}
+
+// 각 슬라이더 스크롤 감지
+['general','company','service'].forEach(sid => {
+  const slider = document.getElementById('slider-'+sid);
+  if (!slider) return;
   slider.addEventListener('scroll', () => {
     const idx = Math.round(slider.scrollLeft / slider.clientWidth);
-    if (idx !== current) updateDots(idx);
+    if (idx !== sliderState[sid]) updateDots(sid, idx);
   });
+});
 
-  // 키보드 좌우 화살표
-  document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowLeft')  move(-1);
-    if (e.key === 'ArrowRight') move(+1);
-  });
+// 키보드
+document.addEventListener('keydown', e => {
+  const active = document.querySelector('.section.active');
+  if (!active) return;
+  const sid = active.id.replace('section-','');
+  if (e.key==='ArrowLeft')  move(sid,-1);
+  if (e.key==='ArrowRight') move(sid,+1);
+});
 </script>
 </body>
 </html>
