@@ -127,7 +127,7 @@ def chart_json(grouped):
     return json.dumps({"labels":all_months,"datasets":datasets},ensure_ascii=False)
 
 # ── HTML 구성 ─────────────────────────────────────────────────────────────────
-def stat_html(emoji, val, lbl, color="#3B82F6"):
+def stat_html(emoji, val, lbl, color="var(--sage)"):
     return f"""<div class="stat">
       <div class="s-emoji">{emoji}</div>
       <div class="s-val" style="color:{color}">{val}</div>
@@ -199,10 +199,10 @@ def apt_pane(apt, trades, rents, chart_registry):
         stats += stat_html("💰", avg3, "최근3개월 평균매매가")
         stats += stat_html("📈", hi84, "84㎡ 최고가")
         stats += stat_html("📉", lo84, "84㎡ 최저가")
-    stats += stat_html("🔑", f"{total_j}건", "전세거래(2023~)", "#6366F1")
-    stats += stat_html("🏠", f"{total_w}건", "월세거래(2023~)", "#10B981")
+    stats += stat_html("🔑", f"{total_j}건", "전세거래(2023~)", "var(--sage)")
+    stats += stat_html("🏠", f"{total_w}건", "월세거래(2023~)", "var(--sage2)")
     if mode == "rent":
-        stats += stat_html("💵", avgj, "최근3개월 전세평균", "#6366F1")
+        stats += stat_html("💵", avgj, "최근3개월 전세평균", "var(--sage)")
     stats += '</div>'
 
     # 차트 (캔버스만 배치, 데이터는 registry에 모음)
@@ -403,8 +403,8 @@ tr:last-child td{{border-bottom:none;}}
 tr:hover td{{background:var(--sage4);transition:.1s;}}
 .pc{{font-weight:700;color:var(--sage);}}
 .tm{{
-  font-size:10px;font-weight:700;color:#1D6FA4;
-  background:#EBF4FA;padding:2px 7px;border-radius:10px;
+  font-size:10px;font-weight:700;color:#3D6B3A;
+  background:#D8E8D5;padding:2px 7px;border-radius:10px;
 }}
 .tj{{
   font-size:10px;font-weight:700;color:var(--sage);
