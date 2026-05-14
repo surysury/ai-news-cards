@@ -2,131 +2,195 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>KCC스위첸2차 시세 추적</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>KCC스위첸2차 시세 🏠</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Noto Sans KR',sans-serif;background:#0e0e0e;color:#e0e0e0;min-height:100vh;padding-bottom:60px;}
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  :root{
+    --pink:   #FF6B9D;
+    --pink2:  #FF9EBB;
+    --pink3:  #FFE4EE;
+    --pink4:  #FFF0F5;
+    --dark:   #3D2B35;
+    --gray:   #9E8A92;
+    --white:  #FFFFFF;
+  }
+  body{font-family:'Noto Sans KR',sans-serif;background:var(--pink4);
+        min-height:100vh;padding-bottom:env(safe-area-inset-bottom,24px);}
 
-  .header{background:#0a0a0a;padding:24px;border-bottom:1px solid #1e1e1e;}
-  .header h1{font-size:22px;font-weight:900;color:#fff;margin-bottom:4px;}
-  .header h1 em{color:#F5C518;font-style:normal;}
-  .header .sub{font-size:12px;color:#555;margin-top:6px;}
+  /* 헤더 */
+  .header{background:linear-gradient(135deg,#FF6B9D 0%,#FF9EBB 100%);
+           padding:28px 24px 24px;padding-top:max(28px,env(safe-area-inset-top));
+           position:relative;overflow:hidden;}
+  .header::before{content:'🐻';position:absolute;right:20px;top:50%;
+                   transform:translateY(-50%);font-size:64px;opacity:.25;}
+  .header::after{content:'🌸🌸🌸';position:absolute;right:24px;top:12px;
+                  font-size:14px;opacity:.5;letter-spacing:4px;}
+  .header .badge{display:inline-block;background:rgba(255,255,255,.3);
+                  color:#fff;font-size:10px;font-weight:700;padding:3px 10px;
+                  border-radius:20px;letter-spacing:.08em;margin-bottom:10px;}
+  .header h1{font-size:22px;font-weight:900;color:#fff;line-height:1.3;
+              text-shadow:0 2px 8px rgba(0,0,0,.15);}
+  .header h1 span{display:block;font-size:13px;font-weight:500;
+                   opacity:.85;margin-top:4px;}
+  .update-info{font-size:10px;color:rgba(255,255,255,.7);margin-top:10px;}
 
-  .section{padding:24px;border-bottom:1px solid #1a1a1a;}
-  .section-title{font-size:13px;font-weight:700;color:#F5C518;letter-spacing:.1em;
-                  text-transform:uppercase;margin-bottom:16px;}
+  /* 탭 */
+  .tabs-wrap{position:sticky;top:0;z-index:50;
+              background:#fff;box-shadow:0 2px 12px rgba(255,107,157,.15);}
+  .tabs{display:flex;}
+  .tab{flex:1;padding:13px 4px;font-size:12px;font-weight:700;color:var(--gray);
+        background:none;border:none;border-bottom:2.5px solid transparent;
+        cursor:pointer;text-align:center;transition:.2s;}
+  .tab.active{color:var(--pink);border-bottom-color:var(--pink);}
 
-  .stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:0;}
-  .stat-card{background:#1a1a1a;border-radius:12px;padding:16px 20px;border:1px solid #2a2a2a;
-              border-left:3px solid #F5C518;min-width:140px;flex:1;}
-  .stat-val{font-size:22px;font-weight:900;color:#F5C518;}
-  .stat-lbl{font-size:11px;color:#555;margin-top:4px;}
+  /* 컨텐츠 */
+  .pane{display:none;padding:20px 16px;} .pane.active{display:block;}
 
-  .chart-box{background:#141414;border-radius:12px;padding:20px;border:1px solid #1e1e1e;margin-bottom:16px;}
-  .chart-box h3{font-size:13px;color:#aaa;margin-bottom:16px;font-weight:700;}
+  /* 스탯 카드 */
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+  .stat{background:#fff;border-radius:16px;padding:16px;
+         box-shadow:0 4px 16px rgba(255,107,157,.12);text-align:center;}
+  .stat.wide{grid-column:1/-1;}
+  .stat-emoji{font-size:24px;margin-bottom:6px;}
+  .stat-val{font-size:20px;font-weight:900;color:var(--pink);line-height:1;}
+  .stat-lbl{font-size:10px;color:var(--gray);margin-top:4px;font-weight:500;}
 
+  /* 차트 카드 */
+  .chart-card{background:#fff;border-radius:20px;padding:20px;
+               box-shadow:0 4px 20px rgba(255,107,157,.1);margin-bottom:16px;}
+  .chart-title{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:16px;
+                display:flex;align-items:center;gap:6px;}
+  .chart-title::before{content:'';display:block;width:4px;height:16px;
+                         background:var(--pink);border-radius:2px;}
+
+  /* 테이블 */
+  .table-card{background:#fff;border-radius:20px;overflow:hidden;
+               box-shadow:0 4px 20px rgba(255,107,157,.1);margin-bottom:16px;}
+  .table-head{background:linear-gradient(90deg,#FF6B9D,#FF9EBB);
+               padding:14px 16px;font-size:12px;font-weight:700;color:#fff;}
   table{width:100%;border-collapse:collapse;font-size:12px;}
-  th{background:#1a1a1a;color:#666;font-weight:700;padding:10px 12px;text-align:left;
-      border-bottom:1px solid #222;letter-spacing:.05em;}
-  td{padding:10px 12px;border-bottom:1px solid #1a1a1a;color:#ccc;}
-  tr:hover td{background:#161616;}
+  th{background:var(--pink3);color:var(--gray);font-weight:700;padding:10px 12px;
+      text-align:left;font-size:11px;}
+  td{padding:10px 12px;border-bottom:1px solid var(--pink4);color:var(--dark);}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:var(--pink4);}
+  .price-cell{font-weight:700;color:var(--pink);}
+  .price-cell.blue{color:#60a5fa;}
+  .price-cell.green{color:#34d399;}
+  .unit{font-size:10px;font-weight:400;color:var(--gray);margin-left:2px;}
 
-  .tabs{display:flex;border-bottom:1px solid #1e1e1e;background:#0a0a0a;
-         position:sticky;top:0;z-index:10;}
-  .tab{flex:1;padding:14px;font-size:13px;font-weight:700;color:#444;background:none;
-        border:none;border-bottom:2px solid transparent;cursor:pointer;text-align:center;}
-  .tab.active{color:#F5C518;border-bottom-color:#F5C518;}
-  .pane{display:none;} .pane.active{display:block;}
+  /* 귀여운 빈 상태 */
+  .empty{text-align:center;padding:40px 20px;color:var(--gray);}
+  .empty .emoji{font-size:48px;margin-bottom:12px;}
+  .empty p{font-size:13px;}
 
-  .update-badge{display:inline-block;font-size:10px;background:#1a1a1a;color:#555;
-                 padding:3px 10px;border-radius:20px;margin-top:8px;}
-  @media(max-width:480px){
-    .stats{gap:8px;}
-    .stat-val{font-size:18px;}
+  /* 섹션 타이틀 */
+  .section-title{font-size:12px;font-weight:700;color:var(--pink);
+                  letter-spacing:.08em;margin:20px 0 10px;
+                  display:flex;align-items:center;gap:6px;}
+
+  @media(max-width:360px){
+    .stats{grid-template-columns:1fr;}
+    .stat.wide{grid-column:1;}
   }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <h1>경기 김포시 운양동<br><em>KCC스위첸2차</em> 시세 추적</h1>
-  <div class="sub">국토교통부 실거래가 기준 · 최근 24개월</div>
-  <div class="update-badge">업데이트: 2026년 05월 14일 13:29</div>
+  <div class="badge">🏠 실거래가 추적기</div>
+  <h1>KCC스위첸2차
+    <span>경기도 김포시 운양동 · 한강신도시</span>
+  </h1>
+  <div class="update-info">📅 업데이트 2026.05.14 13:35 · 최근 24개월 기준</div>
 </div>
 
-<div class="tabs">
-  <button class="tab active" onclick="show('trade',this)">📈 매매</button>
-  <button class="tab" onclick="show('rent',this)">🔑 전·월세</button>
-  <button class="tab" onclick="show('table',this)">📋 거래 내역</button>
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="show('trade',this)">📈 매매</button>
+    <button class="tab" onclick="show('rent',this)">🔑 전·월세</button>
+    <button class="tab" onclick="show('table',this)">📋 전체내역</button>
+  </div>
 </div>
 
-<!-- 매매 탭 -->
+<!-- ① 매매 탭 -->
 <div class="pane active" id="pane-trade">
-  <div class="section">
-    <div class="section-title">📊 시세 요약</div>
-    <div class="stats">
-      <div class="stat-card"><div class="stat-val">0건</div><div class="stat-lbl">총 매매 거래 (24개월)</div></div>
-      <div class="stat-card"><div class="stat-val">데이터 없음</div><div class="stat-lbl">최근 3개월 평균가</div></div>
-      
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-emoji">🏡</div>
+      <div class="stat-val">0건</div>
+      <div class="stat-lbl">총 매매거래 (24개월)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-emoji">💰</div>
+      <div class="stat-val" style="font-size:16px">—</div>
+      <div class="stat-lbl">최근 3개월 평균가</div>
+    </div>
+    <div class="stat">
+      <div class="stat-emoji">📈</div>
+      <div class="stat-val" style="font-size:16px">—</div>
+      <div class="stat-lbl">84㎡ 최고가 (24개월)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-emoji">📉</div>
+      <div class="stat-val" style="font-size:16px">—</div>
+      <div class="stat-lbl">84㎡ 최저가 (24개월)</div>
     </div>
   </div>
-  <div class="section">
-    <div class="section-title">📈 매매가 추이 (평형별)</div>
-    <div class="chart-box">
-      <h3>월별 평균 매매가 (만원)</h3>
-      <canvas id="tradeChart" height="200"></canvas>
+
+  <div class="chart-card">
+    <div class="chart-title">매매가 월별 추이 (평형별)</div>
+    <canvas id="tradeChart" height="200"></canvas>
+  </div>
+
+  <div class="section-title">🕐 최근 매매 거래</div>
+  <div class='empty'><div class='emoji'>🐻</div><p>아직 거래 데이터가 없어요</p></div>
+</div>
+
+<!-- ② 전월세 탭 -->
+<div class="pane" id="pane-rent">
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-emoji">🔑</div>
+      <div class="stat-val">0건</div>
+      <div class="stat-lbl">전세 거래 (24개월)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-emoji">🏠</div>
+      <div class="stat-val">0건</div>
+      <div class="stat-lbl">월세 거래 (24개월)</div>
     </div>
   </div>
-  <div class="section">
-    <div class="section-title">🕐 최근 매매 거래</div>
+
+  <div class="chart-card">
+    <div class="chart-title">전세 보증금 월별 추이 (평형별)</div>
+    <canvas id="jeonseChart" height="200"></canvas>
+  </div>
+
+  <div class="section-title">🕐 최근 전·월세 거래</div>
+  <div class='empty'><div class='emoji'>🐻</div><p>아직 전·월세 데이터가 없어요</p></div>
+</div>
+
+<!-- ③ 전체내역 탭 -->
+<div class="pane" id="pane-table">
+  <div class="table-card">
+    <div class="table-head">📋 매매 전체 내역 (0건)</div>
     <table>
-      <tr><th>거래일</th><th>단지명</th><th>면적</th><th>층</th><th>거래가</th></tr>
-      
+      <tr><th>거래일</th><th>면적</th><th>층</th><th>거래가</th></tr>
+      <tr><td colspan='4' style='text-align:center;padding:24px;color:#aaa'>데이터 없음 🐻</td></tr>
     </table>
   </div>
-</div>
-
-<!-- 전·월세 탭 -->
-<div class="pane" id="pane-rent">
-  <div class="section">
-    <div class="section-title">📊 전월세 요약</div>
-    <div class="stats">
-      <div class="stat-card" style="border-color:#60a5fa">
-        <div class="stat-val" style="color:#60a5fa">0건</div>
-        <div class="stat-lbl">전세 거래 (24개월)</div>
-      </div>
-      <div class="stat-card" style="border-color:#34d399">
-        <div class="stat-val" style="color:#34d399">0건</div>
-        <div class="stat-lbl">월세 거래 (24개월)</div>
-      </div>
+  <div class="table-card" style="margin-top:16px">
+    <div class="table-head" style="background:linear-gradient(90deg,#60a5fa,#a78bfa)">
+      🔑 전·월세 전체 내역 (0건)
     </div>
-  </div>
-  <div class="section">
-    <div class="section-title">📈 전세가 추이 (평형별)</div>
-    <div class="chart-box">
-      <h3>월별 평균 전세 보증금 (만원)</h3>
-      <canvas id="jeonseChart" height="200"></canvas>
-    </div>
-  </div>
-  <div class="section">
-    <div class="section-title">🕐 최근 전·월세 거래</div>
     <table>
       <tr><th>거래일</th><th>유형</th><th>면적</th><th>층</th><th>가격</th></tr>
-      
-    </table>
-  </div>
-</div>
-
-<!-- 거래 내역 탭 -->
-<div class="pane" id="pane-table">
-  <div class="section">
-    <div class="section-title">📋 전체 매매 거래 내역</div>
-    <table>
-      <tr><th>거래일</th><th>단지명</th><th>면적</th><th>층</th><th>거래가</th></tr>
-      
+      <tr><td colspan='5' style='text-align:center;padding:24px;color:#aaa'>데이터 없음 🐻</td></tr>
     </table>
   </div>
 </div>
@@ -139,44 +203,52 @@ function show(id, btn) {
   btn.classList.add('active');
 }
 
-Chart.defaults.color = '#666';
-Chart.defaults.borderColor = '#1e1e1e';
+Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+Chart.defaults.color = '#9E8A92';
+Chart.defaults.borderColor = '#FFE4EE';
 
-const tradeData = {"labels": [], "datasets": []};
+const tradeData  = {"labels": [], "datasets": []};
 const jeonseData = {"labels": [], "datasets": []};
 
-function makeChart(id, data, label) {
+function makeChart(id, data) {
   const ctx = document.getElementById(id);
-  if (!ctx) return;
+  if (!ctx || !data.labels.length) return;
   new Chart(ctx, {
     type: 'line',
     data: data,
     options: {
       responsive: true,
-      interaction: { mode: 'index', intersect: false },
+      interaction: { mode:'index', intersect:false },
       plugins: {
-        legend: { labels: { color: '#aaa', font: { size: 11 } } },
+        legend: { labels: { color:'#9E8A92', font:{size:11}, padding:12 } },
         tooltip: {
+          backgroundColor:'#fff',
+          titleColor:'#3D2B35',
+          bodyColor:'#FF6B9D',
+          borderColor:'#FFE4EE',
+          borderWidth:1,
           callbacks: {
-            label: ctx => ctx.dataset.label + ': ' + (ctx.raw ? ctx.raw.toLocaleString() + '만원' : '-')
+            label: c => c.dataset.label+': '+(c.raw ? c.raw.toLocaleString()+'만원' : '-')
           }
         }
       },
       scales: {
-        x: { ticks: { color: '#555', maxTicksLimit: 12 } },
+        x: { ticks:{ color:'#C5A8B5', maxTicksLimit:8, font:{size:10} }, grid:{color:'#FFF0F5'} },
         y: {
           ticks: {
-            color: '#555',
-            callback: v => (v/10000).toFixed(0) + '억' + (v%10000 > 0 ? (v%10000) + '' : '')
-          }
+            color:'#C5A8B5',
+            font:{size:10},
+            callback: v => v>=10000 ? (v/10000).toFixed(1)+'억' : v.toLocaleString()+'만'
+          },
+          grid:{color:'#FFF0F5'}
         }
       }
     }
   });
 }
 
-makeChart('tradeChart',  tradeData,  '매매가');
-makeChart('jeonseChart', jeonseData, '전세가');
+makeChart('tradeChart',  tradeData);
+makeChart('jeonseChart', jeonseData);
 </script>
 </body>
 </html>

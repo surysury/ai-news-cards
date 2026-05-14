@@ -1,401 +1,396 @@
 #!/usr/bin/env python3
-"""
-KCC스위첸2차 (운양동, 김포) 부동산 가격 추적기
-- 국토교통부 실거래가 API: 매매 / 전월세 실거래 내역
-- 네이버 부동산 API: 현재 매물 수 / 호가 (선택)
+"""KCC스위첸2차 시세 추적기 — 귀여운 핑크 디자인"""
 
-필요한 것:
-  MOLIT_API_KEY = 국토교통부 공공데이터 API 키
-  → https://www.data.go.kr 에서 무료 발급
-  → "아파트매매 실거래자료" 서비스 신청
-"""
-
-import os, json, urllib.request, urllib.parse, xml.etree.ElementTree as ET
+import os, json, urllib.request, urllib.parse, urllib.error
+import xml.etree.ElementTree as ET, subprocess
 from datetime import datetime, timedelta
 from collections import defaultdict
-import subprocess
 
 # ── 설정 ─────────────────────────────────────────────────────────────────────
-MOLIT_API_KEY = os.environ.get("MOLIT_API_KEY", "여기에_API키_입력")
+MOLIT_API_KEY = os.environ.get("MOLIT_API_KEY", "")
+LAWD_CD       = "41570"   # 경기도 김포시
+APT_NAME      = "KCC"     # 아파트명 필터
+MONTHS_BACK   = 24        # 최근 24개월
+TARGET_AREAS  = [59, 74, 84]
+AREA_TOL      = 6
+OUTPUT        = os.path.join(os.path.dirname(os.path.abspath(__file__)), "kcc_tracker.html")
 
-LAWD_CD   = "41570"          # 경기도 김포시
-APT_NAME  = "KCC"            # 아파트명 필터 (포함 여부)
-OUTPUT    = os.path.join(os.path.dirname(os.path.abspath(__file__)), "kcc_tracker.html")
+# APIs — 운영키 / 개발키 두 가지 모두 시도
+TRADE_URLS = [
+    "https://apis.data.go.kr/1613000/RTMSDataSvcAptTrade/getRTMSDataSvcAptTrade",
+    "http://apis.data.go.kr/1613000/RTMSDataSvcAptTrade/getRTMSDataSvcAptTrade",
+    "https://apis.data.go.kr/1613000/RTMSDataSvcAptTradeDev/getRTMSDataSvcAptTradeDev",
+]
+RENT_URLS = [
+    "https://apis.data.go.kr/1613000/RTMSDataSvcAptRent/getRTMSDataSvcAptRent",
+    "http://apis.data.go.kr/1613000/RTMSDataSvcAptRent/getRTMSDataSvcAptRent",
+    "https://apis.data.go.kr/1613000/RTMSDataSvcAptRentDev/getRTMSDataSvcAptRentDev",
+]
 
-# 추적할 면적 (전용면적 기준, None이면 전체)
-TARGET_AREAS = [59, 74, 84]  # 대표 평형 (근사값 ±5㎡)
-AREA_TOLERANCE = 5
-
-# 최근 몇 개월 조회 (최대 36)
-MONTHS_BACK = 24
-
-# 네이버 부동산 단지 코드 (찾으면 입력)
-NAVER_COMPLEX_NO = ""  # 예: "113079"
-
-# ── 국토교통부 실거래 API ─────────────────────────────────────────────────────
-BASE_TRADE = "http://apis.data.go.kr/1613000/RTMSDataSvcAptTrade/getRTMSDataSvcAptTrade"
-BASE_RENT  = "http://apis.data.go.kr/1613000/RTMSDataSvcAptRent/getRTMSDataSvcAptRent"
-
-def fetch_molit(base_url, ym):
-    """국토교통부 API 한 달치 조회"""
-    params = urllib.parse.urlencode({
+# ── API 호출 ─────────────────────────────────────────────────────────────────
+def fetch_api(urls, ym):
+    """여러 엔드포인트 중 성공한 것 반환"""
+    params = {
         "serviceKey": MOLIT_API_KEY,
         "LAWD_CD":    LAWD_CD,
         "DEAL_YMD":   ym,
         "numOfRows":  "1000",
         "pageNo":     "1",
-    })
-    url = f"{base_url}?{params}"
-    try:
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=10) as r:
-            return r.read().decode("utf-8")
-    except Exception as e:
-        print(f"  [API 오류] {ym}: {e}")
-        return ""
+    }
+    # serviceKey는 이미 인코딩돼 있으면 그대로, 아니면 urlencode
+    query = urllib.parse.urlencode({k: v for k, v in params.items() if k != "serviceKey"})
+    query = f"serviceKey={MOLIT_API_KEY}&{query}"
+
+    for base in urls:
+        url = f"{base}?{query}"
+        try:
+            req = urllib.request.Request(url, headers={
+                "User-Agent": "Mozilla/5.0",
+                "Accept": "application/xml, text/xml, */*",
+            })
+            with urllib.request.urlopen(req, timeout=15) as r:
+                raw = r.read().decode("utf-8")
+            # 오류 응답 걸러내기
+            if "<resultCode>00</resultCode>" in raw or "<item>" in raw:
+                return raw
+            if "SERVICE_ACCESS_DENIED" in raw or "LIMITED_NUMBER" in raw:
+                print(f"    [키 오류] {raw[raw.find('<errMsg>'):raw.find('</errMsg>')+10]}")
+                return raw
+        except urllib.error.HTTPError as e:
+            print(f"    HTTP {e.code}: {base.split('/')[-1]}")
+        except Exception as e:
+            print(f"    오류: {e}")
+    return ""
 
 def parse_trade(xml_str):
-    """매매 실거래 파싱"""
     rows = []
     try:
         root = ET.fromstring(xml_str)
         for item in root.iter("item"):
             name = (item.findtext("아파트") or "").strip()
-            if APT_NAME not in name:
-                continue
-            area_str = item.findtext("전용면적") or "0"
-            try: area = float(area_str)
-            except: area = 0.0
-            price_str = (item.findtext("거래금액") or "0").replace(",","").strip()
-            try: price = int(price_str)
+            if APT_NAME not in name: continue
+            try: area = float(item.findtext("전용면적") or 0)
+            except: area = 0
+            try: price = int((item.findtext("거래금액") or "0").replace(",","").strip())
             except: price = 0
-            year  = item.findtext("년") or ""
-            month = item.findtext("월") or ""
-            day   = item.findtext("일") or ""
-            floor = item.findtext("층") or ""
-            rows.append({
-                "type":  "매매",
-                "name":  name,
-                "area":  area,
-                "price": price,
-                "date":  f"{year}-{month.zfill(2)}-{day.zfill(2)}",
-                "floor": floor,
-            })
+            y = item.findtext("년") or ""
+            m = (item.findtext("월") or "").zfill(2)
+            d = (item.findtext("일") or "").zfill(2)
+            rows.append({"type":"매매","name":name,"area":area,"price":price,
+                         "date":f"{y}-{m}-{d}","floor":item.findtext("층") or ""})
     except: pass
     return rows
 
 def parse_rent(xml_str):
-    """전월세 실거래 파싱"""
     rows = []
     try:
         root = ET.fromstring(xml_str)
         for item in root.iter("item"):
             name = (item.findtext("아파트") or "").strip()
-            if APT_NAME not in name:
-                continue
-            area_str = item.findtext("전용면적") or "0"
-            try: area = float(area_str)
-            except: area = 0.0
-            deposit_str = (item.findtext("보증금액") or "0").replace(",","").strip()
-            monthly_str = (item.findtext("월세금액") or "0").replace(",","").strip()
-            try: deposit = int(deposit_str)
+            if APT_NAME not in name: continue
+            try: area = float(item.findtext("전용면적") or 0)
+            except: area = 0
+            try: deposit = int((item.findtext("보증금액") or "0").replace(",","").strip())
             except: deposit = 0
-            try: monthly = int(monthly_str)
+            try: monthly = int((item.findtext("월세금액") or "0").replace(",","").strip())
             except: monthly = 0
-            year  = item.findtext("년") or ""
-            month = item.findtext("월") or ""
-            day   = item.findtext("일") or ""
-            floor = item.findtext("층") or ""
-            rent_type = "월세" if monthly > 0 else "전세"
-            rows.append({
-                "type":    rent_type,
-                "name":    name,
-                "area":    area,
-                "price":   deposit,
-                "monthly": monthly,
-                "date":    f"{year}-{month.zfill(2)}-{day.zfill(2)}",
-                "floor":   floor,
-            })
+            y = item.findtext("년") or ""
+            m = (item.findtext("월") or "").zfill(2)
+            d = (item.findtext("일") or "").zfill(2)
+            rows.append({"type":"월세" if monthly>0 else "전세","name":name,"area":area,
+                         "price":deposit,"monthly":monthly,
+                         "date":f"{y}-{m}-{d}","floor":item.findtext("층") or ""})
     except: pass
     return rows
 
 def collect_all():
-    """최근 N개월 전체 수집"""
     trades, rents = [], []
     now = datetime.now()
-    months = []
     for i in range(MONTHS_BACK):
-        d = now - timedelta(days=30*i)
-        months.append(d.strftime("%Y%m"))
-
-    print(f"  조회 기간: {months[-1]} ~ {months[0]}")
-    for ym in months:
-        print(f"  {ym} 조회 중...", end=" ")
-        xml_t = fetch_molit(BASE_TRADE, ym)
-        xml_r = fetch_molit(BASE_RENT,  ym)
+        d = now.replace(day=1) - timedelta(days=i*28)
+        ym = d.strftime("%Y%m")
+        print(f"  {ym} 조회 중...", end=" ", flush=True)
+        xml_t = fetch_api(TRADE_URLS, ym)
+        xml_r = fetch_api(RENT_URLS,  ym)
         t = parse_trade(xml_t)
         r = parse_rent(xml_r)
         trades.extend(t)
         rents.extend(r)
-        print(f"매매 {len(t)}건, 전월세 {len(r)}건")
+        print(f"매매 {len(t)}건 / 전월세 {len(r)}건")
+    return (sorted(trades, key=lambda x: x["date"]),
+            sorted(rents,  key=lambda x: x["date"]))
 
-    return sorted(trades, key=lambda x: x["date"]), \
-           sorted(rents,  key=lambda x: x["date"])
-
-# ── 네이버 매물 수 ─────────────────────────────────────────────────────────────
-def fetch_naver_listings():
-    """네이버 부동산 현재 매물 수 / 호가 (단지코드 있을 때만)"""
-    if not NAVER_COMPLEX_NO:
-        return None
-    import time
-    time.sleep(2)
-    try:
-        url = f"https://new.land.naver.com/api/articles/complex/{NAVER_COMPLEX_NO}?realEstateType=APT&tradeType=A1&tag=&rentPriceMin=0&rentPriceMax=900000000&priceMin=0&priceMax=900000000&areaMin=0&areaMax=900000000&oldBuildYear&recentlyBuildYear&page=1&sameAddressGroup=true"
-        req = urllib.request.Request(url, headers={
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
-            "referer": "https://new.land.naver.com/",
-        })
-        with urllib.request.urlopen(req, timeout=8) as r:
-            data = json.loads(r.read())
-        total = data.get("articleTotalCount", 0)
-        items = data.get("articleList", [])[:5]
-        return {"total": total, "items": items}
-    except Exception as e:
-        print(f"  [네이버 매물 오류] {e}")
-        return None
-
-# ── 차트 데이터 준비 ──────────────────────────────────────────────────────────
-def area_label(area):
-    """면적 → 평형 라벨"""
-    py = area / 3.3058
-    return f"{area:.1f}㎡ (약 {py:.0f}평)"
-
-def group_by_month_area(rows, types=("매매",)):
-    """월별 × 면적별 평균가 집계"""
+# ── 차트 데이터 ───────────────────────────────────────────────────────────────
+def group_by_month(rows, types):
     buckets = defaultdict(list)
     for r in rows:
-        if r["type"] not in types:
-            continue
-        ym   = r["date"][:7]
-        area = r["area"]
-        # 대표 평형 분류
-        matched = None
-        for ta in TARGET_AREAS:
-            if abs(area - ta) <= AREA_TOLERANCE:
-                matched = ta
-                break
-        if matched is None:
-            matched = round(area)
+        if r["type"] not in types: continue
+        ym = r["date"][:7]
+        a  = r["area"]
+        matched = next((ta for ta in TARGET_AREAS if abs(a-ta)<=AREA_TOL), round(a/3)*3)
         buckets[(ym, matched)].append(r["price"])
     result = {}
     for (ym, area), prices in buckets.items():
         result.setdefault(area, {})[ym] = round(sum(prices)/len(prices))
     return result
 
-def make_chart_datasets(grouped):
-    """Chart.js 데이터셋 생성"""
-    colors = ["#F5C518","#60a5fa","#34d399","#fb923c","#a78bfa"]
+def chart_json(grouped):
+    COLORS = ["#FF6B9D","#FF9EBB","#FFB3CC","#FF4081","#E91E8C"]
     all_months = sorted({ym for v in grouped.values() for ym in v})
     datasets = []
     for i, (area, monthly) in enumerate(sorted(grouped.items())):
-        color = colors[i % len(colors)]
-        data  = [monthly.get(ym, None) for ym in all_months]
-        label = f"{area}㎡ (약{round(area/3.3058)}평)"
-        datasets.append({"label": label, "data": data,
-                         "borderColor": color, "backgroundColor": color+"33",
-                         "tension": 0.3, "spanGaps": True})
+        c = COLORS[i % len(COLORS)]
+        datasets.append({
+            "label": f"{area}㎡ (약{round(area/3.3058)}평)",
+            "data":  [monthly.get(ym) for ym in all_months],
+            "borderColor": c, "backgroundColor": c+"33",
+            "tension": 0.4, "spanGaps": True,
+            "pointBackgroundColor": c, "pointRadius": 4,
+        })
     return all_months, datasets
 
-# ── HTML 생성 ─────────────────────────────────────────────────────────────────
-def generate_html(trades, rents, naver):
-    now_str    = datetime.now().strftime("%Y년 %m월 %d일 %H:%M")
-    total_trade = len(trades)
-    total_rent  = len(rents)
+# ── HTML ──────────────────────────────────────────────────────────────────────
+def generate_html(trades, rents):
+    now_str  = datetime.now().strftime("%Y.%m.%d %H:%M")
+    total_t  = len(trades)
+    total_r  = len(rents)
+    total_j  = sum(1 for r in rents if r["type"]=="전세")
+    total_w  = sum(1 for r in rents if r["type"]=="월세")
 
-    # 최근 10건
-    recent_trades = trades[-10:][::-1]
-    recent_rents  = rents[-10:][::-1]
+    # 최근 3개월 평균 매매가
+    cutoff = (datetime.now()-timedelta(days=90)).strftime("%Y-%m-%d")
+    recent3 = [r for r in trades if r["date"] >= cutoff]
+    avg3 = f"{round(sum(r['price'] for r in recent3)/len(recent3)):,}만원" if recent3 else "—"
 
-    # 차트 데이터
-    trade_grouped   = group_by_month_area(trades, ("매매",))
-    jeonse_grouped  = group_by_month_area(rents,  ("전세",))
-    monthly_grouped = group_by_month_area(rents,  ("월세",))
+    # 84㎡ 최근 최고/최저
+    t84 = [r for r in trades if abs(r["area"]-84)<=AREA_TOL]
+    hi84 = f"{max(r['price'] for r in t84):,}만원" if t84 else "—"
+    lo84 = f"{min(r['price'] for r in t84):,}만원" if t84 else "—"
 
-    t_months, t_ds = make_chart_datasets(trade_grouped)
-    j_months, j_ds = make_chart_datasets(jeonse_grouped)
+    # 차트 JSON
+    t_months, t_ds   = chart_json(group_by_month(trades, ("매매",)))
+    j_months, j_ds   = chart_json(group_by_month(rents,  ("전세",)))
 
-    def ds_json(months, datasets):
-        return json.dumps({"labels": months, "datasets": datasets}, ensure_ascii=False)
+    def ds_json(months, ds):
+        return json.dumps({"labels": months, "datasets": ds}, ensure_ascii=False)
 
-    trade_json  = ds_json(t_months, t_ds)
-    jeonse_json = ds_json(j_months, j_ds)
+    # 테이블 행
+    def trade_row(r):
+        return f"""<tr>
+          <td>{r['date']}</td><td>{r['area']:.0f}㎡</td>
+          <td>{r['floor']}층</td>
+          <td class="price-cell">{r['price']:,}<span class="unit">만원</span></td>
+        </tr>"""
 
-    # 최근 매매 평균
-    last3 = [r for r in trades if r["date"] >= (datetime.now()-timedelta(days=90)).strftime("%Y-%m-%d")]
-    avg3  = f"{round(sum(r['price'] for r in last3)/len(last3)):,}만원" if last3 else "데이터 없음"
+    def rent_row(r):
+        if r["type"]=="전세":
+            p = f"{r['price']:,}만원"
+            cls = "blue"
+        else:
+            p = f"{r['price']:,}/{r.get('monthly',0):,}만원"
+            cls = "green"
+        return f"""<tr>
+          <td>{r['date']}</td><td>{r['type']}</td><td>{r['area']:.0f}㎡</td>
+          <td>{r['floor']}층</td>
+          <td class="price-cell {cls}">{p}</td>
+        </tr>"""
 
-    # 매물 수 표시
-    naver_html = ""
-    if naver:
-        naver_html = f'<div class="stat-card" style="border-color:#60a5fa"><div class="stat-val" style="color:#60a5fa">{naver["total"]}건</div><div class="stat-lbl">현재 네이버 매물</div></div>'
-
-    # 거래 테이블 행
-    def trade_rows(rows):
-        return "".join(f"""<tr>
-            <td>{r['date']}</td>
-            <td>{r['name']}</td>
-            <td>{r['area']:.1f}㎡</td>
-            <td>{r['floor']}층</td>
-            <td style="font-weight:700;color:#F5C518">{r['price']:,}만원</td>
-        </tr>""" for r in rows)
-
-    def rent_rows(rows):
-        out = []
-        for r in rows:
-            if r["type"] == "전세":
-                price_str = f"전세 {r['price']:,}만원"
-                color = "#60a5fa"
-            else:
-                price_str = f"월세 {r['price']:,}/{r.get('monthly',0):,}만원"
-                color = "#34d399"
-            out.append(f"""<tr>
-                <td>{r['date']}</td>
-                <td>{r['type']}</td>
-                <td>{r['area']:.1f}㎡</td>
-                <td>{r['floor']}층</td>
-                <td style="font-weight:700;color:{color}">{price_str}</td>
-            </tr>""")
-        return "".join(out)
+    trade_rows_html = "".join(trade_row(r) for r in trades[::-1][:50])
+    rent_rows_html  = "".join(rent_row(r)  for r in rents[::-1][:50])
 
     return f"""<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>KCC스위첸2차 시세 추적</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>KCC스위첸2차 시세 🏠</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
-  *{{box-sizing:border-box;margin:0;padding:0;}}
-  body{{font-family:'Noto Sans KR',sans-serif;background:#0e0e0e;color:#e0e0e0;min-height:100vh;padding-bottom:60px;}}
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+  *,*::before,*::after{{box-sizing:border-box;margin:0;padding:0;}}
+  :root{{
+    --pink:   #FF6B9D;
+    --pink2:  #FF9EBB;
+    --pink3:  #FFE4EE;
+    --pink4:  #FFF0F5;
+    --dark:   #3D2B35;
+    --gray:   #9E8A92;
+    --white:  #FFFFFF;
+  }}
+  body{{font-family:'Noto Sans KR',sans-serif;background:var(--pink4);
+        min-height:100vh;padding-bottom:env(safe-area-inset-bottom,24px);}}
 
-  .header{{background:#0a0a0a;padding:24px;border-bottom:1px solid #1e1e1e;}}
-  .header h1{{font-size:22px;font-weight:900;color:#fff;margin-bottom:4px;}}
-  .header h1 em{{color:#F5C518;font-style:normal;}}
-  .header .sub{{font-size:12px;color:#555;margin-top:6px;}}
+  /* 헤더 */
+  .header{{background:linear-gradient(135deg,#FF6B9D 0%,#FF9EBB 100%);
+           padding:28px 24px 24px;padding-top:max(28px,env(safe-area-inset-top));
+           position:relative;overflow:hidden;}}
+  .header::before{{content:'🐻';position:absolute;right:20px;top:50%;
+                   transform:translateY(-50%);font-size:64px;opacity:.25;}}
+  .header::after{{content:'🌸🌸🌸';position:absolute;right:24px;top:12px;
+                  font-size:14px;opacity:.5;letter-spacing:4px;}}
+  .header .badge{{display:inline-block;background:rgba(255,255,255,.3);
+                  color:#fff;font-size:10px;font-weight:700;padding:3px 10px;
+                  border-radius:20px;letter-spacing:.08em;margin-bottom:10px;}}
+  .header h1{{font-size:22px;font-weight:900;color:#fff;line-height:1.3;
+              text-shadow:0 2px 8px rgba(0,0,0,.15);}}
+  .header h1 span{{display:block;font-size:13px;font-weight:500;
+                   opacity:.85;margin-top:4px;}}
+  .update-info{{font-size:10px;color:rgba(255,255,255,.7);margin-top:10px;}}
 
-  .section{{padding:24px;border-bottom:1px solid #1a1a1a;}}
-  .section-title{{font-size:13px;font-weight:700;color:#F5C518;letter-spacing:.1em;
-                  text-transform:uppercase;margin-bottom:16px;}}
+  /* 탭 */
+  .tabs-wrap{{position:sticky;top:0;z-index:50;
+              background:#fff;box-shadow:0 2px 12px rgba(255,107,157,.15);}}
+  .tabs{{display:flex;}}
+  .tab{{flex:1;padding:13px 4px;font-size:12px;font-weight:700;color:var(--gray);
+        background:none;border:none;border-bottom:2.5px solid transparent;
+        cursor:pointer;text-align:center;transition:.2s;}}
+  .tab.active{{color:var(--pink);border-bottom-color:var(--pink);}}
 
-  .stats{{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:0;}}
-  .stat-card{{background:#1a1a1a;border-radius:12px;padding:16px 20px;border:1px solid #2a2a2a;
-              border-left:3px solid #F5C518;min-width:140px;flex:1;}}
-  .stat-val{{font-size:22px;font-weight:900;color:#F5C518;}}
-  .stat-lbl{{font-size:11px;color:#555;margin-top:4px;}}
+  /* 컨텐츠 */
+  .pane{{display:none;padding:20px 16px;}} .pane.active{{display:block;}}
 
-  .chart-box{{background:#141414;border-radius:12px;padding:20px;border:1px solid #1e1e1e;margin-bottom:16px;}}
-  .chart-box h3{{font-size:13px;color:#aaa;margin-bottom:16px;font-weight:700;}}
+  /* 스탯 카드 */
+  .stats{{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}}
+  .stat{{background:#fff;border-radius:16px;padding:16px;
+         box-shadow:0 4px 16px rgba(255,107,157,.12);text-align:center;}}
+  .stat.wide{{grid-column:1/-1;}}
+  .stat-emoji{{font-size:24px;margin-bottom:6px;}}
+  .stat-val{{font-size:20px;font-weight:900;color:var(--pink);line-height:1;}}
+  .stat-lbl{{font-size:10px;color:var(--gray);margin-top:4px;font-weight:500;}}
 
+  /* 차트 카드 */
+  .chart-card{{background:#fff;border-radius:20px;padding:20px;
+               box-shadow:0 4px 20px rgba(255,107,157,.1);margin-bottom:16px;}}
+  .chart-title{{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:16px;
+                display:flex;align-items:center;gap:6px;}}
+  .chart-title::before{{content:'';display:block;width:4px;height:16px;
+                         background:var(--pink);border-radius:2px;}}
+
+  /* 테이블 */
+  .table-card{{background:#fff;border-radius:20px;overflow:hidden;
+               box-shadow:0 4px 20px rgba(255,107,157,.1);margin-bottom:16px;}}
+  .table-head{{background:linear-gradient(90deg,#FF6B9D,#FF9EBB);
+               padding:14px 16px;font-size:12px;font-weight:700;color:#fff;}}
   table{{width:100%;border-collapse:collapse;font-size:12px;}}
-  th{{background:#1a1a1a;color:#666;font-weight:700;padding:10px 12px;text-align:left;
-      border-bottom:1px solid #222;letter-spacing:.05em;}}
-  td{{padding:10px 12px;border-bottom:1px solid #1a1a1a;color:#ccc;}}
-  tr:hover td{{background:#161616;}}
+  th{{background:var(--pink3);color:var(--gray);font-weight:700;padding:10px 12px;
+      text-align:left;font-size:11px;}}
+  td{{padding:10px 12px;border-bottom:1px solid var(--pink4);color:var(--dark);}}
+  tr:last-child td{{border-bottom:none;}}
+  tr:hover td{{background:var(--pink4);}}
+  .price-cell{{font-weight:700;color:var(--pink);}}
+  .price-cell.blue{{color:#60a5fa;}}
+  .price-cell.green{{color:#34d399;}}
+  .unit{{font-size:10px;font-weight:400;color:var(--gray);margin-left:2px;}}
 
-  .tabs{{display:flex;border-bottom:1px solid #1e1e1e;background:#0a0a0a;
-         position:sticky;top:0;z-index:10;}}
-  .tab{{flex:1;padding:14px;font-size:13px;font-weight:700;color:#444;background:none;
-        border:none;border-bottom:2px solid transparent;cursor:pointer;text-align:center;}}
-  .tab.active{{color:#F5C518;border-bottom-color:#F5C518;}}
-  .pane{{display:none;}} .pane.active{{display:block;}}
+  /* 귀여운 빈 상태 */
+  .empty{{text-align:center;padding:40px 20px;color:var(--gray);}}
+  .empty .emoji{{font-size:48px;margin-bottom:12px;}}
+  .empty p{{font-size:13px;}}
 
-  .update-badge{{display:inline-block;font-size:10px;background:#1a1a1a;color:#555;
-                 padding:3px 10px;border-radius:20px;margin-top:8px;}}
-  @media(max-width:480px){{
-    .stats{{gap:8px;}}
-    .stat-val{{font-size:18px;}}
+  /* 섹션 타이틀 */
+  .section-title{{font-size:12px;font-weight:700;color:var(--pink);
+                  letter-spacing:.08em;margin:20px 0 10px;
+                  display:flex;align-items:center;gap:6px;}}
+
+  @media(max-width:360px){{
+    .stats{{grid-template-columns:1fr;}}
+    .stat.wide{{grid-column:1;}}
   }}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <h1>경기 김포시 운양동<br><em>KCC스위첸2차</em> 시세 추적</h1>
-  <div class="sub">국토교통부 실거래가 기준 · 최근 {MONTHS_BACK}개월</div>
-  <div class="update-badge">업데이트: {now_str}</div>
+  <div class="badge">🏠 실거래가 추적기</div>
+  <h1>KCC스위첸2차
+    <span>경기도 김포시 운양동 · 한강신도시</span>
+  </h1>
+  <div class="update-info">📅 업데이트 {now_str} · 최근 {MONTHS_BACK}개월 기준</div>
 </div>
 
-<div class="tabs">
-  <button class="tab active" onclick="show('trade',this)">📈 매매</button>
-  <button class="tab" onclick="show('rent',this)">🔑 전·월세</button>
-  <button class="tab" onclick="show('table',this)">📋 거래 내역</button>
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="show('trade',this)">📈 매매</button>
+    <button class="tab" onclick="show('rent',this)">🔑 전·월세</button>
+    <button class="tab" onclick="show('table',this)">📋 전체내역</button>
+  </div>
 </div>
 
-<!-- 매매 탭 -->
+<!-- ① 매매 탭 -->
 <div class="pane active" id="pane-trade">
-  <div class="section">
-    <div class="section-title">📊 시세 요약</div>
-    <div class="stats">
-      <div class="stat-card"><div class="stat-val">{total_trade}건</div><div class="stat-lbl">총 매매 거래 ({MONTHS_BACK}개월)</div></div>
-      <div class="stat-card"><div class="stat-val">{avg3}</div><div class="stat-lbl">최근 3개월 평균가</div></div>
-      {naver_html}
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-emoji">🏡</div>
+      <div class="stat-val">{total_t}건</div>
+      <div class="stat-lbl">총 매매거래 ({MONTHS_BACK}개월)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-emoji">💰</div>
+      <div class="stat-val" style="font-size:16px">{avg3}</div>
+      <div class="stat-lbl">최근 3개월 평균가</div>
+    </div>
+    <div class="stat">
+      <div class="stat-emoji">📈</div>
+      <div class="stat-val" style="font-size:16px">{hi84}</div>
+      <div class="stat-lbl">84㎡ 최고가 ({MONTHS_BACK}개월)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-emoji">📉</div>
+      <div class="stat-val" style="font-size:16px">{lo84}</div>
+      <div class="stat-lbl">84㎡ 최저가 ({MONTHS_BACK}개월)</div>
     </div>
   </div>
-  <div class="section">
-    <div class="section-title">📈 매매가 추이 (평형별)</div>
-    <div class="chart-box">
-      <h3>월별 평균 매매가 (만원)</h3>
-      <canvas id="tradeChart" height="200"></canvas>
+
+  <div class="chart-card">
+    <div class="chart-title">매매가 월별 추이 (평형별)</div>
+    <canvas id="tradeChart" height="200"></canvas>
+  </div>
+
+  <div class="section-title">🕐 최근 매매 거래</div>
+  {"<div class='table-card'><table><tr><th>거래일</th><th>면적</th><th>층</th><th>거래가</th></tr>" + "".join(trade_row(r) for r in trades[::-1][:15]) + "</table></div>" if trades else "<div class='empty'><div class='emoji'>🐻</div><p>아직 거래 데이터가 없어요</p></div>"}
+</div>
+
+<!-- ② 전월세 탭 -->
+<div class="pane" id="pane-rent">
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-emoji">🔑</div>
+      <div class="stat-val">{total_j}건</div>
+      <div class="stat-lbl">전세 거래 ({MONTHS_BACK}개월)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-emoji">🏠</div>
+      <div class="stat-val">{total_w}건</div>
+      <div class="stat-lbl">월세 거래 ({MONTHS_BACK}개월)</div>
     </div>
   </div>
-  <div class="section">
-    <div class="section-title">🕐 최근 매매 거래</div>
+
+  <div class="chart-card">
+    <div class="chart-title">전세 보증금 월별 추이 (평형별)</div>
+    <canvas id="jeonseChart" height="200"></canvas>
+  </div>
+
+  <div class="section-title">🕐 최근 전·월세 거래</div>
+  {"<div class='table-card'><table><tr><th>거래일</th><th>유형</th><th>면적</th><th>층</th><th>가격</th></tr>" + "".join(rent_row(r) for r in rents[::-1][:15]) + "</table></div>" if rents else "<div class='empty'><div class='emoji'>🐻</div><p>아직 전·월세 데이터가 없어요</p></div>"}
+</div>
+
+<!-- ③ 전체내역 탭 -->
+<div class="pane" id="pane-table">
+  <div class="table-card">
+    <div class="table-head">📋 매매 전체 내역 ({total_t}건)</div>
     <table>
-      <tr><th>거래일</th><th>단지명</th><th>면적</th><th>층</th><th>거래가</th></tr>
-      {trade_rows(recent_trades)}
+      <tr><th>거래일</th><th>면적</th><th>층</th><th>거래가</th></tr>
+      {trade_rows_html if trade_rows_html else "<tr><td colspan='4' style='text-align:center;padding:24px;color:#aaa'>데이터 없음 🐻</td></tr>"}
     </table>
   </div>
-</div>
-
-<!-- 전·월세 탭 -->
-<div class="pane" id="pane-rent">
-  <div class="section">
-    <div class="section-title">📊 전월세 요약</div>
-    <div class="stats">
-      <div class="stat-card" style="border-color:#60a5fa">
-        <div class="stat-val" style="color:#60a5fa">{sum(1 for r in rents if r['type']=='전세')}건</div>
-        <div class="stat-lbl">전세 거래 ({MONTHS_BACK}개월)</div>
-      </div>
-      <div class="stat-card" style="border-color:#34d399">
-        <div class="stat-val" style="color:#34d399">{sum(1 for r in rents if r['type']=='월세')}건</div>
-        <div class="stat-lbl">월세 거래 ({MONTHS_BACK}개월)</div>
-      </div>
+  <div class="table-card" style="margin-top:16px">
+    <div class="table-head" style="background:linear-gradient(90deg,#60a5fa,#a78bfa)">
+      🔑 전·월세 전체 내역 ({total_r}건)
     </div>
-  </div>
-  <div class="section">
-    <div class="section-title">📈 전세가 추이 (평형별)</div>
-    <div class="chart-box">
-      <h3>월별 평균 전세 보증금 (만원)</h3>
-      <canvas id="jeonseChart" height="200"></canvas>
-    </div>
-  </div>
-  <div class="section">
-    <div class="section-title">🕐 최근 전·월세 거래</div>
     <table>
       <tr><th>거래일</th><th>유형</th><th>면적</th><th>층</th><th>가격</th></tr>
-      {rent_rows(recent_rents)}
-    </table>
-  </div>
-</div>
-
-<!-- 거래 내역 탭 -->
-<div class="pane" id="pane-table">
-  <div class="section">
-    <div class="section-title">📋 전체 매매 거래 내역</div>
-    <table>
-      <tr><th>거래일</th><th>단지명</th><th>면적</th><th>층</th><th>거래가</th></tr>
-      {trade_rows(trades[::-1])}
+      {rent_rows_html if rent_rows_html else "<tr><td colspan='5' style='text-align:center;padding:24px;color:#aaa'>데이터 없음 🐻</td></tr>"}
     </table>
   </div>
 </div>
@@ -408,44 +403,52 @@ function show(id, btn) {{
   btn.classList.add('active');
 }}
 
-Chart.defaults.color = '#666';
-Chart.defaults.borderColor = '#1e1e1e';
+Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+Chart.defaults.color = '#9E8A92';
+Chart.defaults.borderColor = '#FFE4EE';
 
-const tradeData = {trade_json};
-const jeonseData = {jeonse_json};
+const tradeData  = {ds_json(t_months, t_ds)};
+const jeonseData = {ds_json(j_months, j_ds)};
 
-function makeChart(id, data, label) {{
+function makeChart(id, data) {{
   const ctx = document.getElementById(id);
-  if (!ctx) return;
+  if (!ctx || !data.labels.length) return;
   new Chart(ctx, {{
     type: 'line',
     data: data,
     options: {{
       responsive: true,
-      interaction: {{ mode: 'index', intersect: false }},
+      interaction: {{ mode:'index', intersect:false }},
       plugins: {{
-        legend: {{ labels: {{ color: '#aaa', font: {{ size: 11 }} }} }},
+        legend: {{ labels: {{ color:'#9E8A92', font:{{size:11}}, padding:12 }} }},
         tooltip: {{
+          backgroundColor:'#fff',
+          titleColor:'#3D2B35',
+          bodyColor:'#FF6B9D',
+          borderColor:'#FFE4EE',
+          borderWidth:1,
           callbacks: {{
-            label: ctx => ctx.dataset.label + ': ' + (ctx.raw ? ctx.raw.toLocaleString() + '만원' : '-')
+            label: c => c.dataset.label+': '+(c.raw ? c.raw.toLocaleString()+'만원' : '-')
           }}
         }}
       }},
       scales: {{
-        x: {{ ticks: {{ color: '#555', maxTicksLimit: 12 }} }},
+        x: {{ ticks:{{ color:'#C5A8B5', maxTicksLimit:8, font:{{size:10}} }}, grid:{{color:'#FFF0F5'}} }},
         y: {{
           ticks: {{
-            color: '#555',
-            callback: v => (v/10000).toFixed(0) + '억' + (v%10000 > 0 ? (v%10000) + '' : '')
-          }}
+            color:'#C5A8B5',
+            font:{{size:10}},
+            callback: v => v>=10000 ? (v/10000).toFixed(1)+'억' : v.toLocaleString()+'만'
+          }},
+          grid:{{color:'#FFF0F5'}}
         }}
       }}
     }}
   }});
 }}
 
-makeChart('tradeChart',  tradeData,  '매매가');
-makeChart('jeonseChart', jeonseData, '전세가');
+makeChart('tradeChart',  tradeData);
+makeChart('jeonseChart', jeonseData);
 </script>
 </body>
 </html>"""
@@ -456,8 +459,7 @@ def push_to_github():
     try:
         subprocess.run(["git","add","kcc_tracker.html","track_kcc.py"], cwd=OUTPUT_DIR, check=True)
         r = subprocess.run(["git","diff","--staged","--quiet"], cwd=OUTPUT_DIR)
-        if r.returncode == 0:
-            print("변경 없음, 스킵"); return
+        if r.returncode == 0: print("변경 없음"); return
         subprocess.run(["git","commit","-m",f"KCC 시세 업데이트 {datetime.now().strftime('%Y-%m-%d')}"],
                        cwd=OUTPUT_DIR, check=True)
         subprocess.run(["git","fetch","origin"], cwd=OUTPUT_DIR, check=True)
@@ -469,35 +471,24 @@ def push_to_github():
 
 # ── 메인 ─────────────────────────────────────────────────────────────────────
 def main():
-    if MOLIT_API_KEY == "여기에_API키_입력":
-        print("⚠️  MOLIT_API_KEY를 설정하세요.")
-        print("   1. https://www.data.go.kr 접속 → 회원가입")
-        print("   2. '아파트매매 실거래자료' 검색 → 활용신청")
-        print("   3. '아파트 전월세 자료' 검색 → 활용신청")
-        print("   4. 발급된 키를 환경변수에 설정:")
-        print("      export MOLIT_API_KEY='발급된키'")
-        print("   (또는 이 파일 상단 MOLIT_API_KEY 변수에 직접 입력)")
+    if not MOLIT_API_KEY:
+        print("❌ MOLIT_API_KEY 환경변수가 없습니다.")
+        print("   export MOLIT_API_KEY='발급받은키'  를 먼저 실행하세요.")
         return
 
-    print("📡 국토교통부 실거래 데이터 수집 중...")
+    print(f"🔑 키 확인: {MOLIT_API_KEY[:8]}...{MOLIT_API_KEY[-4:]}")
+    print(f"📡 국토교통부 실거래 수집 중 (최근 {MONTHS_BACK}개월)...")
     trades, rents = collect_all()
     print(f"\n✅ 수집 완료: 매매 {len(trades)}건, 전월세 {len(rents)}건")
 
-    print("\n🌐 네이버 매물 조회 중...")
-    naver = fetch_naver_listings()
-    if naver:
-        print(f"  현재 매물: {naver['total']}건")
-
-    html = generate_html(trades, rents, naver)
+    html = generate_html(trades, rents)
     with open(OUTPUT, "w", encoding="utf-8") as f:
         f.write(html)
-    print(f"\n📊 리포트 생성: {OUTPUT}")
+    print(f"\n🎀 리포트 생성: {OUTPUT}")
 
+    push_to_github()
     IS_CI = os.environ.get("CI") == "true"
-    if IS_CI:
-        push_to_github()
-    else:
-        push_to_github()
+    if not IS_CI:
         subprocess.run(["open", OUTPUT])
 
 if __name__ == "__main__":
