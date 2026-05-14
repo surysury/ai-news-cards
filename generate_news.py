@@ -9,11 +9,17 @@ IS_CI      = os.environ.get("CI") == "true"
 
 # ── RSS 피드 ──────────────────────────────────────────────────────────────────
 FEEDS = [
-    {"name": "AI타임스",    "url": "https://www.aitimes.com/rss/allArticle.xml",  "color": "#5B4CFF"},
-    {"name": "인공지능신문", "url": "https://www.aitimes.kr/rss/allArticle.xml",  "color": "#00C2A8"},
-    {"name": "매일경제 IT", "url": "https://www.mk.co.kr/rss/40300001/",          "color": "#E6A817"},
+    # 국내
+    {"name": "AI타임스",       "url": "https://www.aitimes.com/rss/allArticle.xml",                               "color": "#5B4CFF", "lang": "ko"},
+    {"name": "인공지능신문",    "url": "https://www.aitimes.kr/rss/allArticle.xml",                               "color": "#00C2A8", "lang": "ko"},
+    {"name": "매일경제 IT",    "url": "https://www.mk.co.kr/rss/40300001/",                                       "color": "#E6A817", "lang": "ko"},
+    # 해외
+    {"name": "TechCrunch AI",  "url": "https://techcrunch.com/category/artificial-intelligence/feed/",           "color": "#FA4B2A", "lang": "en"},
+    {"name": "The Verge AI",   "url": "https://www.theverge.com/ai-artificial-intelligence/rss/index.xml",       "color": "#E040FB", "lang": "en"},
+    {"name": "VentureBeat AI", "url": "https://venturebeat.com/ai/feed/",                                        "color": "#FF6F00", "lang": "en"},
+    {"name": "MIT Tech Review","url": "https://www.technologyreview.com/feed/",                                   "color": "#B71C1C", "lang": "en"},
 ]
-MAX_PER_FEED = 15
+MAX_PER_FEED = 8
 
 # AI 관련 기사 필터 키워드 (이 중 하나라도 포함되면 포함)
 AI_KW = [
@@ -98,21 +104,22 @@ def fetch_og_image(url):
     except: return ""
 
 # ── Claude AI 요약 ─────────────────────────────────────────────────────────────
-def ai_summarize(title, summary):
+def ai_summarize(title, summary, lang="ko"):
     api_key = os.environ.get("ANTHROPIC_API_KEY","")
     if not api_key: return title, summary
     try:
         import anthropic
         client = anthropic.Anthropic(api_key=api_key)
+        translate_note = "영문 기사이므로 반드시 한국어로 번역해서 요약해줘." if lang == "en" else "한국어로 요약해줘."
         msg = client.messages.create(
             model="claude-haiku-4-5-20251001",
             max_tokens=500,
-            messages=[{"role":"user","content":f"""다음 뉴스를 한국어로 요약해줘. JSON만 출력해.
+            messages=[{"role":"user","content":f"""다음 뉴스를 {translate_note} JSON만 출력해.
 
 제목: {title}
 내용: {summary}
 
-{{"headline":"핵심 한 문장 제목 (30자 이내)","summary":"핵심 내용 5줄 이내. 줄바꿈 구분."}}"""}]
+{{"headline":"핵심 한 문장 제목 (30자 이내, 반드시 한국어)","summary":"핵심 내용 5줄 이내. 줄바꿈 구분. 반드시 한국어."}}"""}]
         )
         raw = msg.content[0].text.strip()
         m = re.search(r'\{.*\}', raw, re.DOTALL)
@@ -143,7 +150,7 @@ def fetch_articles():
                     continue
 
                 seen.add(link)
-                headline, summary = ai_summarize(raw_title, raw_summary)
+                headline, summary = ai_summarize(raw_title, raw_summary, lang=feed_info.get("lang","ko"))
                 lines = [l.strip() for l in summary.split("\n") if l.strip()][:8]
 
                 dt = parse_pub_date(entry)
