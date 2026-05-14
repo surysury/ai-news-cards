@@ -33,8 +33,8 @@ MONTHS_BACK = 24
 NAVER_COMPLEX_NO = ""  # 예: "113079"
 
 # ── 국토교통부 실거래 API ─────────────────────────────────────────────────────
-BASE_TRADE = "http://openapi.molit.go.kr/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTrade"
-BASE_RENT  = "http://openapi.molit.go.kr/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptRent"
+BASE_TRADE = "http://apis.data.go.kr/1613000/RTMSDataSvcAptTrade/getRTMSDataSvcAptTrade"
+BASE_RENT  = "http://apis.data.go.kr/1613000/RTMSDataSvcAptRent/getRTMSDataSvcAptRent"
 
 def fetch_molit(base_url, ym):
     """국토교통부 API 한 달치 조회"""
