@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KCC스위첸2차 시세 추적</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans KR',sans-serif;background:#0e0e0e;color:#e0e0e0;min-height:100vh;padding-bottom:60px;}
+
+  .header{background:#0a0a0a;padding:24px;border-bottom:1px solid #1e1e1e;}
+  .header h1{font-size:22px;font-weight:900;color:#fff;margin-bottom:4px;}
+  .header h1 em{color:#F5C518;font-style:normal;}
+  .header .sub{font-size:12px;color:#555;margin-top:6px;}
+
+  .section{padding:24px;border-bottom:1px solid #1a1a1a;}
+  .section-title{font-size:13px;font-weight:700;color:#F5C518;letter-spacing:.1em;
+                  text-transform:uppercase;margin-bottom:16px;}
+
+  .stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:0;}
+  .stat-card{background:#1a1a1a;border-radius:12px;padding:16px 20px;border:1px solid #2a2a2a;
+              border-left:3px solid #F5C518;min-width:140px;flex:1;}
+  .stat-val{font-size:22px;font-weight:900;color:#F5C518;}
+  .stat-lbl{font-size:11px;color:#555;margin-top:4px;}
+
+  .chart-box{background:#141414;border-radius:12px;padding:20px;border:1px solid #1e1e1e;margin-bottom:16px;}
+  .chart-box h3{font-size:13px;color:#aaa;margin-bottom:16px;font-weight:700;}
+
+  table{width:100%;border-collapse:collapse;font-size:12px;}
+  th{background:#1a1a1a;color:#666;font-weight:700;padding:10px 12px;text-align:left;
+      border-bottom:1px solid #222;letter-spacing:.05em;}
+  td{padding:10px 12px;border-bottom:1px solid #1a1a1a;color:#ccc;}
+  tr:hover td{background:#161616;}
+
+  .tabs{display:flex;border-bottom:1px solid #1e1e1e;background:#0a0a0a;
+         position:sticky;top:0;z-index:10;}
+  .tab{flex:1;padding:14px;font-size:13px;font-weight:700;color:#444;background:none;
+        border:none;border-bottom:2px solid transparent;cursor:pointer;text-align:center;}
+  .tab.active{color:#F5C518;border-bottom-color:#F5C518;}
+  .pane{display:none;} .pane.active{display:block;}
+
+  .update-badge{display:inline-block;font-size:10px;background:#1a1a1a;color:#555;
+                 padding:3px 10px;border-radius:20px;margin-top:8px;}
+  @media(max-width:480px){
+    .stats{gap:8px;}
+    .stat-val{font-size:18px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>경기 김포시 운양동<br><em>KCC스위첸2차</em> 시세 추적</h1>
+  <div class="sub">국토교통부 실거래가 기준 · 최근 24개월</div>
+  <div class="update-badge">업데이트: 2026년 05월 14일 13:26</div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="show('trade',this)">📈 매매</button>
+  <button class="tab" onclick="show('rent',this)">🔑 전·월세</button>
+  <button class="tab" onclick="show('table',this)">📋 거래 내역</button>
+</div>
+
+<!-- 매매 탭 -->
+<div class="pane active" id="pane-trade">
+  <div class="section">
+    <div class="section-title">📊 시세 요약</div>
+    <div class="stats">
+      <div class="stat-card"><div class="stat-val">0건</div><div class="stat-lbl">총 매매 거래 (24개월)</div></div>
+      <div class="stat-card"><div class="stat-val">데이터 없음</div><div class="stat-lbl">최근 3개월 평균가</div></div>
+      
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">📈 매매가 추이 (평형별)</div>
+    <div class="chart-box">
+      <h3>월별 평균 매매가 (만원)</h3>
+      <canvas id="tradeChart" height="200"></canvas>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">🕐 최근 매매 거래</div>
+    <table>
+      <tr><th>거래일</th><th>단지명</th><th>면적</th><th>층</th><th>거래가</th></tr>
+      
+    </table>
+  </div>
+</div>
+
+<!-- 전·월세 탭 -->
+<div class="pane" id="pane-rent">
+  <div class="section">
+    <div class="section-title">📊 전월세 요약</div>
+    <div class="stats">
+      <div class="stat-card" style="border-color:#60a5fa">
+        <div class="stat-val" style="color:#60a5fa">0건</div>
+        <div class="stat-lbl">전세 거래 (24개월)</div>
+      </div>
+      <div class="stat-card" style="border-color:#34d399">
+        <div class="stat-val" style="color:#34d399">0건</div>
+        <div class="stat-lbl">월세 거래 (24개월)</div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">📈 전세가 추이 (평형별)</div>
+    <div class="chart-box">
+      <h3>월별 평균 전세 보증금 (만원)</h3>
+      <canvas id="jeonseChart" height="200"></canvas>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">🕐 최근 전·월세 거래</div>
+    <table>
+      <tr><th>거래일</th><th>유형</th><th>면적</th><th>층</th><th>가격</th></tr>
+      
+    </table>
+  </div>
+</div>
+
+<!-- 거래 내역 탭 -->
+<div class="pane" id="pane-table">
+  <div class="section">
+    <div class="section-title">📋 전체 매매 거래 내역</div>
+    <table>
+      <tr><th>거래일</th><th>단지명</th><th>면적</th><th>층</th><th>거래가</th></tr>
+      
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('pane-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+Chart.defaults.color = '#666';
+Chart.defaults.borderColor = '#1e1e1e';
+
+const tradeData = {"labels": [], "datasets": []};
+const jeonseData = {"labels": [], "datasets": []};
+
+function makeChart(id, data, label) {
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'line',
+    data: data,
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { labels: { color: '#aaa', font: { size: 11 } } },
+        tooltip: {
+          callbacks: {
+            label: ctx => ctx.dataset.label + ': ' + (ctx.raw ? ctx.raw.toLocaleString() + '만원' : '-')
+          }
+        }
+      },
+      scales: {
+        x: { ticks: { color: '#555', maxTicksLimit: 12 } },
+        y: {
+          ticks: {
+            color: '#555',
+            callback: v => (v/10000).toFixed(0) + '억' + (v%10000 > 0 ? (v%10000) + '' : '')
+          }
+        }
+      }
+    }
+  });
+}
+
+makeChart('tradeChart',  tradeData,  '매매가');
+makeChart('jeonseChart', jeonseData, '전세가');
+</script>
+</body>
+</html>
