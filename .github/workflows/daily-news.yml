@@ -1,0 +1,36 @@
+name: AI 뉴스카드 자동 생성
+
+on:
+  schedule:
+    - cron: '0 23 * * *'  # 매일 오전 8시 KST (UTC 기준 전날 23시)
+  workflow_dispatch:        # 수동 실행 버튼도 제공
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 의존성 설치
+        run: pip install feedparser anthropic
+
+      - name: 뉴스카드 생성
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CI: true
+        run: python generate_news.py
+
+      - name: GitHub에 업로드
+        run: |
+          git config user.name "AI 뉴스봇"
+          git config user.email "actions@github.com"
+          git add news_card.html
+          git diff --staged --quiet || git commit -m "뉴스카드 업데이트 $(date '+%Y-%m-%d')"
+          git push

@@ -17,6 +17,7 @@ FEEDS = [
 ]
 MAX_PER_FEED = 6
 OUTPUT_DIR   = os.path.dirname(os.path.abspath(__file__))
+IS_CI        = os.environ.get("CI") == "true"
 
 # ── Claude API 요약 (API 키 있을 때만) ────────────────────────────────────────
 def ai_summarize(title, summary):
@@ -517,6 +518,18 @@ def generate_html(articles):
 </html>"""
 
 # ── 메인 ──────────────────────────────────────────────────────────────────────
+def push_to_github():
+    gh = os.path.join(OUTPUT_DIR, "gh")
+    try:
+        subprocess.run(["git", "add", "news_card.html"], cwd=OUTPUT_DIR, check=True)
+        subprocess.run(["git", "commit", "-m", f"뉴스카드 업데이트 {datetime.now().strftime('%Y-%m-%d')}"],
+                       cwd=OUTPUT_DIR, check=True)
+        subprocess.run(["git", "push"], cwd=OUTPUT_DIR, check=True)
+        print("GitHub 업로드 완료!")
+        print("👉 https://surysury.github.io/ai-news-cards/news_card.html")
+    except subprocess.CalledProcessError as e:
+        print(f"[GitHub 업로드 실패] {e}")
+
 def main():
     print("어제 AI 뉴스 수집 중...")
     articles = fetch_articles(use_yesterday=True)
@@ -534,7 +547,12 @@ def main():
         f.write(html_content)
 
     print(f"뉴스카드 생성 완료: {output_path}")
-    subprocess.run(["open", output_path])
+
+    if IS_CI:
+        print("CI 환경 - GitHub Actions가 자동 업로드합니다.")
+    else:
+        push_to_github()
+        subprocess.run(["open", "https://surysury.github.io/ai-news-cards/news_card.html"])
 
 if __name__ == "__main__":
     main()
