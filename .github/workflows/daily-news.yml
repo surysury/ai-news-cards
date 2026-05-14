@@ -5,6 +5,9 @@ on:
     - cron: '0 23 * * *'  # 매일 오전 8시 KST (UTC 기준 전날 23시)
   workflow_dispatch:        # 수동 실행 버튼도 제공
 
+permissions:
+  contents: write
+
 jobs:
   generate:
     runs-on: ubuntu-latest
