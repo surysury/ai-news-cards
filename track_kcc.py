@@ -67,17 +67,17 @@ def parse_trade(xml_str):
     try:
         root = ET.fromstring(xml_str)
         for item in root.iter("item"):
-            name = (item.findtext("아파트") or "").strip()
+            name = (item.findtext("aptNm") or "").strip()
             if APT_NAME not in name: continue
-            try: area = float(item.findtext("전용면적") or 0)
+            try: area = float(item.findtext("excluUseAr") or 0)
             except: area = 0
-            try: price = int((item.findtext("거래금액") or "0").replace(",","").strip())
+            try: price = int((item.findtext("dealAmount") or "0").replace(",","").strip())
             except: price = 0
-            y = item.findtext("년") or ""
-            m = (item.findtext("월") or "").zfill(2)
-            d = (item.findtext("일") or "").zfill(2)
+            y = item.findtext("dealYear") or ""
+            m = (item.findtext("dealMonth") or "").zfill(2)
+            d = (item.findtext("dealDay") or "").zfill(2)
             rows.append({"type":"매매","name":name,"area":area,"price":price,
-                         "date":f"{y}-{m}-{d}","floor":item.findtext("층") or ""})
+                         "date":f"{y}-{m}-{d}","floor":item.findtext("floor") or ""})
     except: pass
     return rows
 
@@ -86,20 +86,20 @@ def parse_rent(xml_str):
     try:
         root = ET.fromstring(xml_str)
         for item in root.iter("item"):
-            name = (item.findtext("아파트") or "").strip()
+            name = (item.findtext("aptNm") or "").strip()
             if APT_NAME not in name: continue
-            try: area = float(item.findtext("전용면적") or 0)
+            try: area = float(item.findtext("excluUseAr") or 0)
             except: area = 0
-            try: deposit = int((item.findtext("보증금액") or "0").replace(",","").strip())
+            try: deposit = int((item.findtext("deposit") or "0").replace(",","").strip())
             except: deposit = 0
-            try: monthly = int((item.findtext("월세금액") or "0").replace(",","").strip())
+            try: monthly = int((item.findtext("monthlyRent") or "0").replace(",","").strip())
             except: monthly = 0
-            y = item.findtext("년") or ""
-            m = (item.findtext("월") or "").zfill(2)
-            d = (item.findtext("일") or "").zfill(2)
+            y = item.findtext("dealYear") or ""
+            m = (item.findtext("dealMonth") or "").zfill(2)
+            d = (item.findtext("dealDay") or "").zfill(2)
             rows.append({"type":"월세" if monthly>0 else "전세","name":name,"area":area,
                          "price":deposit,"monthly":monthly,
-                         "date":f"{y}-{m}-{d}","floor":item.findtext("층") or ""})
+                         "date":f"{y}-{m}-{d}","floor":item.findtext("floor") or ""})
     except: pass
     return rows
 
