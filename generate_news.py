@@ -53,6 +53,10 @@ STOCKS = [
 # ── 유틸 ──────────────────────────────────────────────────────────────────────
 def strip_tags(t): return re.sub(r"<[^>]+>", "", t or "")
 
+def contains_any(text, keywords):
+    t = text.lower()
+    return any(kw.lower() in t for kw in keywords)
+
 def parse_pub_date(entry):
     parsed = entry.get("published_parsed") or entry.get("updated_parsed")
     if parsed:
