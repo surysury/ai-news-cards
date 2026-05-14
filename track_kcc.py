@@ -134,34 +134,44 @@ def stat_html(emoji, val, lbl, color="#3B82F6"):
       <div class="s-lbl">{lbl}</div>
     </div>"""
 
-def trade_table(rows):
-    if not rows: return ""
-    rows_html = "".join(f"""<tr>
-      <td>{r['date']}</td><td>{r['area']:.0f}㎡</td>
-      <td>{r['floor']}층</td><td class="pc">{r['price']:,}<span class="u">만원</span></td>
-    </tr>""" for r in reversed(rows))
-    return f"""<div class="sec-ttl">최근 매매 거래</div>
-    <div class="tbl-wrap"><table>
-      <tr><th>거래일</th><th>면적</th><th>층</th><th>거래가</th></tr>
-      {rows_html}
-    </table></div>"""
+def combined_table(aid, trades, rents):
+    if not trades and not rents: return ""
 
-def rent_table(rows, title="최근 전·월세 거래"):
-    if not rows: return ""
-    def rent_price(r):
-        if r['type'] == '전세':
-            return f"{r['price']:,}만원"
-        return f"{r['price']:,}/{r.get('monthly',0):,}만원"
-    def rent_cls(r):
-        return "tj" if r['type'] == '전세' else "tw"
-    rows_html = "".join(f"""<tr>
+    def price_cell(r):
+        if r["type"] == "매매":
+            return f"{r['price']:,}<span class='u'>만원</span>"
+        elif r["type"] == "전세":
+            return f"{r['price']:,}<span class='u'>만원</span>"
+        else:
+            return f"{r['price']:,}/{r.get('monthly',0):,}<span class='u'>만원</span>"
+
+    def type_pill(r):
+        cls = {"매매":"tm","전세":"tj","월세":"tw"}[r["type"]]
+        return f'<span class="{cls}">{r["type"]}</span>'
+
+    all_rows = sorted(
+        [dict(r, monthly=0) for r in trades] + list(rents),
+        key=lambda x: x["date"], reverse=True
+    )
+    rows_html = "".join(f"""<tr data-type="{r['type']}">
       <td>{r['date']}</td>
-      <td class="{rent_cls(r)}">{r['type']}</td>
+      <td>{type_pill(r)}</td>
       <td>{r['area']:.0f}㎡</td><td>{r['floor']}층</td>
-      <td class="pc">{rent_price(r)}</td>
-    </tr>""" for r in reversed(rows))
-    return f"""<div class="sec-ttl">{title}</div>
-    <div class="tbl-wrap"><table>
+      <td class="pc">{price_cell(r)}</td>
+    </tr>""" for r in all_rows)
+
+    counts = {t: sum(1 for r in all_rows if r["type"]==t) for t in ("매매","전세","월세")}
+    total = len(all_rows)
+
+    btns = f"""<div class="filter-row">
+      <button class="flt active" onclick="filterTbl(this,'{aid}','all')">전체 <span class="fcnt">{total}</span></button>
+      <button class="flt" onclick="filterTbl(this,'{aid}','매매')">매매 <span class="fcnt">{counts['매매']}</span></button>
+      <button class="flt" onclick="filterTbl(this,'{aid}','전세')">전세 <span class="fcnt">{counts['전세']}</span></button>
+      <button class="flt" onclick="filterTbl(this,'{aid}','월세')">월세 <span class="fcnt">{counts['월세']}</span></button>
+    </div>"""
+
+    return f"""{btns}
+    <div class="tbl-wrap"><table id="tbl-{aid}">
       <tr><th>거래일</th><th>유형</th><th>면적</th><th>층</th><th>가격</th></tr>
       {rows_html}
     </table></div>"""
@@ -211,9 +221,8 @@ def apt_pane(apt, trades, rents, chart_registry):
             chart_registry[cid] = cj
             charts += f'<div class="chart-card"><div class="chart-ttl">{label} (평형별)</div><canvas id="{cid}" height="210"></canvas></div>'
 
-    # 테이블
-    tables = trade_table(trades) if mode == "both" else ""
-    tables += rent_table(rents, "전·월세 전체 내역 (2023~)")
+    # 테이블 (통합)
+    tables = combined_table(aid, trades if mode in ("both","trade") else [], rents)
 
     empty = "" if (trades or rents) else '<div class="empty"><div>🏗</div><p>데이터 없음</p></div>'
     return f'<div class="pane" id="pane-{aid}">{stats}{charts}{tables}{empty}</div>'
@@ -393,6 +402,10 @@ td{{padding:9px 11px;border-bottom:1px solid var(--bdr);color:var(--dark);}}
 tr:last-child td{{border-bottom:none;}}
 tr:hover td{{background:var(--sage4);transition:.1s;}}
 .pc{{font-weight:700;color:var(--sage);}}
+.tm{{
+  font-size:10px;font-weight:700;color:#1D6FA4;
+  background:#EBF4FA;padding:2px 7px;border-radius:10px;
+}}
 .tj{{
   font-size:10px;font-weight:700;color:var(--sage);
   background:var(--sage3);padding:2px 7px;border-radius:10px;
@@ -402,6 +415,23 @@ tr:hover td{{background:var(--sage4);transition:.1s;}}
   background:#FDF0EB;padding:2px 7px;border-radius:10px;
 }}
 .u{{font-size:9px;font-weight:400;color:var(--muted);margin-left:1px;}}
+
+/* ── 필터 버튼 ── */
+.filter-row{{
+  display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;
+}}
+.flt{{
+  padding:5px 13px;border-radius:20px;border:1.5px solid var(--bdr);
+  font-size:11px;font-weight:700;color:var(--mid);
+  background:var(--white);cursor:pointer;
+  display:flex;align-items:center;gap:5px;transition:.15s;
+}}
+.flt.active{{
+  background:var(--sage);border-color:var(--sage);color:#fff;
+}}
+.fcnt{{
+  font-size:9px;font-weight:500;opacity:.75;
+}}
 
 /* ── 빈 상태 ── */
 .empty{{text-align:center;padding:48px 16px;color:var(--muted);font-size:13px;}}
@@ -431,6 +461,14 @@ tr:hover td{{background:var(--sage4);transition:.1s;}}
 Chart.defaults.font.family="'Noto Sans KR',sans-serif";
 Chart.defaults.color="#A8A8A8";
 Chart.defaults.borderColor="#EBF0E8";
+
+function filterTbl(btn, aid, type){{
+  btn.closest('.filter-row').querySelectorAll('.flt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#tbl-'+aid+' tr[data-type]').forEach(row=>{{
+    row.style.display=(type==='all'||row.dataset.type===type)?'':'none';
+  }});
+}}
 
 function show(id,btn){{
   document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
